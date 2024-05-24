@@ -76,6 +76,8 @@ repos:
     hooks:
     -   id: Flake8-pyproject
         additional_dependencies: [flake8-docstrings, flake8-comprehensions, flake8-bugbear]
+        args:
+        -   --per-file-ignores=tests/*:D100,D101,D102,D103,F401
 -   repo: https://github.com/rstcheck/rstcheck
     rev: v6.2.0
     hooks:
