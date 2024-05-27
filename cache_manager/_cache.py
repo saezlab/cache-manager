@@ -115,14 +115,43 @@ class Cache:
             self.con.execute(q)
 
             for row in self.con.fetchall():
+
                 key = row["version_id"]
 
                 if key not in results:
-                    results[key] = CacheItem(key = row["item_id"],
-                                                version = row["version"],
-                                                status = row["status"],
-                                                ext = row["ext"])
-            
+
+                    results[key] = CacheItem(
+                        key = row["item_id"],
+                        version = row["version"],
+                        status = row["status"],
+                        ext = row["ext"],
+                    )
+
                 results[key].attrs[row["name"]] = row["value"]
 
-        return results
+        return list(results.values())
+
+
+    def best(
+            self,
+            uri: str,
+            attrs: dict | None = None,
+            status: set[int] | None = None,
+            newer_than: str | datetime.datetime | None = None,
+            older_than: str | datetime.datetime | None = None,
+        ) -> CacheItem | None:
+
+        items = self.search(
+            uri = uri,
+            attrs = attrs,
+            newer_than = newer_than,
+            older_than = older_than,
+        )
+
+        items = sorted(items, key = lambda it: it['version'])
+
+        for it in items[::-1]:
+
+            if it['status'] in status:
+
+                return it
