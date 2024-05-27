@@ -1,3 +1,4 @@
+from __future__ import annotations
 import os
 import datetime
 import sqlite3
@@ -64,6 +65,7 @@ class Cache:
                 CREATE TABLE IF NOT EXISTS
                 attr_{} (
                     id VARCHAR FOREIGN KEY,
+                    name VARCHAR,
                     value {}
                 )
             '''.format(typ, typ.upper()),
@@ -81,34 +83,46 @@ class Cache:
         Look up items in the cache.
         """
 
-        q = ' SELECT item_id, version, status, date, ext, label FROM main'
-        where = ''
+        results = {}
 
-        if uri or attrs:
+        for actual_typ in ['varchar, int, date']:
 
-            item_id = CacheItem.serialize(uri, attrs)
+            q = f'SELECT * FROM main LEFT JOIN attr_{actual_typ}'
+            where = ''
 
-            where += f' item_id = "{item_id}"'
+            if uri or attrs:
 
-        if status is not None:
+                item_id = CacheItem.serialize(uri, attrs)
 
-            where  += f' AND status = "{status}"'
+                where += f' item_id = "{item_id}"'
 
-        if newer_than:
+            if status is not None:
 
-            where += f' AND date > "{_utils.parse_time(newer_than)}"'
+                where  += f' AND status = "{status}"'
 
-        if older_than:
+            if newer_than:
 
-            where += f' AND date < "{_utils.parse_time(older_than)}"'
+                where += f' AND date > "{_utils.parse_time(newer_than)}"'
 
-        if where:
+            if older_than:
 
-            q += f' WHERE {where}'
+                where += f' AND date < "{_utils.parse_time(older_than)}"'
 
-        self.con.execute(q)
+            if where:
 
-        return [
-            CacheItem(*row)
-            for row in self.con.fetchall()
-        ]
+                q += f' WHERE {where}'
+
+            self.con.execute(q)
+
+            for row in self.con.fetchall():
+                key = row["version_id"]
+
+                if key not in results:
+                    results[key] = CacheItem(key = row["item_id"],
+                                                version = row["version"],
+                                                status = row["status"],
+                                                ext = row["ext"])
+            
+                results[key].attrs[row["name"]] = row["value"]
+
+        return results
