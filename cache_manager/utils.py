@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from typing import Any, Iterable, Mapping
-
+import datetime
+import dateutil
 import hashlib
 
 def list_like(value: Any):
@@ -13,9 +14,9 @@ def list_like(value: Any):
 
 
 def serialize(value: Any):
-    
+
     if list_like(value):
-        
+
         if isinstance(value, Mapping):
 
             value = [
@@ -24,14 +25,27 @@ def serialize(value: Any):
             ]
 
         return '[%s]' % ','.join(sorted(map(serialize, value)))
-                        
+
     else:
 
         return str(value)
-    
+
 
 def hash(value: Any) -> str:
 
     value = serialize(value).encode()
 
     return hashlib.md5(value).hexdigest()
+
+
+def parse_time(value: str | datetime.datetime) -> str:
+    """
+    Formats a date and time value.
+    """
+
+    if isinstance(value, str):
+
+        value = dateutil.parser.parse(value)
+
+    return datetime.strftime(value, '%Y-%m-%d %H:%M:%S')
+

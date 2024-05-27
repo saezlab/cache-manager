@@ -1,5 +1,9 @@
 import os
+import datetime
 import sqlite3
+
+from cache_manager._item import CacheItem
+import cache_manager.utils as _utils
 
 __all__ = [
     'Cache',
@@ -49,17 +53,62 @@ class Cache:
                 file_name VARCHAR,
                 label VARCHAR,
                 date DATE,
-                extension VARCHAR
+                ext VARCHAR
             )
         ''')
 
         for typ in ['varchar, int, date']:
+
             self.cur.execute(
                 '''
                 CREATE TABLE IF NOT EXISTS
                 attr_{} (
-                    version_id VARCHAR FOREIGN KEY,
+                    id VARCHAR FOREIGN KEY,
                     value {}
                 )
             '''.format(typ, typ.upper()),
             )
+
+    def search(
+            self,
+            uri: str,
+            attrs: dict | None = None,
+            status: int | None = None,
+            newer_than: str | datetime.datetime | None = None,
+            older_than: str | datetime.datetime | None = None,
+        ) -> list[CacheItem]:
+        """
+        Look up items in the cache.
+        """
+
+        q = ' SELECT item_id, version, status, date, ext, label FROM main'
+        where = ''
+
+        if uri or attrs:
+
+            item_id = CacheItem.serialize(uri, attrs)
+
+            where += f' item_id = "{item_id}"'
+
+        if status is not None:
+
+            where  += f' AND status = "{status}"'
+
+        if newer_than:
+
+            where += f' AND date > "{_utils.parse_time(newer_than)}"'
+
+        if older_than:
+
+            where += f' AND date < "{_utils.parse_time(older_than)}"'
+
+        if where:
+
+            q += f' WHERE {where}'
+
+        self.con.execute(q)
+
+        return [
+            CacheItem(*row)
+            for row in self.con.fetchall()
+        ]
