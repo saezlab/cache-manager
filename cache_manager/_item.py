@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-import utils
 import os
+
+import utils
 
 __all__ = [
     'CacheItem',
@@ -88,4 +89,6 @@ class CacheItem:
         Setting default values
         """
 
-        self.ext = os.path.splitext(self.uri)[-1]
+        self.filename = self.filename or os.path.basename(self.uri)
+        self.ext = os.path.splitext(self.filename)[-1]
+        self.date = self.date or utils.parse_time()
