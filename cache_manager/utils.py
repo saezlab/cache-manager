@@ -1,9 +1,17 @@
 from __future__ import annotations
 
-from typing import Any, Iterable, Mapping
-import datetime
-import dateutil
+from typing import Any, Mapping, Iterable
 import hashlib
+import datetime
+
+import dateutil
+
+__all__ = [
+    'hash',
+    'list_like',
+    'parse_time',
+    'serialize',
+]
 
 def list_like(value: Any):
 
@@ -47,5 +55,8 @@ def parse_time(value: str | datetime.datetime) -> str:
 
         value = dateutil.parser.parse(value)
 
-    return datetime.strftime(value, '%Y-%m-%d %H:%M:%S')
+    elif value is None:
 
+        value = datetime.datetime.now()
+
+    return datetime.strftime(value, '%Y-%m-%d %H:%M:%S')
