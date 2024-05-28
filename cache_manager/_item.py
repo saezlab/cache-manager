@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import utils
+import os
 
 __all__ = [
     'CacheItem',
@@ -15,12 +16,13 @@ class CacheItem:
     def __init__(# TODO:add filename
             self,
             key,
-            version: int,
-            status: int,
-            date: str,
+            version: int = 1,
+            status: int = 0,
+            date: str = None,
+            filename: str = None,
             ext: str | None = None,
             label: str | None = None,
-            attrs: dict | None = None,
+            attrs: dict | None = None
     ):
         """
         Instantiates a new cache item.
@@ -30,9 +32,11 @@ class CacheItem:
         self.version = version
         self.status = status
         self.date = date
+        self.filename = filename
         self.ext = ext
         self.label = label
         self.attrs = attrs or {}
+        self._setup()
 
     @classmethod
     def new(
@@ -40,8 +44,9 @@ class CacheItem:
         uri,
         params,
         version: int = 0,
-        status: int = 0, # TODO: Define status
+        status: int = 0,
         date: str = None,
+        filename: str = None,
         ext: str | None = None,
         label: str | None = None,
         attrs: dict | None = None,
@@ -77,3 +82,10 @@ class CacheItem:
         version = self.default_version if version is None else version
 
         return f'{self.key}-{version}.{self.ext}'
+    
+    def _setup(self):
+        """
+        Setting default values
+        """
+
+        self.ext = os.path.splitext(self.uri)[-1]
