@@ -74,7 +74,7 @@ class Cache:
     def search(
             self,
             uri: str,
-            attrs: dict | None = None,
+            params: dict | None = None,
             status: int | None = None,
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
@@ -90,9 +90,9 @@ class Cache:
             q = f'SELECT * FROM main LEFT JOIN attr_{actual_typ}'
             where = ''
 
-            if uri or attrs:
+            if uri or params:
 
-                item_id = CacheItem.serialize(uri, attrs)
+                item_id = CacheItem.serialize(uri, params)
 
                 where += f' item_id = "{item_id}"'
 
@@ -127,7 +127,7 @@ class Cache:
                         ext = row["ext"],
                     )
 
-                results[key].attrs[row["name"]] = row["value"]
+                results[key].params[row["name"]] = row["value"]
 
         return list(results.values())
 
@@ -135,7 +135,7 @@ class Cache:
     def best(
             self,
             uri: str,
-            attrs: dict | None = None,
+            params: dict | None = None,
             status: set[int] | None = None,
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
@@ -143,7 +143,7 @@ class Cache:
 
         items = self.search(
             uri = uri,
-            attrs = attrs,
+            params = params,
             newer_than = newer_than,
             older_than = older_than,
         )
@@ -155,3 +155,42 @@ class Cache:
             if it['status'] in status:
 
                 return it
+
+
+    def create(
+            self,
+            uri: str,
+            params: dict | None = None,
+            attrs: dict | None = None
+        ):
+
+        items = self.search(
+            uri = uri,
+            params = params,
+        )
+
+        last_version = max((i['version'] for i in items), default = 0)
+        new_version = last_version + 1
+
+        CacheItem.new(
+            uri,
+            attrs,
+            new_version,
+            params
+        ) 
+
+        self._open_sqlite()
+        self.cur.execute('''
+            INSERT INTO
+            main (
+                id INT PRIMARY KEY,
+                item_id VARCHAR,
+                version_id VARCHAR,
+                version INT,
+                status INT,
+                file_name VARCHAR,
+                label VARCHAR,
+                date DATE,
+                ext VARCHAR
+            )
+        ''')

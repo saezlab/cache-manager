@@ -35,7 +35,15 @@ class CacheItem:
         self.attrs = attrs or {}
 
     @classmethod
-    def new(cls, uri, attrs):
+    def new(cls,
+            uri,
+            attrs,
+            version: int = 0,
+            status: int = 0,
+            date: str = None,
+            ext: str | None = None,
+            label: str | None = None,
+            params: dict | None = None):
         """
         Creates a new item.
         """
