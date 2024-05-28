@@ -1,7 +1,8 @@
 from __future__ import annotations
+
 import os
-import datetime
 import sqlite3
+import datetime
 
 from cache_manager._item import CacheItem
 import cache_manager.utils as _utils
@@ -78,7 +79,7 @@ class Cache:
             status: int | None = None,
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
-        ) -> list[CacheItem]:
+    ) -> list[CacheItem]:
         """
         Look up items in the cache.
         """
@@ -116,18 +117,18 @@ class Cache:
 
             for row in self.con.fetchall():
 
-                key = row["version_id"]
+                key = row['version_id']
 
                 if key not in results:
 
                     results[key] = CacheItem(
-                        key = row["item_id"],
-                        version = row["version"],
-                        status = row["status"],
-                        ext = row["ext"],
+                        key = row['item_id'],
+                        version = row['version'],
+                        status = row['status'],
+                        ext = row['ext'],
                     )
 
-                results[key].params[row["name"]] = row["value"]
+                results[key].params[row['name']] = row['value']
 
         return list(results.values())
 
@@ -139,7 +140,7 @@ class Cache:
             status: set[int] | None = None,
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
-        ) -> CacheItem | None:
+    ) -> CacheItem | None:
 
         items = self.search(
             uri = uri,
@@ -161,8 +162,11 @@ class Cache:
             self,
             uri: str,
             params: dict | None = None,
-            attrs: dict | None = None
-        ):
+            attrs: dict | None = None,
+            status: int = 0,
+            ext: str | None = None,
+            label: str | None = None,
+    ):
 
         items = self.search(
             uri = uri,
@@ -170,27 +174,41 @@ class Cache:
         )
 
         last_version = max((i['version'] for i in items), default = 0)
-        new_version = last_version + 1
 
-        CacheItem.new(
+        new = CacheItem.new(
             uri,
-            attrs,
-            new_version,
-            params
-        ) 
+            params,
+            attrs=attrs,
+            version=last_version + 1,
+            date=_utils.parse_time(),
+            status=status,
+            ext=ext,
+            label=label,
+        )
 
         self._open_sqlite()
-        self.cur.execute('''
+        self.cur.execute(f'''
             INSERT INTO
             main (
-                id INT PRIMARY KEY,
-                item_id VARCHAR,
-                version_id VARCHAR,
-                version INT,
-                status INT,
-                file_name VARCHAR,
-                label VARCHAR,
-                date DATE,
-                ext VARCHAR
+                id,
+                item_id,
+                version_id,
+                version,
+                status,
+                file_name,
+                label,
+                date,
+                ext
+            )
+            VALUES (
+                NULL,
+                {new.key},
+                {new.key}-{new.version},
+                {new.version},
+                {new.status},
+                {new.filename},
+                {new.label},
+                {new.date},
+                {new.ext}
             )
         ''')

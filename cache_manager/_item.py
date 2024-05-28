@@ -12,7 +12,7 @@ class CacheItem:
     Cache item class, stores a single cache item information.
     """
 
-    def __init__(
+    def __init__(# TODO:add filename
             self,
             key,
             version: int,
@@ -40,7 +40,7 @@ class CacheItem:
         uri,
         params,
         version: int = 0,
-        status: int = 0,
+        status: int = 0, # TODO: Define status
         date: str = None,
         ext: str | None = None,
         label: str | None = None,
