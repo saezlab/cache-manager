@@ -35,22 +35,28 @@ class CacheItem:
         self.attrs = attrs or {}
 
     @classmethod
-    def new(cls,
-            uri,
-            attrs,
-            version: int = 0,
-            status: int = 0,
-            date: str = None,
-            ext: str | None = None,
-            label: str | None = None,
-            params: dict | None = None):
+    def new(
+        cls,
+        uri,
+        params,
+        version: int = 0,
+        status: int = 0,
+        date: str = None,
+        ext: str | None = None,
+        label: str | None = None,
+        attrs: dict | None = None,
+    ):
         """
         Creates a new item.
         """
 
-        key = cls.serialize(uri, attrs)
+        key = cls.serialize(uri, params)
+        args = {
+            k: v for k, v in locals().items()
+            if k not in ['uri', 'params', 'cls']
+        }
 
-        return cls(key)
+        return cls(key, **args)
 
     @classmethod
     def serialize(cls, uri, attrs: dict | None = None):
