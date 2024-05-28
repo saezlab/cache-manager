@@ -2,15 +2,8 @@
 Cache management for directories of files.
 """
 
-__author__ = ", ".join(["Dénes Türei"])
-__maintainer__ = ", ".join(["Dénes Türei"])
-__version__ = "0.0.1"
-__email__ = "turei.denes@gmail.com"
+from ._metadata import __version__, __author__, __license__
+from ._metadata import metadata as _metadata
+from . import _session
 
-
-def twentythree():
-    """
-    The number 23.
-    """
-
-    return 23
+session = _session._session()
