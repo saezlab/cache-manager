@@ -6,6 +6,7 @@ import datetime
 
 from cache_manager._item import CacheItem
 import cache_manager.utils as _utils
+from cache_manager._session import _log
 
 __all__ = [
     'Cache',
@@ -26,6 +27,7 @@ class Cache:
 
     def __del__(self):
 
+        _log(f'Closing SQLite database path: {self.path}')
         self.con.close()
 
     def _set_path(self, path: str):
@@ -34,16 +36,21 @@ class Cache:
 
             path = os.path.join(path, 'cache.sqlite')
 
+        _log(f'Setting SQLite database to path: {path}')
         self.path = path
 
     def _open_sqlite(self):
 
+        _log(f'Opening SQLite database path: {self.path}')
         self.con = sqlite3.connect(self.path)
         self.cur = self.con.cursor()
 
     def _create_schema(self):
 
         self._open_sqlite()
+
+        _log(f'Initializing new database')
+        _log(f'Creating main table')
         self.cur.execute('''
             CREATE TABLE IF NOT EXISTS
             main (
@@ -61,6 +68,7 @@ class Cache:
 
         for typ in ['varchar, int, date']:
 
+            _log(f'Creating attr_{typ} table')
             self.cur.execute(
                 '''
                 CREATE TABLE IF NOT EXISTS
