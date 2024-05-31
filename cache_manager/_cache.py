@@ -85,6 +85,36 @@ class Cache:
             '''.format(typ, typ.upper()),
             )
 
+    def _where(uri,
+               params,
+               status,
+               newer_than,
+               older_than):
+
+        where = ''
+
+        if uri or params:
+
+            item_id = CacheItem.serialize(uri, params)
+
+            where += f' item_id = "{item_id}"'
+
+        if status is not None:
+
+            where  += f' AND status = "{status}"'
+
+        if newer_than:
+
+            where += f' AND date > "{_utils.parse_time(newer_than)}"'
+
+        if older_than:
+
+            where += f' AND date < "{_utils.parse_time(older_than)}"'
+
+        if where:
+
+            q += f' WHERE {where}'
+
     def search(
             self,
             uri: str,
@@ -252,3 +282,28 @@ class Cache:
         ''')
 
         _log(f'Successfully created new version: {new.key}-{new.version}')
+
+    def remove(
+            self,
+            uri: str,
+            params: dict | None = None,
+            attrs: dict | None = None,
+            status: int | None = None,
+            ext: str | None = None,
+            label: str | None = None,
+            newer_than: str | datetime.datetime | None = None,
+            older_than: str | datetime.datetime | None = None
+    ):
+        """
+        Remove CacheItem or version
+        """
+
+        items = self.search(
+            uri = uri,
+            params = params,
+            status = status,
+            newer_than = newer_than,
+            older_than = older_than
+        )
+
+        self._open_sqlite()
