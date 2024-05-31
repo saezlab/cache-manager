@@ -23,7 +23,7 @@ class CacheItem:
             filename: str = None,
             ext: str | None = None,
             label: str | None = None,
-            attrs: dict | None = None
+            attrs: dict | None = None,
     ):
         """
         Instantiates a new cache item.
@@ -83,7 +83,7 @@ class CacheItem:
         version = self.default_version if version is None else version
 
         return f'{self.key}-{version}.{self.ext}'
-    
+
     def _setup(self):
         """
         Setting default values
