@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 
-import utils
+import cache_manager.utils as _utils
 
 __all__ = [
     'CacheItem',
@@ -73,7 +73,7 @@ class CacheItem:
         attrs = attrs or {}
         attrs['uri'] = uri
 
-        return utils.serialize(attrs)
+        return _utils.serialize(attrs)
 
     def path(self, version: int | None = None):
         """
@@ -91,4 +91,4 @@ class CacheItem:
 
         self.filename = self.filename or os.path.basename(self.uri)
         self.ext = os.path.splitext(self.filename)[-1]
-        self.date = self.date or utils.parse_time()
+        self.date = self.date or _utils.parse_time()
