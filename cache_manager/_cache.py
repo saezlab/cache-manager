@@ -5,7 +5,7 @@ import sqlite3
 import datetime
 
 from cache_manager._item import CacheItem
-from cache_manager._session import _log
+from cache_manager import _log
 import cache_manager.utils as _utils
 
 __all__ = [

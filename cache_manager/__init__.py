@@ -8,3 +8,4 @@ from . import _session
 
 session = _session.session()
 log = _session.log
+_log = session._logger.msg
