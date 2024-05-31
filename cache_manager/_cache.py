@@ -4,7 +4,7 @@ import os
 import sqlite3
 import datetime
 
-from cache_manager import _log
+from cache_manager._session import _log
 from cache_manager._item import CacheItem
 import cache_manager.utils as _utils
 
@@ -24,11 +24,14 @@ class Cache:
         """
 
         self._set_path(path)
+        self._open_sqlite()
 
     def __del__(self):
 
-        _log(f'Closing SQLite database path: {self.path}')
-        self.con.close()
+        if hasattr(self, 'con'):
+
+            _log(f'Closing SQLite database path: {self.path}')
+            self.con.close()
 
     def _set_path(self, path: str):
 

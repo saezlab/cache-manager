@@ -4,8 +4,6 @@ Cache management for directories of files.
 
 from ._metadata import __version__, __author__, __license__
 from ._metadata import metadata as _metadata
-from . import _session
+from ._session import log, _log, session
+from ._cache import Cache
 
-session = _session.session()
-log = _session.log
-_log = session._logger.msg
