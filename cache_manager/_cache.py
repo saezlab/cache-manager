@@ -101,7 +101,7 @@ class Cache:
 
         param_str = ', '.join(
             f'{k}={_utils.serialize(v)}'
-            for k, v in locals().items() if v
+            for k, v in locals().items() if v and k != 'self'
         )
         _log(f'Searching cache: {param_str}')
 
@@ -167,7 +167,7 @@ class Cache:
         """
         Selecting best version of an item
         """
-        
+
         items = self.search(
             uri = uri,
             params = params,
@@ -184,6 +184,7 @@ class Cache:
                 _log(f'Best matching version: {it["version"]}')
 
                 return it
+
         _log('No version found matching criteria')
 
 
@@ -196,6 +197,12 @@ class Cache:
             ext: str | None = None,
             label: str | None = None,
     ):
+
+        param_str = ', '.join(
+            f'{k}={_utils.serialize(v)}'
+            for k, v in locals().items() if v and k != 'self'
+        )
+        _log(f'Creating new version for item {param_str}')
 
         items = self.search(
             uri = uri,
@@ -214,6 +221,8 @@ class Cache:
             ext=ext,
             label=label,
         )
+
+        _log(f'Next version: {new.key}-{new.version}')
 
         self._open_sqlite()
         self._execute(f'''
@@ -241,3 +250,5 @@ class Cache:
                 {new.ext}
             )
         ''')
+
+        _log(f'Successfully created new version: {new.key}-{new.version}')
