@@ -35,16 +35,22 @@ class Cache:
 
     def _set_path(self, path: str):
 
+        if not os.path.exists(path):
+
+            stem, ext = os.path.splitext(path)
+            os.makedirs(stem if ext else path, exist_ok = True)
+
         if os.path.isdir(path):
 
             path = os.path.join(path, 'cache.sqlite')
 
-        _log(f'Setting SQLite database to path: {path}')
+        _log(f'Setting SQLite database path: {path}')
         self.path = path
+        self.dir = os.path.dirname(self.path)
 
     def _open_sqlite(self):
 
-        _log(f'Opening SQLite database path: {self.path}')
+        _log(f'Opening SQLite database: {self.path}')
         self.con = sqlite3.connect(self.path)
         self.cur = self.con.cursor()
 
