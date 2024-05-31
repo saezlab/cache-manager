@@ -134,10 +134,12 @@ class Cache:
 
             self._execute(q)
 
+            _log(f'Fetching results from attr_{actual_typ}')
+
             for row in self.con.fetchall():
 
                 key = row['version_id']
-
+                
                 if key not in results:
 
                     results[key] = CacheItem(
@@ -148,7 +150,9 @@ class Cache:
                     )
 
                 results[key].params[row['name']] = row['value']
-
+            
+        _log(f'Retrieved {len(results)} results')
+        
         return list(results.values())
 
 
