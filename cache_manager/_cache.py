@@ -45,13 +45,18 @@ class Cache:
         self.con = sqlite3.connect(self.path)
         self.cur = self.con.cursor()
 
+    def _execute(self, query: str):
+
+        _log(f'Executing query: {query}')
+        self.cur.execute(query)
+
     def _create_schema(self):
 
         self._open_sqlite()
 
         _log(f'Initializing new database')
         _log(f'Creating main table')
-        self.cur.execute('''
+        self._execute('''
             CREATE TABLE IF NOT EXISTS
             main (
                 id INT PRIMARY KEY,
@@ -69,7 +74,7 @@ class Cache:
         for typ in ['varchar, int, date']:
 
             _log(f'Creating attr_{typ} table')
-            self.cur.execute(
+            self._execute(
                 '''
                 CREATE TABLE IF NOT EXISTS
                 attr_{} (
@@ -94,7 +99,13 @@ class Cache:
 
         results = {}
 
-        for actual_typ in ['varchar, int, date']:
+        param_str = ', '.join(
+            f'{k}={_utils.serialize(v)}'
+            for k, v in locals().items() if v
+        )
+        _log(f'Searching cache: {param_str}')
+
+        for actual_typ in ['varchar', 'int', 'date']:
 
             q = f'SELECT * FROM main LEFT JOIN attr_{actual_typ}'
             where = ''
@@ -121,7 +132,7 @@ class Cache:
 
                 q += f' WHERE {where}'
 
-            self.con.execute(q)
+            self._execute(q)
 
             for row in self.con.fetchall():
 
@@ -195,7 +206,7 @@ class Cache:
         )
 
         self._open_sqlite()
-        self.cur.execute(f'''
+        self._execute(f'''
             INSERT INTO
             main (
                 id,
