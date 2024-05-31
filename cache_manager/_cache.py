@@ -85,6 +85,7 @@ class Cache:
             '''.format(typ, typ.upper()),
             )
 
+    @staticmethod
     def _where(
         uri: str,
         params: dict | None = None,
@@ -113,11 +114,8 @@ class Cache:
 
             where += f' AND date < "{_utils.parse_time(older_than)}"'
 
-        if where:
+        return  f' WHERE {where}' if where else ''
 
-            q += f' WHERE {where}'
-
-        return q
 
     def search(
             self,
