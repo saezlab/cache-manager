@@ -5,8 +5,8 @@ import sqlite3
 import datetime
 
 from cache_manager._item import CacheItem
-import cache_manager.utils as _utils
 from cache_manager._session import _log
+import cache_manager.utils as _utils
 
 __all__ = [
     'Cache',
@@ -139,7 +139,7 @@ class Cache:
             for row in self.con.fetchall():
 
                 key = row['version_id']
-                
+
                 if key not in results:
 
                     results[key] = CacheItem(
@@ -150,9 +150,9 @@ class Cache:
                     )
 
                 results[key].params[row['name']] = row['value']
-            
+
         _log(f'Retrieved {len(results)} results')
-        
+
         return list(results.values())
 
 
@@ -167,7 +167,7 @@ class Cache:
         """
         Selecting best version of an item
         """
-
+        
         items = self.search(
             uri = uri,
             params = params,
@@ -181,7 +181,10 @@ class Cache:
 
             if it['status'] in status:
 
+                _log(f'Best matching version: {it["version"]}')
+
                 return it
+        _log('No version found matching criteria')
 
 
     def create(
