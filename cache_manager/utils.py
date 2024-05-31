@@ -22,6 +22,9 @@ def list_like(value: Any):
 
 
 def serialize(value: Any):
+    """
+    Converts collection of variables into a single string
+    """
 
     if list_like(value):
 
