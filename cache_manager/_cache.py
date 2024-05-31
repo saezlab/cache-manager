@@ -4,8 +4,8 @@ import os
 import sqlite3
 import datetime
 
-from cache_manager._item import CacheItem
 from cache_manager import _log
+from cache_manager._item import CacheItem
 import cache_manager.utils as _utils
 
 __all__ = [
@@ -85,11 +85,13 @@ class Cache:
             '''.format(typ, typ.upper()),
             )
 
-    def _where(uri,
-               params,
-               status,
-               newer_than,
-               older_than):
+    def _where(
+        uri: str,
+        params: dict | None = None,
+        status: int | None = None,
+        newer_than: str | datetime.datetime | None = None,
+        older_than: str | datetime.datetime | None = None,
+    ):
 
         where = ''
 
@@ -115,6 +117,8 @@ class Cache:
 
             q += f' WHERE {where}'
 
+        return q
+
     def search(
             self,
             uri: str,
@@ -138,29 +142,7 @@ class Cache:
         for actual_typ in ['varchar', 'int', 'date']:
 
             q = f'SELECT * FROM main LEFT JOIN attr_{actual_typ}'
-            where = ''
-
-            if uri or params:
-
-                item_id = CacheItem.serialize(uri, params)
-
-                where += f' item_id = "{item_id}"'
-
-            if status is not None:
-
-                where  += f' AND status = "{status}"'
-
-            if newer_than:
-
-                where += f' AND date > "{_utils.parse_time(newer_than)}"'
-
-            if older_than:
-
-                where += f' AND date < "{_utils.parse_time(older_than)}"'
-
-            if where:
-
-                q += f' WHERE {where}'
+            q += self._where(uri, params, status, newer_than, older_than)
 
             self._execute(q)
 
@@ -292,7 +274,7 @@ class Cache:
             ext: str | None = None,
             label: str | None = None,
             newer_than: str | datetime.datetime | None = None,
-            older_than: str | datetime.datetime | None = None
+            older_than: str | datetime.datetime | None = None,
     ):
         """
         Remove CacheItem or version
@@ -303,7 +285,23 @@ class Cache:
             params = params,
             status = status,
             newer_than = newer_than,
-            older_than = older_than
+            older_than = older_than,
         )
 
-        self._open_sqlite()
+        where = self._where(uri, params, status, newer_than, older_than)
+
+        for actual_typ in ['varchar', 'int', 'date']:
+
+            _log(f'Deleting attributes from attr_{actual_typ}')
+
+            q = f'DELETE * FROM attr_{actual_typ} LEFT JOIN main'
+            q += where
+
+            self._execute(q)
+
+        q = f'DELETE * FROM  main'
+        q += where
+
+        self._execute(q)
+
+        _log(f'Deleted {len(results)} results')
