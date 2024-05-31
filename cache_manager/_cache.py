@@ -164,6 +164,9 @@ class Cache:
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
     ) -> CacheItem | None:
+        """
+        Selecting best version of an item
+        """
 
         items = self.search(
             uri = uri,
