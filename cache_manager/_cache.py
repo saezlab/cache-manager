@@ -168,6 +168,7 @@ class Cache:
                         version = row['version'],
                         status = row['status'],
                         ext = row['ext'],
+                        _id = row['id'],
                     )
 
                 results[key].params[row['name']] = row['value']
@@ -346,6 +347,11 @@ class Cache:
 
         where = self._where(uri, params, status, newer_than, older_than)
 
+        q = f'UPDATE main SET () '
+        q += where
+
+        self._execute(q)
+
         for actual_typ in ['varchar', 'int', 'date']:
 
             _log(f'Updating attributes in attr_{actual_typ}')
@@ -355,10 +361,5 @@ class Cache:
 
             self._execute(q)
 
-        q = f'DELETE * FROM  main'
-        q += where
-
-        self._execute(q)
 
         _log(f'Deleted {len(items)} results')
-

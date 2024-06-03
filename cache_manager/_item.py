@@ -24,6 +24,7 @@ class CacheItem:
             ext: str | None = None,
             label: str | None = None,
             attrs: dict | None = None,
+            _id: int | None = None,
     ):
         """
         Instantiates a new cache item.
@@ -37,6 +38,7 @@ class CacheItem:
         self.ext = ext
         self.label = label
         self.attrs = attrs or {}
+        self._id = _id
         self._setup()
 
     @classmethod
