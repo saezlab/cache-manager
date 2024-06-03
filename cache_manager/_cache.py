@@ -7,6 +7,7 @@ import datetime
 from cache_manager._session import _log
 from cache_manager._item import CacheItem
 import cache_manager.utils as _utils
+from . import _data
 
 __all__ = [
     'Cache',
@@ -93,6 +94,12 @@ class Cache:
                 )
             '''.format(typ, typ.upper()),
             )
+
+    @staticmethod
+    def _table_fields(name: str = 'main') -> dict[str, str]:
+
+        return _data.load(f'{name}.yaml')
+
 
     @staticmethod
     def _where(
@@ -340,7 +347,7 @@ class Cache:
 
         update = update or {}
 
-        
+
 
         where = self._where(uri, params, status, newer_than, older_than)
 
