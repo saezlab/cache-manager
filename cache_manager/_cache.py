@@ -90,6 +90,13 @@ class Cache:
             '''.format(typ, typ.upper()),
             )
 
+
+    @staticmethod
+    def _quotes(string: str) -> str:
+
+        return f'"{string}"'
+
+
     @staticmethod
     def _table_fields(name: str = 'main') -> dict[str, str]:
 
@@ -343,11 +350,15 @@ class Cache:
 
         update = update or {}
 
-
+        main = {k: v for k, v in update.items() if k in self._table_fields()}
+        ids = [it.id for it in items()]
+        _log(f'Updating {len(ids)} items')
 
         where = self._where(uri, params, status, newer_than, older_than)
 
-        q = f'UPDATE main SET () '
+        q = (
+            'UPDATE main SET (%s) '
+        ) 
         q += where
 
         self._execute(q)
