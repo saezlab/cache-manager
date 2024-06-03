@@ -92,9 +92,9 @@ class Cache:
 
 
     @staticmethod
-    def _quotes(string: str) -> str:
+    def _quotes(string: str, typ: str = 'VARCHAR') -> str:
 
-        return f'"{string}"'
+        return f'"{string}"' if typ.startswith('VARCHAR') else string
 
 
     @staticmethod
@@ -349,16 +349,17 @@ class Cache:
         )
 
         update = update or {}
-
-        main = {k: v for k, v in update.items() if k in self._table_fields()}
+        main_fields = self._table_fields()
+        main = ', '.join(
+            f'{k} = {self._quotes(v, main_fields[k])}'
+            for k, v in update.items() if k in main_fields
+        )
         ids = [it.id for it in items()]
         _log(f'Updating {len(ids)} items')
 
         where = self._where(uri, params, status, newer_than, older_than)
 
-        q = (
-            'UPDATE main SET (%s) '
-        )
+        q = f'UPDATE main SET ({main}) '
         q += where
 
         self._execute(q)
