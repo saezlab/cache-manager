@@ -323,6 +323,8 @@ class Cache:
             ext: str | None = None,
             label: str | None = None,
             newer_than: str | datetime.datetime | None = None,
+            older_than: str | datetime.datetime | None = None,
+            update: dict | None = None,
     ):
         """
         Update one or more items.
@@ -335,6 +337,10 @@ class Cache:
             newer_than = newer_than,
             older_than = older_than,
         )
+
+        update = update or {}
+
+        
 
         where = self._where(uri, params, status, newer_than, older_than)
 

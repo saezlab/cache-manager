@@ -1,0 +1,9 @@
+id: "INT PRIMARY KEY"
+item_id: VARCHAR
+version_id: VARCHAR
+version: INT
+status: INT
+file_name: VARCHAR
+label: VARCHAR
+date: DATE
+ext: VARCHAR
