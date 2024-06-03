@@ -269,14 +269,14 @@ class Cache:
             )
             VALUES (
                 NULL,
-                {new.key},
-                {new.key}-{new.version},
+                {self._quotes(new.key)},
+                "{new.key}-{new.version}",
                 {new.version},
                 {new.status},
-                {new.filename},
-                {new.label},
+                {self._quotes(new.filename)},
+                {self._quotes(new.label)},
                 {new.date},
-                {new.ext}
+                {self._quotes(new.ext)}
             )
         ''')
 
@@ -358,7 +358,7 @@ class Cache:
 
         q = (
             'UPDATE main SET (%s) '
-        ) 
+        )
         q += where
 
         self._execute(q)
