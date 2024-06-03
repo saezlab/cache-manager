@@ -65,19 +65,14 @@ class Cache:
         self._open_sqlite()
 
         _log(f'Initializing new database')
+
+        fields = ",".join(f'{k}: {v}' for k, v in self._table_fields())
+
         _log(f'Creating main table')
-        self._execute('''
+        self._execute(f'''
             CREATE TABLE IF NOT EXISTS
             main (
-                id INT PRIMARY KEY,
-                item_id VARCHAR,
-                version_id VARCHAR,
-                version INT,
-                status INT,
-                file_name VARCHAR,
-                label VARCHAR,
-                date DATE,
-                ext VARCHAR
+                {fields}
             )
         ''')
 
