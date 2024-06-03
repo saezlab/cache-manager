@@ -1,9 +1,10 @@
 from __future__ import annotations
+from typing import Any
 
 import os
 import sqlite3
 import datetime
-
+from pypath_common import _misc
 from cache_manager._session import _log
 from cache_manager._item import CacheItem
 import cache_manager.utils as _utils
@@ -12,6 +13,7 @@ from . import _data
 __all__ = [
     'Cache',
 ]
+ATTR_TYPES = ['varchar', 'int', 'date', 'float']
 
 
 class Cache:
@@ -76,7 +78,7 @@ class Cache:
             )
         ''')
 
-        for typ in ['varchar, int, date']:
+        for typ in ATTR_TYPES:
 
             _log(f'Creating attr_{typ} table')
             self._execute(
@@ -95,6 +97,16 @@ class Cache:
     def _quotes(string: str, typ: str = 'VARCHAR') -> str:
 
         return f'"{string}"' if typ.startswith('VARCHAR') else string
+
+
+    @staticmethod
+    def _typeof(value: Any):
+
+        if isinstance(value, float) or _misc.is_int(value):
+            return "INT"
+        
+        elif isinstance(value, float) or _misc.is_float(value):
+            return "FLOAT"
 
 
     @staticmethod
@@ -155,7 +167,7 @@ class Cache:
         )
         _log(f'Searching cache: {param_str}')
 
-        for actual_typ in ['varchar', 'int', 'date']:
+        for actual_typ in ATTR_TYPES:
 
             q = f'SELECT * FROM main LEFT JOIN attr_{actual_typ}'
             q += self._where(uri, params, status, newer_than, older_than)
@@ -307,7 +319,7 @@ class Cache:
 
         where = self._where(uri, params, status, newer_than, older_than)
 
-        for actual_typ in ['varchar', 'int', 'date']:
+        for actual_typ in ATTR_TYPES:
 
             _log(f'Deleting attributes from attr_{actual_typ}')
 
@@ -357,21 +369,25 @@ class Cache:
         ids = [it.id for it in items()]
         _log(f'Updating {len(ids)} items')
 
-        where = self._where(uri, params, status, newer_than, older_than)
+        where = f'WHERE id IN ({", ".join(ids)})'
 
-        q = f'UPDATE main SET ({main}) '
-        q += where
+        q = f'UPDATE main SET ({main}) {where}'
 
         self._execute(q)
 
-        for actual_typ in ['varchar', 'int', 'date']:
+        for actual_typ in ATTR_TYPES:
 
             _log(f'Updating attributes in attr_{actual_typ}')
 
-            q = f'UPDATE attr_{actual_typ} SET (value) LEFT JOIN main'
-            q += where
+            main = ', '.join(
+                f'{k} = {self._quotes(v, main_fields[k])}'
+                for k, v in update.items() if k not in main_fields and 
+            )
+            ids = [it.id for it in items()]
+            _log(f'Updating {len(ids)} items')
+
+            where = f'WHERE id IN ({", ".join(ids)})'
+
+            q = f'UPDATE main SET ({main}) {where}'
 
             self._execute(q)
-
-
-        _log(f'Deleted {len(items)} results')
