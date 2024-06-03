@@ -311,4 +311,46 @@ class Cache:
 
         self._execute(q)
 
-        _log(f'Deleted {len(results)} results')
+        _log(f'Deleted {len(items)} results')
+
+
+    def update(
+            self,
+            uri: str,
+            params: dict | None = None,
+            attrs: dict | None = None,
+            status: int | None = None,
+            ext: str | None = None,
+            label: str | None = None,
+            newer_than: str | datetime.datetime | None = None,
+    ):
+        """
+        Update one or more items.
+        """
+
+        items = self.search(
+            uri = uri,
+            params = params,
+            status = status,
+            newer_than = newer_than,
+            older_than = older_than,
+        )
+
+        where = self._where(uri, params, status, newer_than, older_than)
+
+        for actual_typ in ['varchar', 'int', 'date']:
+
+            _log(f'Updating attributes in attr_{actual_typ}')
+
+            q = f'UPDATE attr_{actual_typ} SET (value) LEFT JOIN main'
+            q += where
+
+            self._execute(q)
+
+        q = f'DELETE * FROM  main'
+        q += where
+
+        self._execute(q)
+
+        _log(f'Deleted {len(items)} results')
+
