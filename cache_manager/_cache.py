@@ -366,7 +366,7 @@ class Cache:
             f'{k} = {self._quotes(v, main_fields[k])}'
             for k, v in update.items() if k in main_fields
         )
-        ids = [it.id for it in items()]
+        ids = [it.id for it in items]
         _log(f'Updating {len(ids)} items')
         where = f'WHERE id IN ({", ".join(map(str, ids))})'
         q = f'UPDATE main SET ({main}) {where};'
@@ -379,14 +379,12 @@ class Cache:
             values = ', '.join(
                 f'{k} = {self._quotes(v, main_fields[k])}'
                 for k, v in update.items()
-                if (k not in main_fields and
-                    str(type(v)) == actual_typ)
+                if (
+                    k not in main_fields and
+                    str(type(v)) == actual_typ
+                )
             )
-            ids = [it.id for it in items()]
-            _log(f'Updating {len(ids)} items')
 
-            where = f'WHERE id IN ({", ".join(ids)})'
-
-            q = f'UPDATE main SET ({values}) {where}'
+            q = f'UPDATE attr_{actual_typ} SET ({values}) {where}'
 
             self._execute(q)
