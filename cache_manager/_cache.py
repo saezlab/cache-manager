@@ -312,6 +312,29 @@ class Cache:
             )
         ''')
 
+        q = f'SELECT id FROM main WHERE version_id = "{new.key}-{new.version}"'
+        self._execute(q)
+        key = self.cur.fetchone()[0]
+
+        for actual_typ in ATTR_TYPES:
+
+            _log(f'Creating attributes in attr_{actual_typ}')
+            
+            useattrs = {k: v for k, v in attrs.items() if v == actual_typ}
+            # XXX: You are here - pending method for converting types Python-SQL
+            values = ', '.join(
+                f'{k} = {self._quotes(v, main_fields[k])}'
+                for k, v in update.items()
+                if (
+                    k not in main_fields and
+                    str(type(v)) == actual_typ
+                )
+            )
+
+            q = f'UPDATE attr_{actual_typ} SET ({values}) {where}'
+
+            self._execute(q)
+
         _log(f'Successfully created new version: {new.key}-{new.version}')
 
     def remove(
