@@ -14,7 +14,7 @@ class CacheItem:
     Cache item class, stores a single cache item information.
     """
 
-    def __init__(# TODO:add filename
+    def __init__(
             self,
             key,
             version: int = 1,

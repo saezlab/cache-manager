@@ -376,15 +376,17 @@ class Cache:
 
             _log(f'Updating attributes in attr_{actual_typ}')
 
-            main = ', '.join(
+            values = ', '.join(
                 f'{k} = {self._quotes(v, main_fields[k])}'
-                for k, v in update.items() if k not in main_fields and
+                for k, v in update.items()
+                if (k not in main_fields and
+                    str(type(v)) == actual_typ)
             )
             ids = [it.id for it in items()]
             _log(f'Updating {len(ids)} items')
 
             where = f'WHERE id IN ({", ".join(ids)})'
 
-            q = f'UPDATE main SET ({main}) {where}'
+            q = f'UPDATE main SET ({values}) {where}'
 
             self._execute(q)
