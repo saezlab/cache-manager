@@ -59,8 +59,10 @@ class CacheItem:
         """
 
         params = params or {}
+        attrs = attrs or {}
         key = cls.serialize(uri, params)
         params['_uri'] = uri
+        attrs['_uri'] = uri
         args = {
             k: v for k, v in locals().items()
             if k not in ['uri', 'params', 'cls']
@@ -87,6 +89,11 @@ class CacheItem:
         version = self.default_version if version is None else version
 
         return f'{self.key}-{version}.{self.ext}'
+
+    @property
+    def uri(self):
+
+        return self.attrs.get('_uri', None)
 
     def _setup(self):
         """
