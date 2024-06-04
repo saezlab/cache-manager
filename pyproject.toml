@@ -2,6 +2,10 @@
 requires = ["poetry_core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+[[tool.poetry.source]]
+name = "pypi-public"
+url = "https://pypi.org/simple/"
+
 [tool.poetry]
 name = "cachemanager"
 version = "0.1.1"
