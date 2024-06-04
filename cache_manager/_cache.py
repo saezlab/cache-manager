@@ -212,7 +212,7 @@ class Cache:
                         _id = row['id'],
                     )
 
-                results[key].params[row['name']] = row['value']
+                results[key].attrs[row['name']] = row['value']
 
         _log(f'Retrieved {len(results)} results')
 
@@ -272,7 +272,7 @@ class Cache:
             params = params,
         )
 
-        last_version = max((i['version'] for i in items), default = 0)
+        last_version = max((i.version for i in items), default = 0)
 
         new = CacheItem.new(
             uri,
