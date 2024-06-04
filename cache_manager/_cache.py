@@ -26,8 +26,9 @@ class Cache:
         This is not empty.
         """
 
+        self.con, self.cur = None, None
         self._set_path(path)
-        self._open_sqlite()
+        self._ensure_sqlite()
 
     def __del__(self):
 
@@ -56,6 +57,14 @@ class Cache:
         _log(f'Opening SQLite database: {self.path}')
         self.con = sqlite3.connect(self.path)
         self.cur = self.con.cursor()
+        self._create_schema()
+
+
+    def _ensure_sqlite(self):
+
+        if self.con is None:
+
+            self._open_sqlite()
 
     def _execute(self, query: str):
 
@@ -64,13 +73,13 @@ class Cache:
 
     def _create_schema(self):
 
-        self._open_sqlite()
+        self._ensure_sqlite()
 
-        _log(f'Initializing new database')
+        _log(f'Initializing database')
 
-        fields = ",".join(f'{k}: {v}' for k, v in self._table_fields())
+        fields = ",".join(f'{k}: {v}' for k, v in self._table_fields().items())
 
-        _log(f'Creating main table')
+        _log(f'Ensuring main table exists')
         self._execute(f'''
             CREATE TABLE IF NOT EXISTS
             main (
@@ -80,7 +89,7 @@ class Cache:
 
         for typ in ATTR_TYPES:
 
-            _log(f'Creating attr_{typ} table')
+            _log(f'Ensuring attr_{typ} table exists')
             self._execute(
                 '''
                 CREATE TABLE IF NOT EXISTS
@@ -265,7 +274,7 @@ class Cache:
 
         _log(f'Next version: {new.key}-{new.version}')
 
-        self._open_sqlite()
+        self._ensure_sqlite()
         self._execute(f'''
             INSERT INTO
             main (
