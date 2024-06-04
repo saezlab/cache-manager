@@ -137,39 +137,39 @@ class Cache:
 
     @staticmethod
     def _where(
-        uri: str,
+        uri: str | None = None,
         params: dict | None = None,
         status: int | None = None,
         newer_than: str | datetime.datetime | None = None,
         older_than: str | datetime.datetime | None = None,
     ):
 
-        where = ''
+        where = []
 
         if uri or params:
 
             item_id = CacheItem.serialize(uri, params)
 
-            where += f' item_id = "{item_id}"'
+            where.append(f' item_id = "{item_id}"')
 
         if status is not None:
 
-            where  += f' AND status = "{status}"'
+            where.append(f'status = "{status}"')
 
         if newer_than:
 
-            where += f' AND date > "{_utils.parse_time(newer_than)}"'
+            where.append(f'date > "{_utils.parse_time(newer_than)}"')
 
         if older_than:
 
-            where += f' AND date < "{_utils.parse_time(older_than)}"'
+            where.append(f'date < "{_utils.parse_time(older_than)}"')
 
-        return  f' WHERE {where}' if where else ''
+        return  f' WHERE {" AND ".join(where)}' if where else ''
 
 
     def search(
             self,
-            uri: str,
+            uri: str | None = None,
             params: dict | None = None,
             status: int | None = None,
             newer_than: str | datetime.datetime | None = None,
