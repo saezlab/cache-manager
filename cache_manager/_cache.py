@@ -109,7 +109,10 @@ class Cache:
 
 
     @staticmethod
-    def _quotes(string: str, typ: str = 'VARCHAR') -> str:
+    def _quotes(string: str | None, typ: str = 'VARCHAR') -> str:
+        if string is None:
+            return 'NULL'
+
         return f'"{string}"' if (
                 typ.startswith('VARCHAR') or
                 typ.startswith('DATETIME')
