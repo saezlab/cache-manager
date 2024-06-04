@@ -81,7 +81,7 @@ class Cache:
 
         _log(f'Initializing database')
 
-        fields = ','.join(f'{k}: {v}' for k, v in self._table_fields().items())
+        fields = ', '.join(f'{k} {v}' for k, v in self._table_fields().items())
 
         _log(f'Ensuring main table exists')
         self._execute(f'''
@@ -98,9 +98,10 @@ class Cache:
                 '''
                 CREATE TABLE IF NOT EXISTS
                 attr_{} (
-                    id VARCHAR FOREIGN KEY,
+                    id INT,
                     name VARCHAR,
-                    value {}
+                    value {},
+                    FOREIGN KEY(id) REFERENCES main(id)
                 )
             '''.format(typ, typ.upper()),
             )
