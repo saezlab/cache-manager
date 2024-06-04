@@ -74,6 +74,7 @@ class Cache:
 
         _log(f'Executing query: {query}')
         self.cur.execute(query)
+        self.con.commit()
 
     def _create_schema(self):
 
