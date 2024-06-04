@@ -1,18 +1,22 @@
 from __future__ import annotations
-from typing import Any
 
+from typing import Any
 import os
 import sqlite3
 import datetime
+
 from pypath_common import _misc
-from cache_manager._session import _log
+
 from cache_manager._item import CacheItem
+from cache_manager._session import _log
 import cache_manager.utils as _utils
 from . import _data
 
 __all__ = [
+    'ATTR_TYPES',
     'Cache',
 ]
+
 ATTR_TYPES = ['varchar', 'int', 'date', 'float']
 
 
@@ -77,7 +81,7 @@ class Cache:
 
         _log(f'Initializing database')
 
-        fields = ",".join(f'{k}: {v}' for k, v in self._table_fields().items())
+        fields = ','.join(f'{k}: {v}' for k, v in self._table_fields().items())
 
         _log(f'Ensuring main table exists')
         self._execute(f'''
@@ -112,10 +116,10 @@ class Cache:
     def _typeof(value: Any):
 
         if isinstance(value, float) or _misc.is_int(value):
-            return "INT"
+            return 'INT'
 
         elif isinstance(value, float) or _misc.is_float(value):
-            return "FLOAT"
+            return 'FLOAT'
 
 
     @staticmethod
@@ -397,3 +401,5 @@ class Cache:
             q = f'UPDATE attr_{actual_typ} SET ({values}) {where}'
 
             self._execute(q)
+
+        _log(f'Finished updating attributes')
