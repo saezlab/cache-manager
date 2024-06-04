@@ -1,5 +1,5 @@
 {
-    "id": "INT PRIMARY KEY",
+    "id": "INT PRIMARY KEY NOT NULL",
     "item_id": "VARCHAR",
     "version_id": "VARCHAR",
     "version": "INT",

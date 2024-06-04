@@ -77,7 +77,7 @@ class CacheItem:
         attrs = attrs or {}
         attrs['uri'] = uri
 
-        return _utils.serialize(attrs)
+        return _utils.hash(_utils.serialize(attrs))
 
     def path(self, version: int | None = None):
         """

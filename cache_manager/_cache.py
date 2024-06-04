@@ -286,7 +286,6 @@ class Cache:
         self._execute(f'''
             INSERT INTO
             main (
-                id,
                 item_id,
                 version_id,
                 version,
@@ -297,7 +296,6 @@ class Cache:
                 ext
             )
             VALUES (
-                NULL,
                 {self._quotes(new.key)},
                 "{new.key}-{new.version}",
                 {new.version},
