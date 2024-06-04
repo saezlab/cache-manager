@@ -3,7 +3,7 @@ requires = ["poetry_core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "cache-manager"
+name = "cachemanager"
 version = "0.1.1"
 description = "A Python manager for the cache"
 license = "GNU General Public License Version 3"
@@ -29,7 +29,7 @@ documentation = "https://cache-manager.readthedocs.io/"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 toml = "*"
 pypath-common = "^0.2.2"
 
@@ -39,7 +39,7 @@ tox = ">=3.20.1"
 pre-commit = ">=2.17.0"
 bump2version = "*"
 coverage = ">=6.0"
-sphinx = ">=5.0.0"
+sphinx = ">=7.0.0"
 sphinx-last-updated-by-git = ">=0.3"
 sphinx-autodoc-typehints = ">=1.18.0"
 sphinxcontrib-fulltoc = ">=1.2.0"
