@@ -198,6 +198,8 @@ class Cache:
 
             for row in self.cur.fetchall():
 
+                keys = tuple(self._table_fields().keys()) + ('name', 'value')
+                row = dict(zip(keys, row))
                 key = row['version_id']
 
                 if key not in results:
