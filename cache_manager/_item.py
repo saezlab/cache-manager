@@ -45,7 +45,7 @@ class CacheItem:
     def new(
         cls,
         uri,
-        params,
+        params: dict | None = None,
         version: int = 0,
         status: int = 0,
         date: str = None,
@@ -58,13 +58,15 @@ class CacheItem:
         Creates a new item.
         """
 
+        params = params or {}
         key = cls.serialize(uri, params)
+        params['_uri'] = uri
         args = {
             k: v for k, v in locals().items()
             if k not in ['uri', 'params', 'cls']
         }
 
-        return cls(key, **args)
+        return cls(**args)
 
     @classmethod
     def serialize(cls, uri, attrs: dict | None = None):
@@ -90,7 +92,7 @@ class CacheItem:
         """
         Setting default values
         """
-
-        self.filename = self.filename or os.path.basename(self.uri)
-        self.ext = os.path.splitext(self.filename)[-1]
+        # TODO: Fix URI/filename
+        self.filename = self.filename# or os.path.basename(self.params['_uri'])
+        #self.ext = os.path.splitext(self.filename)[-1]
         self.date = self.date or _utils.parse_time()

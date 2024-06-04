@@ -6,6 +6,6 @@
     "status": "INT",
     "file_name": "VARCHAR",
     "label": "VARCHAR",
-    "date": "DATE",
+    "date": "DATETIME",
     "ext": "VARCHAR"
 }

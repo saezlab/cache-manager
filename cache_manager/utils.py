@@ -49,7 +49,7 @@ def hash(value: Any) -> str:
     return hashlib.md5(value).hexdigest()
 
 
-def parse_time(value: str | datetime.datetime) -> str:
+def parse_time(value: str | datetime.datetime | None = None) -> str:
     """
     Formats a date and time value.
     """
@@ -62,4 +62,4 @@ def parse_time(value: str | datetime.datetime) -> str:
 
         value = datetime.datetime.now()
 
-    return datetime.strftime(value, '%Y-%m-%d %H:%M:%S')
+    return value.strftime('%Y-%m-%d %H:%M:%S')

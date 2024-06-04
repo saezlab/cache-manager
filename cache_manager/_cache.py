@@ -17,7 +17,7 @@ __all__ = [
     'Cache',
 ]
 
-ATTR_TYPES = ['varchar', 'int', 'date', 'float']
+ATTR_TYPES = ['varchar', 'int', 'datetime', 'float']
 
 
 class Cache:
@@ -109,8 +109,10 @@ class Cache:
 
     @staticmethod
     def _quotes(string: str, typ: str = 'VARCHAR') -> str:
-
-        return f'"{string}"' if typ.startswith('VARCHAR') else string
+        return f'"{string}"' if (
+                typ.startswith('VARCHAR') or
+                typ.startswith('DATETIME')
+            ) else string
 
 
     @staticmethod
@@ -190,7 +192,7 @@ class Cache:
 
             _log(f'Fetching results from attr_{actual_typ}')
 
-            for row in self.con.fetchall():
+            for row in self.cur.fetchall():
 
                 key = row['version_id']
 
@@ -301,7 +303,7 @@ class Cache:
                 {new.status},
                 {self._quotes(new.filename)},
                 {self._quotes(new.label)},
-                {new.date},
+                {self._quotes(new.date)},
                 {self._quotes(new.ext)}
             )
         ''')
