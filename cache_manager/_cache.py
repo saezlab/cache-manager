@@ -104,7 +104,7 @@ class Cache:
 
         if isinstance(value, float) or _misc.is_int(value):
             return "INT"
-        
+
         elif isinstance(value, float) or _misc.is_float(value):
             return "FLOAT"
 
@@ -368,11 +368,8 @@ class Cache:
         )
         ids = [it.id for it in items()]
         _log(f'Updating {len(ids)} items')
-
-        where = f'WHERE id IN ({", ".join(ids)})'
-
-        q = f'UPDATE main SET ({main}) {where}'
-
+        where = f'WHERE id IN ({", ".join(map(str, ids))})'
+        q = f'UPDATE main SET ({main}) {where};'
         self._execute(q)
 
         for actual_typ in ATTR_TYPES:
@@ -381,7 +378,7 @@ class Cache:
 
             main = ', '.join(
                 f'{k} = {self._quotes(v, main_fields[k])}'
-                for k, v in update.items() if k not in main_fields and 
+                for k, v in update.items() if k not in main_fields and
             )
             ids = [it.id for it in items()]
             _log(f'Updating {len(ids)} items')
