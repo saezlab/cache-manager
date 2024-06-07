@@ -1,11 +1,14 @@
+import sys
+import pathlib as pl
 import pytest
-
-from cache_manager import Cache
 
 __all__ = [
     'nested_dict',
     'test_cache',
 ]
+
+sys.path.append(str(pl.Path(__file__).parent.parent))
+from cache_manager import Cache
 
 
 @pytest.fixture
