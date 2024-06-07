@@ -1,7 +1,10 @@
 import pytest
 
+from cache_manager import Cache
+
 __all__ = [
     'nested_dict',
+    'test_cache',
 ]
 
 
@@ -19,8 +22,9 @@ def nested_dict():
     }
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def test_cache(tmpdir_factory):
     fn = tmpdir_factory.mktemp('test_cache')
-    
-    return fn
+    c = Cache(fn)
+
+    return c
