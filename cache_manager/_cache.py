@@ -41,6 +41,15 @@ class Cache:
         self._set_path(path)
         self._ensure_sqlite()
 
+    def reload(self):
+
+        modname = self.__class__.__module__
+        mod = __import__(modname, fromlist = [modname.split('.')[0]])
+        import importlib as imp
+        imp.reload(mod)
+        new = getattr(mod, self.__class__.__name__)
+        setattr(self, '__class__', new)
+
     def __del__(self):
 
         if hasattr(self, 'con'):
