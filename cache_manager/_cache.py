@@ -336,12 +336,12 @@ class Cache:
             main_fields = self._table_fields()
 
             values = ', '.join(
-                f'({k}, {self._quotes(v, actual_typ)})'
+                f'({key}, "{k}", {self._quotes(v, actual_typ)})'
                 for k, v in useattrs.items()
                 if k not in main_fields
             )
 
-            q = (f'INSERT INTO attr_{actual_typ} ( id, name, value )
+            q = (f'INSERT INTO attr_{actual_typ} ( id, name, value ) \
                  VALUES ({values})')
 
             self._execute(q)
