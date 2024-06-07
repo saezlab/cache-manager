@@ -327,23 +327,26 @@ class Cache:
 
             _log(f'Creating attributes in attr_{actual_typ}')
 
-            useattrs = {k: v for k, v in new.attrs.items() if v == actual_typ}
+            useattrs = {
+                k: v
+                for k, v in new.attrs.items()
+                if self._sqlite_type(v) == actual_typ
+            }
+
             main_fields = self._table_fields()
-            # XXX: You are here - pending method for converting types Python-SQL
+
             values = ', '.join(
-                f'{k} = {self._quotes(v, self._sqlite_type(v))}'
-                for k, v in update.items()
-                if (
-                    k not in main_fields and
-                    str(type(v)) == actual_typ
-                )
+                f'({k}, {self._quotes(v, actual_typ)})'
+                for k, v in useattrs.items()
+                if k not in main_fields
             )
 
-            q = f'UPDATE attr_{actual_typ} SET ({values}) {where}'
+            q = (f'INSERT INTO attr_{actual_typ} ( id, name, value )
+                 VALUES ({values})')
 
             self._execute(q)
 
-        _log(f'Successfully created new version: {new.key}-{new.version}')
+        _log(f'Successfully created: {new.key}-{new.version}')
 
 
     @staticmethod
