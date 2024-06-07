@@ -60,8 +60,8 @@ class CacheItem:
 
         params = params or {}
         attrs = attrs or {}
-        key = cls.serialize(uri, params)
         params['_uri'] = uri
+        key = cls.serialize(params)
         attrs['_uri'] = uri
         args = {
             k: v for k, v in locals().items()
@@ -71,15 +71,14 @@ class CacheItem:
         return cls(**args)
 
     @classmethod
-    def serialize(cls, uri, attrs: dict | None = None):
+    def serialize(cls, params: dict | None = None):
         """
         Serializes to generate an identifier.
         """
 
-        attrs = attrs or {}
-        attrs['uri'] = uri
+        params = params or {}
 
-        return _utils.hash(_utils.serialize(attrs))
+        return _utils.hash(_utils.serialize(params))
 
     def path(self, version: int | None = None):
         """

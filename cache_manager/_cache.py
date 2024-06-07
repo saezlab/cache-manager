@@ -166,7 +166,7 @@ class Cache:
 
         if uri or params:
 
-            item_id = CacheItem.serialize(uri, params)
+            item_id = CacheItem.serialize(params)
 
             where.append(f' item_id = "{item_id}"')
 
