@@ -17,3 +17,10 @@ def nested_dict():
         'baz': None,
         None: 'foobar',
     }
+
+
+@pytest.fixture(scope="session")
+def test_cache(tmpdir_factory):
+    fn = tmpdir_factory.mktemp('test_cache')
+    
+    return fn
