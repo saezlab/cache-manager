@@ -19,6 +19,13 @@ __all__ = [
 
 ATTR_TYPES = ['varchar', 'int', 'datetime', 'float']
 
+TYPES = {
+    'str': 'VARCHAR',
+    'int': 'INT',
+    'float': 'FLOAT',
+    'datetime': 'DATETIME',
+}
+
 
 class Cache:
     """
@@ -319,11 +326,12 @@ class Cache:
         for actual_typ in ATTR_TYPES:
 
             _log(f'Creating attributes in attr_{actual_typ}')
-            
-            useattrs = {k: v for k, v in attrs.items() if v == actual_typ}
+
+            useattrs = {k: v for k, v in new.attrs.items() if v == actual_typ}
+            main_fields = self._table_fields()
             # XXX: You are here - pending method for converting types Python-SQL
             values = ', '.join(
-                f'{k} = {self._quotes(v, main_fields[k])}'
+                f'{k} = {self._quotes(v, self._sqlite_type(v))}'
                 for k, v in update.items()
                 if (
                     k not in main_fields and
@@ -336,6 +344,15 @@ class Cache:
             self._execute(q)
 
         _log(f'Successfully created new version: {new.key}-{new.version}')
+
+
+    @staticmethod
+    def _sqlite_type(obj: Any) -> str:
+
+        pytype = type(obj).__name__
+
+        return TYPES.get(pytype, None)
+
 
     def remove(
             self,
