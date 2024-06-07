@@ -129,6 +129,8 @@ class Cache:
         if string is None:
             return 'NULL'
 
+        typ = typ.upper()
+
         return f'"{string}"' if (
                 typ.startswith('VARCHAR') or
                 typ.startswith('DATETIME')
@@ -339,8 +341,12 @@ class Cache:
             useattrs = {
                 k: v
                 for k, v in new.attrs.items()
-                if self._sqlite_type(v) == actual_typ
+                if self._sqlite_type(v) == actual_typ.upper()
             }
+
+            if not useattrs:
+
+                continue
 
             main_fields = self._table_fields()
 
@@ -350,8 +356,7 @@ class Cache:
                 if k not in main_fields
             )
 
-            q = (f'INSERT INTO attr_{actual_typ} ( id, name, value ) \
-                 VALUES ({values})')
+            q = (f'INSERT INTO attr_{actual_typ} ( id, name, value )  VALUES {values}')
 
             self._execute(q)
 
