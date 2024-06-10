@@ -397,15 +397,16 @@ class Cache:
         where = self._where(uri, params, status, newer_than, older_than)
 
         for actual_typ in ATTR_TYPES:
+            attr_table = f'attr_{actual_typ}'
 
-            _log(f'Deleting attributes from attr_{actual_typ}')
+            _log(f'Deleting attributes from {attr_table}')
 
-            q = f'DELETE * FROM attr_{actual_typ} LEFT JOIN main'
+            q = f'DELETE a FROM {attr_table} a LEFT JOIN main m ON a.id = m.id'
             q += where
 
             self._execute(q)
 
-        q = f'DELETE * FROM  main'
+        q = f'DELETE FROM main'
         q += where
 
         self._execute(q)
