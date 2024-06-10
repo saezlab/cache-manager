@@ -401,7 +401,7 @@ class Cache:
             newer_than = newer_than,
             older_than = older_than,
         )
-        print(items)
+
         if not items:
             return
 
