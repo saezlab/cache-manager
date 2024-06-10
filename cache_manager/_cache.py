@@ -166,8 +166,13 @@ class Cache:
 
         if uri or params:
 
-            item_id = CacheItem.serialize(params)
+            params = params or {}
 
+            if uri:
+
+                params['_uri'] = uri
+
+            item_id = CacheItem.serialize(params)
             where.append(f'item_id = "{item_id}"')
 
         if status is not None:
@@ -199,7 +204,7 @@ class Cache:
 
         results = {}
 
-        args = locals().pop(self)
+        args = locals().pop('self')
         param_str = _utils.serialize(args)
 
         _log(f'Searching cache: {param_str}')
@@ -283,7 +288,7 @@ class Cache:
             label: str | None = None,
     ):
 
-        args = locals().pop(self)
+        args = locals().pop('self')
         param_str = _utils.serialize(args)
 
         _log(f'Creating new version for item {param_str}')
