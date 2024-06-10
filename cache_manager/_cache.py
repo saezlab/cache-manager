@@ -216,7 +216,10 @@ class Cache:
 
             for row in self.cur.fetchall():
 
-                keys = tuple(self._table_fields().keys()) + ('name', 'value')
+                keys = (
+                    tuple(self._table_fields().keys()) +
+                    ('_id', 'name', 'value')
+                )
                 row = dict(zip(keys, row))
                 key = row['version_id']
 
@@ -230,7 +233,9 @@ class Cache:
                         _id = row['id'],
                     )
 
-                results[key].attrs[row['name']] = row['value']
+                if row['name']:
+
+                    results[key].attrs[row['name']] = row['value']
 
         _log(f'Retrieved {len(results)} results')
 
