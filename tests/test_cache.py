@@ -1,4 +1,7 @@
 import pytest
+
+import datetime
+
 from cache_manager import utils
 
 
@@ -20,11 +23,41 @@ class TestCache:
 
         assert hashname in items
 
+    def test_search_by_date(self, test_cache):
+
+        hashname = utils.hash({"_uri": "searchdate"})
+        test_cache.create("searchdate")
+        keys = lambda items: {it.key for it in items}
+
+        older_than = test_cache.search(
+            'searchdate',
+            older_than = datetime.datetime.now() + datetime.timedelta(2),
+        )
+        newer_than = test_cache.search(
+            'searchdate',
+            newer_than = datetime.datetime.now() - datetime.timedelta(100),
+        )
+
+        assert hashname in keys(older_than)
+        assert hashname in keys(newer_than)
+
+        older_than = test_cache.search(
+            'searchdate',
+            newer_than = datetime.datetime.now() + datetime.timedelta(2),
+        )
+        newer_than = test_cache.search(
+            'searchdate',
+            older_than = datetime.datetime.now() - datetime.timedelta(100),
+        )
+        assert hashname not in keys(older_than)
+        assert hashname not in keys(newer_than)
+
+
     def test_remove(self, test_cache):
         hashname = utils.hash({"_uri": "testremove"})
         test_cache.create("testremove")
         test_cache.remove("testremove")
         test_cache._execute("SELECT * FROM main")
-        keys = {it[1] for it in test_cache.cur.fetchall()} 
+        keys = {it[1] for it in test_cache.cur.fetchall()}
 
         assert hashname not in keys
