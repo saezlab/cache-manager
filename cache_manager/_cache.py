@@ -160,6 +160,8 @@ class Cache:
         status: int | None = None,
         newer_than: str | datetime.datetime | None = None,
         older_than: str | datetime.datetime | None = None,
+        ext: str | None = None,
+        label: str | None = None
     ):
 
         where = []
@@ -187,6 +189,14 @@ class Cache:
 
             where.append(f'date < "{_utils.parse_time(older_than)}"')
 
+        if ext:
+
+            where.append(f'ext = "{ext}"')
+
+        if label:
+
+            where.append(f'label = "{label}"')
+
         return  f' WHERE {" AND ".join(where)}' if where else ''
 
 
@@ -197,6 +207,8 @@ class Cache:
             status: int | None = None,
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
+            ext: str | None = None,
+            label: str | None = None
     ) -> list[CacheItem]:
         """
         Look up items in the cache.
