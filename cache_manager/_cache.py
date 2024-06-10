@@ -168,7 +168,7 @@ class Cache:
 
             item_id = CacheItem.serialize(params)
 
-            where.append(f' item_id = "{item_id}"')
+            where.append(f'item_id = "{item_id}"')
 
         if status is not None:
 
@@ -199,10 +199,9 @@ class Cache:
 
         results = {}
 
-        param_str = ', '.join(
-            f'{k}={_utils.serialize(v)}'
-            for k, v in locals().items() if v and k != 'self'
-        )
+        args = locals().pop(self)
+        param_str = _utils.serialize(args)
+
         _log(f'Searching cache: {param_str}')
 
         for actual_typ in ATTR_TYPES:
@@ -284,10 +283,9 @@ class Cache:
             label: str | None = None,
     ):
 
-        param_str = ', '.join(
-            f'{k}={_utils.serialize(v)}'
-            for k, v in locals().items() if v and k != 'self'
-        )
+        args = locals().pop(self)
+        param_str = _utils.serialize(args)
+
         _log(f'Creating new version for item {param_str}')
 
         items = self.search(

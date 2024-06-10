@@ -44,7 +44,7 @@ class CacheItem:
     @classmethod
     def new(
         cls,
-        uri,
+        uri: str | None = None,
         params: dict | None = None,
         version: int = 0,
         status: int = 0,
@@ -60,9 +60,12 @@ class CacheItem:
 
         params = params or {}
         attrs = attrs or {}
-        params['_uri'] = uri
+
+        if uri:
+            params['_uri'] = uri
+            attrs['_uri'] = uri
+
         key = cls.serialize(params)
-        attrs['_uri'] = uri
         args = {
             k: v for k, v in locals().items()
             if k not in ['uri', 'params', 'cls']
