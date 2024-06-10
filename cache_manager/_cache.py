@@ -401,8 +401,10 @@ class Cache:
 
             _log(f'Deleting attributes from {attr_table}')
 
-            q = f'DELETE a FROM {attr_table} a LEFT JOIN main m ON a.id = m.id'
-            q += where
+            q = (
+                f'DELETE FROM {attr_table} WHERE id IN '
+                f'(SELECT id FROM main {where})'
+            )
 
             self._execute(q)
 
