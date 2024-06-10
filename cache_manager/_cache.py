@@ -393,8 +393,12 @@ class Cache:
             newer_than = newer_than,
             older_than = older_than,
         )
+        print(items)
+        if not items:
+            return
 
-        where = self._where(uri, params, status, newer_than, older_than)
+        where = ",".join(str(item._id) for item in items)
+        where = f'WHERE id in {where}'
 
         for actual_typ in ATTR_TYPES:
             attr_table = f'attr_{actual_typ}'

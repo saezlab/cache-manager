@@ -12,6 +12,14 @@ class TestCache:
 
         assert hashname in keys
 
+    def test_search(self, test_cache):
+        hashname = utils.hash({"_uri": "testsearch"})
+        test_cache.create("testsearch")
+        items = test_cache.search("testsearch")
+        items = {it.key for it in items}
+
+        assert hashname in items
+
     def test_remove(self, test_cache):
         hashname = utils.hash({"_uri": "testremove"})
         test_cache.create("testremove")
