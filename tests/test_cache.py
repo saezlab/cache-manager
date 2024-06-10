@@ -25,6 +25,6 @@ class TestCache:
         test_cache.create("testremove")
         test_cache.remove("testremove")
         test_cache._execute("SELECT * FROM main")
-        keys = {it[1] for it in test_cache.cur.fetchall()}
+        keys = {it[1] for it in test_cache.cur.fetchall()} 
 
         assert hashname not in keys

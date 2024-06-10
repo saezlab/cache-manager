@@ -406,17 +406,14 @@ class Cache:
             return
 
         where = ",".join(str(item._id) for item in items)
-        where = f'WHERE id in {where}'
+        where = f' WHERE id IN ({where})'
 
         for actual_typ in ATTR_TYPES:
             attr_table = f'attr_{actual_typ}'
 
             _log(f'Deleting attributes from {attr_table}')
 
-            q = (
-                f'DELETE FROM {attr_table} WHERE id IN '
-                f'(SELECT id FROM main {where})'
-            )
+            q = f'DELETE FROM {attr_table} {where}'
 
             self._execute(q)
 
