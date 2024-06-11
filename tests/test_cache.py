@@ -3,6 +3,7 @@ import pytest
 import datetime
 
 from cache_manager import utils
+from cache_manager import _item
 
 
 def _keys(items):
@@ -110,3 +111,25 @@ class TestCache:
         keys = {it[1] for it in test_cache.cur.fetchall()}
 
         assert hashname not in keys
+
+
+    def test_best_or_new(self, test_cache):
+
+        it = test_cache.best_or_new('bestornew', attrs = {'foo': 'bar'})
+
+        assert isinstance(it, _item.CacheItem)
+        assert it.status == 1
+        assert it.version == 1
+
+        it = test_cache.best_or_new('bestornew', status = 1)
+
+        assert isinstance(it, _item.CacheItem)
+        assert it.status == 1
+        assert it.version == 1
+        assert it.attrs == {'foo': 'bar', '_uri': 'bestornew'}
+
+        it = test_cache.best_or_new('bestornew')
+
+        assert isinstance(it, _item.CacheItem)
+        assert it.status == 1
+        assert it.version == 2
