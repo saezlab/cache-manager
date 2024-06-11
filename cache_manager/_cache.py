@@ -298,7 +298,7 @@ class Cache:
             status: int = 0,
             ext: str | None = None,
             label: str | None = None,
-    ):
+    ) -> CacheItem:
 
         args = locals().pop('self')
         param_str = _utils.serialize(args)
@@ -381,6 +381,8 @@ class Cache:
             self._execute(q)
 
         _log(f'Successfully created: {new.key}-{new.version}')
+
+        return new
 
 
     @staticmethod
@@ -491,3 +493,34 @@ class Cache:
             self._execute(q)
 
         _log(f'Finished updating attributes')
+
+
+    def best_or_new(
+        self,
+        uri: str,
+        params: dict | None = None,
+        status: set[int] | None = None,
+        newer_than: str | datetime.datetime | None = None,
+        older_than: str | datetime.datetime | None = None,  
+        attrs: dict | None = None,
+        ext: str | None = None,
+        label: str | None = None,
+        new_status: int = 1
+    ) -> CacheItem:
+        
+        args = locals()
+        args.pop('self')
+        args['status'] = args.pop('new_status')
+
+        item = self.best(
+            uri = uri,
+            params = params,
+            status = status,
+            newer_than = newer_than,
+            older_than = older_than
+        )
+
+        if not item:
+            item = self.create(**args)
+
+        return item
