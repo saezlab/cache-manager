@@ -403,7 +403,7 @@ class Cache:
 
     def remove(
             self,
-            uri: str,
+            uri: str | None = None,
             params: dict | None = None,
             attrs: dict | None = None,
             status: int | None = None,
@@ -411,7 +411,7 @@ class Cache:
             label: str | None = None,
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
-    ):
+    ): # Make it more safer later (avoid to delete everything accidentally)
         """
         Remove CacheItem or version
         """
@@ -455,6 +455,7 @@ class Cache:
             params: dict | None = None,
             attrs: dict | None = None,
             status: int | None = None,
+            version: int | None = None,
             ext: str | None = None,
             label: str | None = None,
             newer_than: str | datetime.datetime | None = None,
@@ -541,3 +542,19 @@ class Cache:
                 item = self.create(**args)
 
         return item
+
+
+    def update_status(
+        self,
+        uri: str,
+        params: dict | None = None,
+        version: int = 1,
+        status: int = 3,
+    ):
+        
+        self.update(
+            uri = uri,
+            params = params,
+            version = version,
+            update = {'status': status},
+        )
