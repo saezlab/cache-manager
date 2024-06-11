@@ -18,19 +18,24 @@ class Lock:
 
     def __enter__(self):
 
-        self.con.execute('BEGIN EXCLUSIVE TRANSACTION;')
+        if not self.con._locked:
+
+            self.con.execute('BEGIN EXCLUSIVE TRANSACTION;')
+            self.con._locked = id(self)
 
         return self.con
 
 
     def __exit__(self, exc_type, exc_value, traceback):
 
-        if exc_type is None:
+        if self.con._locked == id(self):
 
-            self.con.commit()
+            if exc_type is None:
 
-        else:
+                self.con.commit()
 
-            self.con.rollback()
+            else:
 
-        self.con.close()
+                self.con.rollback()
+
+            self.con._locked = False
