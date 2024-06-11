@@ -304,88 +304,91 @@ class Cache:
             ext: str | None = None,
             label: str | None = None,
     ) -> CacheItem:
+        
+        self._ensure_sqlite()
 
         args = locals().pop('self')
         param_str = _utils.serialize(args)
 
         _log(f'Creating new version for item {param_str}')
 
-        items = self.search(
-            uri = uri,
-            params = params,
-        )
+        with Lock(self.con):
 
-        last_version = max((i.version for i in items), default = 0)
-
-        new = CacheItem.new(
-            uri,
-            params,
-            attrs=attrs,
-            version=last_version + 1,
-            date=_utils.parse_time(),
-            status=status,
-            ext=ext,
-            label=label,
-        )
-
-        _log(f'Next version: {new.key}-{new.version}')
-
-        self._ensure_sqlite()
-        self._execute(f'''
-            INSERT INTO
-            main (
-                item_id,
-                version_id,
-                version,
-                status,
-                file_name,
-                label,
-                date,
-                ext
-            )
-            VALUES (
-                {self._quotes(new.key)},
-                "{new.key}-{new.version}",
-                {new.version},
-                {new.status},
-                {self._quotes(new.filename)},
-                {self._quotes(new.label)},
-                {self._quotes(new.date)},
-                {self._quotes(new.ext)}
-            )
-        ''')
-
-        q = f'SELECT id FROM main WHERE version_id = "{new.key}-{new.version}"'
-        self._execute(q)
-        key = self.cur.fetchone()[0]
-
-        for actual_typ in ATTR_TYPES:
-
-            _log(f'Creating attributes in attr_{actual_typ}')
-
-            useattrs = {
-                k: v
-                for k, v in new.attrs.items()
-                if self._sqlite_type(v) == actual_typ.upper()
-            }
-
-            if not useattrs:
-
-                continue
-
-            main_fields = self._table_fields()
-
-            values = ', '.join(
-                f'({key}, "{k}", {self._quotes(v, actual_typ)})'
-                for k, v in useattrs.items()
-                if k not in main_fields
+            items = self.search(
+                uri = uri,
+                params = params,
             )
 
-            q = (f'INSERT INTO attr_{actual_typ} ( id, name, value )  VALUES {values}')
+            last_version = max((i.version for i in items), default = 0)
 
+            new = CacheItem.new(
+                uri,
+                params,
+                attrs=attrs,
+                version=last_version + 1,
+                date=_utils.parse_time(),
+                status=status,
+                ext=ext,
+                label=label,
+            )
+
+            _log(f'Next version: {new.key}-{new.version}')
+
+            self._execute(f'''
+                INSERT INTO
+                main (
+                    item_id,
+                    version_id,
+                    version,
+                    status,
+                    file_name,
+                    label,
+                    date,
+                    ext
+                )
+                VALUES (
+                    {self._quotes(new.key)},
+                    "{new.key}-{new.version}",
+                    {new.version},
+                    {new.status},
+                    {self._quotes(new.filename)},
+                    {self._quotes(new.label)},
+                    {self._quotes(new.date)},
+                    {self._quotes(new.ext)}
+                )
+            ''')
+
+            q = f'SELECT id FROM main WHERE version_id = "{new.key}-{new.version}"'
             self._execute(q)
+            key = self.cur.fetchone()[0]
 
-        _log(f'Successfully created: {new.key}-{new.version}')
+            for actual_typ in ATTR_TYPES:
+
+                _log(f'Creating attributes in attr_{actual_typ}')
+
+                useattrs = {
+                    k: v
+                    for k, v in new.attrs.items()
+                    if self._sqlite_type(v) == actual_typ.upper()
+                }
+
+                if not useattrs:
+
+                    continue
+
+                main_fields = self._table_fields()
+
+                values = ', '.join(
+                    f'({key}, "{k}", {self._quotes(v, actual_typ)})'
+                    for k, v in useattrs.items()
+                    if k not in main_fields
+                )
+
+                q = (f'INSERT INTO attr_{actual_typ} ( id, name, value )  VALUES {values}')
+
+                self._execute(q)
+
+            _log(f'Successfully created: {new.key}-{new.version}')
 
         return new
 
@@ -413,35 +416,37 @@ class Cache:
         Remove CacheItem or version
         """
 
-        items = self.search(
-            uri = uri,
-            params = params,
-            status = status,
-            newer_than = newer_than,
-            older_than = older_than,
-        )
+        with Lock(self.con):
 
-        if not items:
-            return
+            items = self.search(
+                uri = uri,
+                params = params,
+                status = status,
+                newer_than = newer_than,
+                older_than = older_than,
+            )
 
-        where = ",".join(str(item._id) for item in items)
-        where = f' WHERE id IN ({where})'
+            if not items:
+                return
 
-        for actual_typ in ATTR_TYPES:
-            attr_table = f'attr_{actual_typ}'
+            where = ",".join(str(item._id) for item in items)
+            where = f' WHERE id IN ({where})'
 
-            _log(f'Deleting attributes from {attr_table}')
+            for actual_typ in ATTR_TYPES:
+                attr_table = f'attr_{actual_typ}'
 
-            q = f'DELETE FROM {attr_table} {where}'
+                _log(f'Deleting attributes from {attr_table}')
+
+                q = f'DELETE FROM {attr_table} {where}'
+
+                self._execute(q)
+
+            q = f'DELETE FROM main'
+            q += where
 
             self._execute(q)
 
-        q = f'DELETE FROM main'
-        q += where
-
-        self._execute(q)
-
-        _log(f'Deleted {len(items)} results')
+            _log(f'Deleted {len(items)} results')
 
 
     def update(
@@ -460,44 +465,46 @@ class Cache:
         Update one or more items.
         """
 
-        items = self.search(
-            uri = uri,
-            params = params,
-            status = status,
-            newer_than = newer_than,
-            older_than = older_than,
-        )
+        with Lock(self.con):
 
-        update = update or {}
-        main_fields = self._table_fields()
-        main = ', '.join(
-            f'{k} = {self._quotes(v, main_fields[k])}'
-            for k, v in update.items() if k in main_fields
-        )
-        ids = [it.id for it in items]
-        _log(f'Updating {len(ids)} items')
-        where = f'WHERE id IN ({", ".join(map(str, ids))})'
-        q = f'UPDATE main SET ({main}) {where};'
-        self._execute(q)
-
-        for actual_typ in ATTR_TYPES:
-
-            _log(f'Updating attributes in attr_{actual_typ}')
-
-            values = ', '.join(
-                f'{k} = {self._quotes(v, main_fields[k])}'
-                for k, v in update.items()
-                if (
-                    k not in main_fields and
-                    str(type(v)) == actual_typ
-                )
+            items = self.search(
+                uri = uri,
+                params = params,
+                status = status,
+                newer_than = newer_than,
+                older_than = older_than,
             )
 
-            q = f'UPDATE attr_{actual_typ} SET ({values}) {where}'
-
+            update = update or {}
+            main_fields = self._table_fields()
+            main = ', '.join(
+                f'{k} = {self._quotes(v, main_fields[k])}'
+                for k, v in update.items() if k in main_fields
+            )
+            ids = [it.id for it in items]
+            _log(f'Updating {len(ids)} items')
+            where = f'WHERE id IN ({", ".join(map(str, ids))})'
+            q = f'UPDATE main SET ({main}) {where};'
             self._execute(q)
 
-        _log(f'Finished updating attributes')
+            for actual_typ in ATTR_TYPES:
+
+                _log(f'Updating attributes in attr_{actual_typ}')
+
+                values = ', '.join(
+                    f'{k} = {self._quotes(v, main_fields[k])}'
+                    for k, v in update.items()
+                    if (
+                        k not in main_fields and
+                        str(type(v)) == actual_typ
+                    )
+                )
+
+                q = f'UPDATE attr_{actual_typ} SET ({values}) {where}'
+
+                self._execute(q)
+
+            _log(f'Finished updating attributes')
 
 
     def best_or_new(
