@@ -4,6 +4,7 @@ from typing import Any
 import os
 import sqlite3
 import datetime
+import functools as ft
 
 from pypath_common import _misc
 
@@ -304,7 +305,7 @@ class Cache:
             ext: str | None = None,
             label: str | None = None,
     ) -> CacheItem:
-        
+
         self._ensure_sqlite()
 
         args = locals().pop('self')
@@ -482,10 +483,10 @@ class Cache:
                 f'{k} = {self._quotes(v, main_fields[k])}'
                 for k, v in update.items() if k in main_fields
             )
-            ids = [it.id for it in items]
+            ids = [it._id for it in items]
             _log(f'Updating {len(ids)} items')
-            where = f'WHERE id IN ({", ".join(map(str, ids))})'
-            q = f'UPDATE main SET ({main}) {where};'
+            where = f' WHERE id IN ({", ".join(map(str, ids))})'
+            q = f'UPDATE main SET {main}{where};'
             self._execute(q)
 
             for actual_typ in ATTR_TYPES:
@@ -500,6 +501,8 @@ class Cache:
                         str(type(v)) == actual_typ
                     )
                 )
+
+                if not values: continue
 
                 q = f'UPDATE attr_{actual_typ} SET ({values}) {where}'
 
@@ -551,10 +554,13 @@ class Cache:
         version: int = 1,
         status: int = 3,
     ):
-        
+
         self.update(
             uri = uri,
             params = params,
             version = version,
             update = {'status': status},
         )
+
+    ready = ft.partial(update_status, status = 3)
+    failed = ft.partial(update_status, status = 2)
