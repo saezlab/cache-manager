@@ -222,37 +222,39 @@ class Cache:
 
         results = {}
 
-        for actual_typ in ATTR_TYPES:
+        with Lock(self.con):
 
-            q = f'SELECT * FROM main LEFT JOIN attr_{actual_typ}'
-            q += self._where(**args)
+            for actual_typ in ATTR_TYPES:
 
-            self._execute(q)
+                q = f'SELECT * FROM main LEFT JOIN attr_{actual_typ}'
+                q += self._where(**args)
 
-            _log(f'Fetching results from attr_{actual_typ}')
+                self._execute(q)
 
-            for row in self.cur.fetchall():
+                _log(f'Fetching results from attr_{actual_typ}')
 
-                keys = (
-                    tuple(self._table_fields().keys()) +
-                    ('_id', 'name', 'value')
-                )
-                row = dict(zip(keys, row))
-                key = row['version_id']
+                for row in self.cur.fetchall():
 
-                if key not in results:
-
-                    results[key] = CacheItem(
-                        key = row['item_id'],
-                        version = row['version'],
-                        status = row['status'],
-                        ext = row['ext'],
-                        _id = row['id'],
+                    keys = (
+                        tuple(self._table_fields().keys()) +
+                        ('_id', 'name', 'value')
                     )
+                    row = dict(zip(keys, row))
+                    key = row['version_id']
 
-                if row['name']:
+                    if key not in results:
 
-                    results[key].attrs[row['name']] = row['value']
+                        results[key] = CacheItem(
+                            key = row['item_id'],
+                            version = row['version'],
+                            status = row['status'],
+                            ext = row['ext'],
+                            _id = row['id'],
+                        )
+
+                    if row['name']:
+
+                        results[key].attrs[row['name']] = row['value']
 
         _log(f'Retrieved {len(results)} results')
 
@@ -263,13 +265,15 @@ class Cache:
             self,
             uri: str,
             params: dict | None = None,
-            status: set[int] | None = None,
+            status: set[int] | None = 3,
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
     ) -> CacheItem | None:
         """
         Selecting best version of an item
         """
+
+        status = _misc.to_set(status)
 
         items = self.search(
             uri = uri,
@@ -278,13 +282,13 @@ class Cache:
             older_than = older_than,
         )
 
-        items = sorted(items, key = lambda it: it['version'])
+        items = sorted(items, key = lambda it: it.version)
 
         for it in items[::-1]:
 
-            if it['status'] in status:
+            if it.status in status:
 
-                _log(f'Best matching version: {it["version"]}')
+                _log(f'Best matching version: {it.version}')
 
                 return it
 
@@ -512,6 +516,8 @@ class Cache:
         args = locals()
         args.pop('self')
         args['status'] = args.pop('new_status')
+        args.pop('newer_than')
+        args.pop('older_than')
 
         with Lock(self.con):
 
