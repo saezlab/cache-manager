@@ -7,6 +7,7 @@ __all__ = [
 ]
 locked_connections = {}
 
+
 class Lock:
 
     def __init__(self, con: sqlite3.Connection) -> None:
@@ -22,14 +23,14 @@ class Lock:
         if id(self.con) not in locked_connections:
 
             self.con.execute('BEGIN EXCLUSIVE TRANSACTION;')
-            locked_connections[id(self.con)] = id.self
+            locked_connections[id(self.con)] = id(self)
 
         return self.con
 
 
     def __exit__(self, exc_type, exc_value, traceback):
 
-        if id(self.con) in locked_connections:
+        if locked_connections.get(id(self.con), None) == id(self):
 
             if exc_type is None:
 
@@ -39,4 +40,4 @@ class Lock:
 
                 self.con.rollback()
 
-            self.con._locked = False
+            del locked_connections[id(self.con)]
