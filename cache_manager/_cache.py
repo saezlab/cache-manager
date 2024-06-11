@@ -179,7 +179,7 @@ class Cache:
 
         if status is not None:
 
-            where.append(f'status = "{status}"')
+            where.append(f'status = {status}')
 
         if newer_than:
 
