@@ -11,6 +11,7 @@ from cache_manager._item import CacheItem
 from cache_manager._session import _log
 import cache_manager.utils as _utils
 from . import _data
+from ._lock import Lock
 
 __all__ = [
     'ATTR_TYPES',
@@ -501,13 +502,13 @@ class Cache:
         params: dict | None = None,
         status: set[int] | None = None,
         newer_than: str | datetime.datetime | None = None,
-        older_than: str | datetime.datetime | None = None,  
+        older_than: str | datetime.datetime | None = None,
         attrs: dict | None = None,
         ext: str | None = None,
         label: str | None = None,
-        new_status: int = 1
+        new_status: int = 1,
     ) -> CacheItem:
-        
+
         args = locals()
         args.pop('self')
         args['status'] = args.pop('new_status')
@@ -517,10 +518,11 @@ class Cache:
             params = params,
             status = status,
             newer_than = newer_than,
-            older_than = older_than
+            older_than = older_than,
         )
 
         if not item:
+
             item = self.create(**args)
 
         return item
