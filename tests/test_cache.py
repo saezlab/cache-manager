@@ -76,7 +76,9 @@ class TestCache:
         search_args = [
             {'status': 0},
             {'ext': '.tsv'},
-            {'label': 'testlabel'}
+            {'label': 'testlabel'},
+            {'status': 0, 'ext': '.tsv'},
+            {'label': 'testlabel', 'ext': '.tsv'},
         ]
 
         for args in search_args:
@@ -84,6 +86,20 @@ class TestCache:
             status_search = test_cache.search('searchmain', **args)
 
             assert hashname in _keys(status_search)
+
+        search_args = [
+            {'status': 99},
+            {'ext': '.xml'},
+            {'label': 'testla'},
+            {'status': 99, 'ext': '.tsv'},
+            {'label': 'testlabel', 'ext': '.csv'},
+        ]
+
+        for args in search_args:
+
+            status_search = test_cache.search('searchmain', **args)
+
+            assert hashname not in _keys(status_search)
 
 
     def test_remove(self, test_cache):
