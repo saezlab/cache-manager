@@ -5,6 +5,7 @@ import sqlite3
 __all__ = [
     'Lock',
 ]
+locked_connections = {}
 
 class Lock:
 
@@ -18,17 +19,17 @@ class Lock:
 
     def __enter__(self):
 
-        if not self.con._locked:
+        if id(self.con) not in locked_connections:
 
             self.con.execute('BEGIN EXCLUSIVE TRANSACTION;')
-            self.con._locked = id(self)
+            locked_connections[id(self.con)] = id.self
 
         return self.con
 
 
     def __exit__(self, exc_type, exc_value, traceback):
 
-        if self.con._locked == id(self):
+        if id(self.con) in locked_connections:
 
             if exc_type is None:
 
