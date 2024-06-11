@@ -214,17 +214,17 @@ class Cache:
         Look up items in the cache.
         """
 
-        results = {}
-
-        args = locals().pop('self')
+        args = locals()
+        args.pop('self')
         param_str = _utils.serialize(args)
-
         _log(f'Searching cache: {param_str}')
+
+        results = {}
 
         for actual_typ in ATTR_TYPES:
 
             q = f'SELECT * FROM main LEFT JOIN attr_{actual_typ}'
-            q += self._where(uri, params, status, newer_than, older_than)
+            q += self._where(**args)
 
             self._execute(q)
 
