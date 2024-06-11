@@ -513,16 +513,18 @@ class Cache:
         args.pop('self')
         args['status'] = args.pop('new_status')
 
-        item = self.best(
-            uri = uri,
-            params = params,
-            status = status,
-            newer_than = newer_than,
-            older_than = older_than,
-        )
+        with Lock(self.con):
 
-        if not item:
+            item = self.best(
+                uri = uri,
+                params = params,
+                status = status,
+                newer_than = newer_than,
+                older_than = older_than,
+            )
 
-            item = self.create(**args)
+            if not item:
+
+                item = self.create(**args)
 
         return item
