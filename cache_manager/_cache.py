@@ -17,6 +17,7 @@ from ._lock import Lock
 __all__ = [
     'ATTR_TYPES',
     'Cache',
+    'TYPES',
 ]
 
 ATTR_TYPES = ['varchar', 'int', 'datetime', 'float']
@@ -136,7 +137,7 @@ class Cache:
         return f'"{string}"' if (
                 typ.startswith('VARCHAR') or
                 typ.startswith('DATETIME')
-            ) else string
+        ) else string
 
 
     @staticmethod
@@ -159,11 +160,12 @@ class Cache:
     def _where(
         uri: str | None = None,
         params: dict | None = None,
-        status: int | None = None,
+        status: int | set[int] | None = None,
+        version: int | set[int] | None = None,
         newer_than: str | datetime.datetime | None = None,
         older_than: str | datetime.datetime | None = None,
         ext: str | None = None,
-        label: str | None = None
+        label: str | None = None,
     ):
 
         where = []
@@ -180,8 +182,12 @@ class Cache:
             where.append(f'item_id = "{item_id}"')
 
         if status is not None:
+            status = str(_misc.to_set(status)).strip('{}')
+            where.append(f'status IN ({status})')
 
-            where.append(f'status = {status}')
+        if version is not None:
+            version = str(_misc.to_set(version)).strip('{}')
+            where.append(f'version IN ({version})')
 
         if newer_than:
 
@@ -206,11 +212,12 @@ class Cache:
             self,
             uri: str | None = None,
             params: dict | None = None,
-            status: int | None = None,
+            status: int | set[int] | None = None,
+            version: int | set[int] | None = None,
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
             ext: str | None = None,
-            label: str | None = None
+            label: str | None = None,
     ) -> list[CacheItem]:
         """
         Look up items in the cache.
@@ -430,7 +437,7 @@ class Cache:
             if not items:
                 return
 
-            where = ",".join(str(item._id) for item in items)
+            where = ','.join(str(item._id) for item in items)
             where = f' WHERE id IN ({where})'
 
             for actual_typ in ATTR_TYPES:
@@ -473,6 +480,7 @@ class Cache:
                 uri = uri,
                 params = params,
                 status = status,
+                version=version,
                 newer_than = newer_than,
                 older_than = older_than,
             )
@@ -551,7 +559,7 @@ class Cache:
         self,
         uri: str,
         params: dict | None = None,
-        version: int = 1,
+        version: int | None = None,
         status: int = 3,
     ):
 
