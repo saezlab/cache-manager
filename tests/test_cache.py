@@ -133,3 +133,37 @@ class TestCache:
         assert isinstance(it, _item.CacheItem)
         assert it.status == 1
         assert it.version == 2
+    
+
+    def test_update_status(self, test_cache):
+
+        it = test_cache.create('teststatus')
+
+        assert it.status == 0
+
+        it = test_cache.best_or_new('teststatus')
+
+        assert it.status == 1
+
+        test_cache.update_status('teststatus')
+        its = test_cache.search('teststatus')
+
+        assert all(it.status == 3 for it in its)
+
+        test_cache.update_status('teststatus', status = 2, version = 1)
+        its = test_cache.search('teststatus')
+
+        assert {(it.version, it.status) for it in its} == {(1, 2), (2, 3)}
+
+        test_cache.failed('teststatus', version = 2)
+
+        assert all(it.status == 2 for it in its)
+
+        test_cache.ready('teststatus', version = 1)
+
+        assert {(it.version, it.status) for it in its} == {(1, 3), (2, 2)}
+
+
+
+
+
