@@ -148,7 +148,7 @@ class TestCache:
         test_cache.update_status('teststatus')
         its = test_cache.search('teststatus')
 
-        assert all(it.status == 3 for it in its)
+        assert {(it.version, it.status) for it in its} == {(1, 0), (2, 3)}
 
         test_cache.update_status('teststatus', status = 2, version = 1)
         its = test_cache.search('teststatus')
@@ -156,10 +156,12 @@ class TestCache:
         assert {(it.version, it.status) for it in its} == {(1, 2), (2, 3)}
 
         test_cache.failed('teststatus', version = 2)
+        its = test_cache.search('teststatus')
 
         assert all(it.status == 2 for it in its)
 
         test_cache.ready('teststatus', version = 1)
+        its = test_cache.search('teststatus')
 
         assert {(it.version, it.status) for it in its} == {(1, 3), (2, 2)}
 
