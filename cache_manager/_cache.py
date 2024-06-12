@@ -185,7 +185,7 @@ class Cache:
             status = str(_misc.to_set(status)).strip('{}')
             where.append(f'status IN ({status})')
 
-        if version is not None:
+        if version is not None and version != -1:
             version = str(_misc.to_set(version)).strip('{}')
             where.append(f'version IN ({version})')
 
@@ -205,7 +205,12 @@ class Cache:
 
             where.append(f'label = "{label}"')
 
-        return  f' WHERE {" AND ".join(where)}' if where else ''
+        where = f' WHERE {" AND ".join(where)}' if where else ''
+
+        if version == -1:
+            where += ' ORDER BY version DESC LIMIT 1'
+
+        return  where
 
 
     def search(
@@ -558,7 +563,7 @@ class Cache:
         self,
         uri: str,
         params: dict | None = None,
-        version: int | None = None,
+        version: int | None = -1,
         status: int = 3,
     ):
 
