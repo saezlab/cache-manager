@@ -515,7 +515,7 @@ class Cache:
         self,
         uri: str,
         params: dict | None = None,
-        status: set[int] | None = None,
+        status: set[int] | None = 2,
         newer_than: str | datetime.datetime | None = None,
         older_than: str | datetime.datetime | None = None,
         attrs: dict | None = None,
