@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import os
 
+from pypath_common import _misc
+
 import cache_manager.utils as _utils
 
 __all__ = [
@@ -107,17 +109,16 @@ class CacheItem:
         self.filename = self.filename# or os.path.basename(self.params['_uri'])
         #self.ext = os.path.splitext(self.filename)[-1]
         self.date = self.date or _utils.parse_time()
-    
+
 
     def _from_main(self):
 
-        return self.cache.by_key(self.key, self.version)
+        return _misc.first(self.cache.by_key(self.key, self.version))
 
     @property
     def status(self):
 
-        return (
-            (self._from_main() or {}).get('status', None)
-            if self.cache else
-            self._status
-        )
+        return getattr(self._from_main(), 'status', self._status)
+
+ #   @status.setter
+ #   def status(self, value):

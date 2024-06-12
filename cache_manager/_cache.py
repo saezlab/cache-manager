@@ -166,11 +166,13 @@ class Cache:
         older_than: str | datetime.datetime | None = None,
         ext: str | None = None,
         label: str | None = None,
+        key: str | None = None,
     ):
 
         where = []
+        item_id = key
 
-        if uri or params:
+        if not item_id and (uri or params):
 
             params = params or {}
 
@@ -179,6 +181,8 @@ class Cache:
                 params['_uri'] = uri
 
             item_id = CacheItem.serialize(params)
+
+        if item_id:
             where.append(f'item_id = "{item_id}"')
 
         if status is not None:
@@ -211,24 +215,13 @@ class Cache:
             where += ' ORDER BY version DESC LIMIT 1'
 
         return  where
-    
 
-    def by_key(self, key: str, version: int) -> CacheItem:
+
+    def by_key(self, key: str, version: int) -> [CacheItem]:
 
         _log(f'Looking up key: {key}')
 
-        q = (
-            f'SELECT * FROM main WHERE item_id = "{key}" '
-            f'AND version = {version};'
-        )
-
-        names = self._table_fields()
-        self._execute(q)
-        
-        return _misc.first([
-            dict(zip(names, row))
-            for row in self.cur.fetchall()
-        ])
+        return self.search(key=key, version=version)
 
 
     def search(
@@ -241,6 +234,7 @@ class Cache:
             older_than: str | datetime.datetime | None = None,
             ext: str | None = None,
             label: str | None = None,
+            key: str | None = None,
     ) -> list[CacheItem]:
         """
         Look up items in the cache.
@@ -256,7 +250,6 @@ class Cache:
         with Lock(self.con):
 
             for actual_typ in ATTR_TYPES:
-
                 q = f'SELECT * FROM main LEFT JOIN attr_{actual_typ}'
                 q += self._where(**args)
 
@@ -271,11 +264,11 @@ class Cache:
                         ('_id', 'name', 'value')
                     )
                     row = dict(zip(keys, row))
-                    key = row['version_id']
+                    verid = row['version_id']
 
-                    if key not in results:
+                    if verid not in results:
 
-                        results[key] = CacheItem(
+                        results[verid] = CacheItem(
                             key = row['item_id'],
                             version = row['version'],
                             status = row['status'],
@@ -286,7 +279,7 @@ class Cache:
 
                     if row['name']:
 
-                        results[key].attrs[row['name']] = row['value']
+                        results[verid].attrs[row['name']] = row['value']
 
         _log(f'Retrieved {len(results)} results')
 
