@@ -207,10 +207,28 @@ class Cache:
 
         where = f' WHERE {" AND ".join(where)}' if where else ''
 
-        if version == -1:
+        if version == -1: # TODO: Address cases where multiple items
             where += ' ORDER BY version DESC LIMIT 1'
 
         return  where
+    
+
+    def by_key(self, key: str, version: int) -> CacheItem:
+
+        _log(f'Looking up key: {key}')
+
+        q = (
+            f'SELECT * FROM main WHERE item_id = "{key}" '
+            f'AND version = {version};'
+        )
+
+        names = self._table_fields()
+        self._execute(q)
+        
+        return _misc.first([
+            dict(zip(names, row))
+            for row in self.cur.fetchall()
+        ])
 
 
     def search(
@@ -263,6 +281,7 @@ class Cache:
                             status = row['status'],
                             ext = row['ext'],
                             _id = row['id'],
+                            cache = self,
                         )
 
                     if row['name']:
