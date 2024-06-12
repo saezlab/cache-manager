@@ -562,5 +562,7 @@ class Cache:
             update = {'status': status},
         )
 
-    ready = ft.partial(update_status, status = 3)
-    failed = ft.partial(update_status, status = 2)
+
+
+    ready = ft.partialmethod(update_status, status = 3)
+    failed = ft.partialmethod(update_status, status = 2)
