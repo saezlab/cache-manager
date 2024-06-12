@@ -25,6 +25,7 @@ class CacheItem:
             label: str | None = None,
             attrs: dict | None = None,
             _id: int | None = None,
+            cache = None,
     ):
         """
         Instantiates a new cache item.
@@ -32,13 +33,14 @@ class CacheItem:
 
         self.key = key
         self.version = version
-        self.status = status
+        self._status = status
         self.date = date
         self.filename = filename
         self.ext = ext
         self.label = label
         self.attrs = attrs or {}
         self._id = _id
+        self.cache = cache
         self._setup()
 
     @classmethod
@@ -105,3 +107,17 @@ class CacheItem:
         self.filename = self.filename# or os.path.basename(self.params['_uri'])
         #self.ext = os.path.splitext(self.filename)[-1]
         self.date = self.date or _utils.parse_time()
+    
+
+    def _from_main(self):
+
+        return self.cache.by_key(self.key, self.version)
+
+    @property
+    def status(self):
+
+        return (
+            (self._from_main() or {}).get('status', None)
+            if self.cache else
+            self._status
+        )
