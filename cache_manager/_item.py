@@ -111,14 +111,17 @@ class CacheItem:
         self.date = self.date or _utils.parse_time()
 
 
-    def _from_main(self):
+    def _from_main(self) -> CacheItem | None:
 
-        return _misc.first(self.cache.by_key(self.key, self.version))
+        if self.cache:
+
+            return _misc.first(self.cache.by_key(self.key, self.version))
+
 
     @property
     def status(self):
 
-        return getattr(self._from_main(), 'status', self._status)
+        return getattr(self._from_main(), '_status', self._status)
 
  #   @status.setter
  #   def status(self, value):
