@@ -273,7 +273,7 @@ class Cache:
             self,
             uri: str,
             params: dict | None = None,
-            status: set[int] | None = 3,
+            status: int | set[int] | None = 3,
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
     ) -> CacheItem | None:
@@ -286,19 +286,18 @@ class Cache:
         items = self.search(
             uri = uri,
             params = params,
+            status = status,
             newer_than = newer_than,
             older_than = older_than,
         )
 
         items = sorted(items, key = lambda it: it.version)
 
-        for it in items[::-1]:
+        if items:
 
-            if it.status in status:
+            _log(f'Best matching version: {items[-1].version}')
 
-                _log(f'Best matching version: {it.version}')
-
-                return it
+            return items[-1]
 
         _log('No version found matching criteria')
 
