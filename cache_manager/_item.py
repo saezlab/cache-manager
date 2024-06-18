@@ -95,7 +95,10 @@ class CacheItem:
         Defines the path of the file.
         """
 
-        return f'{self.key}-{self.version}.{self.ext}'
+        d = self.cache.dir if self.cache else ''
+
+        return os.path.join(d, f'{self.key}-{self.version}.{self.ext}')
+
 
     @property
     def uri(self):
