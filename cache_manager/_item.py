@@ -115,7 +115,7 @@ class CacheItem:
 
         if self.cache:
 
-            return _misc.first(self.cache.by_key(self.key, self.version))
+            return self.cache.by_key(self.key, self.version)
 
 
     @property
@@ -123,5 +123,15 @@ class CacheItem:
 
         return getattr(self._from_main(), '_status', self._status)
 
- #   @status.setter
- #   def status(self, value):
+    @status.setter
+    def status(self, value: int):
+
+        if self.cache:
+
+            self.cache.update_status(
+                key = self.key,
+                version = self.version,
+                status = value,
+            )
+
+        self._status = value
