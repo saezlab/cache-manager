@@ -166,6 +166,14 @@ class TestCache:
         assert {(it.version, it.status) for it in its} == {(1, 3), (2, 2)}
 
 
+    def test_item_status(self, test_cache):
 
+        it = test_cache.best_or_new('itemstatus')
+        
+        assert it.status == 1
+        assert it._status == 1
 
+        it.status = 3
 
+        assert it.status == 3
+        assert it._status == 3        
