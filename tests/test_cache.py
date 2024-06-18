@@ -68,7 +68,7 @@ class TestCache:
 
         args = {
             'status': 0,
-            'ext': '.tsv',
+            'ext': 'tsv',
             'label': 'testlabel'
         }
 
@@ -77,10 +77,10 @@ class TestCache:
 
         search_args = [
             {'status': 0},
-            {'ext': '.tsv'},
+            {'ext': 'tsv'},
             {'label': 'testlabel'},
-            {'status': 0, 'ext': '.tsv'},
-            {'label': 'testlabel', 'ext': '.tsv'},
+            {'status': 0, 'ext': 'tsv'},
+            {'label': 'testlabel', 'ext': 'tsv'},
         ]
 
         for args in search_args:
@@ -91,10 +91,10 @@ class TestCache:
 
         search_args = [
             {'status': 99},
-            {'ext': '.xml'},
+            {'ext': 'xml'},
             {'label': 'testla'},
-            {'status': 99, 'ext': '.tsv'},
-            {'label': 'testlabel', 'ext': '.csv'},
+            {'status': 99, 'ext': 'tsv'},
+            {'label': 'testlabel', 'ext': 'csv'},
         ]
 
         for args in search_args:
