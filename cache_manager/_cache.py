@@ -624,7 +624,7 @@ class Cache:
         ext: str | None = None,
         label: str | None = None,
         filename: str | None = None,
-    ):
+    ) -> CacheItem:
 
         args = locals()
         args.pop('self')
@@ -633,7 +633,10 @@ class Cache:
         uri = uri or os.path.basename(path)
 
         item = self.create(**args)
+        _log(f'Copying {path} ot {item.path}')
         shutil.copy(path, item.path)
+
+        return item
 
 
     ready = ft.partialmethod(update_status, status = _status.READY.value)
