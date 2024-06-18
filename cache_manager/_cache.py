@@ -354,6 +354,7 @@ class Cache:
                 status=status,
                 ext=ext,
                 label=label,
+                cache=self,
             )
 
             _log(f'Next version: {new.key}-{new.version}')

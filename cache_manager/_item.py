@@ -57,6 +57,7 @@ class CacheItem:
         ext: str | None = None,
         label: str | None = None,
         attrs: dict | None = None,
+        cache: None = None,
     ):
         """
         Creates a new item.
