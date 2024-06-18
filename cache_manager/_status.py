@@ -2,6 +2,9 @@ from __future__ import annotations
 
 import enum
 
+__all__ = ['status']
+
+
 class status(enum.Enum):
 
     UNINITIALIZED = 0

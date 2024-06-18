@@ -11,6 +11,7 @@ from pypath_common import _misc
 from cache_manager._item import CacheItem
 from cache_manager._session import _log
 import cache_manager.utils as _utils
+from cache_manager._status import status as _status
 from . import _data
 from ._lock import Lock
 
@@ -160,7 +161,7 @@ class Cache:
     def _where(
         uri: str | None = None,
         params: dict | None = None,
-        status: int | set[int] | None = None,
+        status: _status | set[int] | None = None,
         version: int | set[int] | None = None,
         newer_than: str | datetime.datetime | None = None,
         older_than: str | datetime.datetime | None = None,
@@ -290,7 +291,7 @@ class Cache:
             self,
             uri: str,
             params: dict | None = None,
-            status: int | set[int] | None = 3,
+            status: int | set[int] | None = _status.READY.value,
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
     ) -> CacheItem | None:
@@ -324,7 +325,7 @@ class Cache:
             uri: str,
             params: dict | None = None,
             attrs: dict | None = None,
-            status: int = 0,
+            status: int = _status.UNINITIALIZED.value,
             ext: str | None = None,
             label: str | None = None,
     ) -> CacheItem:
@@ -542,7 +543,7 @@ class Cache:
         self,
         uri: str,
         params: dict | None = None,
-        status: set[int] | None = 3,
+        status: set[int] | None = _status.READY.value,
         newer_than: str | datetime.datetime | None = None,
         older_than: str | datetime.datetime | None = None,
         attrs: dict | None = None,
@@ -579,7 +580,7 @@ class Cache:
         uri: str | None = None,
         params: dict | None = None,
         version: int | None = -1,
-        status: int = 3,
+        status: int = _status.READY.value,
         key: str | None = None,
     ):
 
@@ -593,5 +594,5 @@ class Cache:
 
 
 
-    ready = ft.partialmethod(update_status, status = 3)
-    failed = ft.partialmethod(update_status, status = 2)
+    ready = ft.partialmethod(update_status, status = _status.READY.value)
+    failed = ft.partialmethod(update_status, status = _status.FAILED.value)

@@ -5,6 +5,7 @@ import os
 from pypath_common import _misc
 
 import cache_manager.utils as _utils
+from cache_manager._status import status as _status
 
 __all__ = [
     'CacheItem',
@@ -136,3 +137,16 @@ class CacheItem:
             )
 
         self._status = value
+
+
+    def ready(self):
+        """
+        Sets the status to ready.
+        """
+
+        self.status = _status.READY.value
+
+
+    def failed(self):
+
+        self.status = _status.FAILED.value
