@@ -439,6 +439,7 @@ class Cache:
             self,
             uri: str | None = None,
             params: dict | None = None,
+            version: int | set[int] | None = None,
             attrs: dict | None = None,
             status: int | None = None,
             ext: str | None = None,
@@ -446,6 +447,7 @@ class Cache:
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
             key: str | None = None,
+            disk: bool = True,
     ): # Make it more safer later (avoid to delete everything accidentally)
         """
         Remove CacheItem or version
@@ -457,6 +459,7 @@ class Cache:
                 uri = uri,
                 params = params,
                 status = status,
+                version = version,
                 newer_than = newer_than,
                 older_than = older_than,
                 key = key,
@@ -482,7 +485,14 @@ class Cache:
 
             self._execute(q)
 
-            _log(f'Deleted {len(items)} results')
+            _log(f'Deleted {len(items)} results.')
+
+            for item in items:
+
+                if disk and os.path.exists(item.path):
+
+                    _log(f'Deleting from disk: `{item.path}`.')
+                    os.remove(item.path)
 
 
     def update(
