@@ -1,6 +1,7 @@
 import pytest
 
 import datetime
+import tempfile
 
 from cache_manager import utils
 from cache_manager import _item
@@ -176,4 +177,18 @@ class TestCache:
         it.status = 3
 
         assert it.status == 3
-        assert it._status == 3        
+        assert it._status == 3
+
+
+    def test_move_in(self, test_cache):
+
+        with tempfile.NamedTemporaryFile() as tmpfile:
+            content = b"Test tmp file"
+            tmpfile.write(content)
+            tmpfile.file.flush()
+
+            item = test_cache.move_in(tmpfile.name)
+
+            with open(item.path, 'rb') as fp:
+                
+                assert fp.read() == content
