@@ -217,11 +217,11 @@ class Cache:
         return  where
 
 
-    def by_key(self, key: str, version: int) -> [CacheItem]:
+    def by_key(self, key: str, version: int) -> CacheItem:
 
         _log(f'Looking up key: {key}')
 
-        return self.search(key=key, version=version)
+        return _misc.first(self.search(key=key, version=version))
 
 
     def search(
@@ -475,7 +475,7 @@ class Cache:
 
     def update(
             self,
-            uri: str,
+            uri: str | None = None,
             params: dict | None = None,
             attrs: dict | None = None,
             status: int | None = None,
@@ -484,6 +484,7 @@ class Cache:
             label: str | None = None,
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
+            key: str | None = None,
             update: dict | None = None,
     ):
         """
@@ -499,6 +500,7 @@ class Cache:
                 version=version,
                 newer_than = newer_than,
                 older_than = older_than,
+                key = key,
             )
 
             update = update or {}
@@ -573,10 +575,11 @@ class Cache:
 
     def update_status(
         self,
-        uri: str,
+        uri: str | None = None,
         params: dict | None = None,
         version: int | None = -1,
         status: int = 3,
+        key: str | None = None,
     ):
 
         self.update(
@@ -584,6 +587,7 @@ class Cache:
             params = params,
             version = version,
             update = {'status': status},
+            key = key,
         )
 
 
