@@ -96,8 +96,9 @@ class CacheItem:
         """
 
         d = self.cache.dir if self.cache else ''
+        ext = f'.{self.ext}' or ''
 
-        return os.path.join(d, f'{self.key}-{self.version}.{self.ext}')
+        return os.path.join(d, f'{self.key}-{self.version}{ext}')
 
 
     @property
