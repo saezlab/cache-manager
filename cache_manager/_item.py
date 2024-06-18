@@ -152,3 +152,13 @@ class CacheItem:
         """
 
         self.status = _status.FAILED.value
+
+
+    def remove(self):
+        """
+        Remove the item from the database.
+        """
+
+        if self.cache:
+
+            self.cache.remove(key = self.key, version = self.version)

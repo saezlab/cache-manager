@@ -168,6 +168,7 @@ class Cache:
         older_than: str | datetime.datetime | None = None,
         ext: str | None = None,
         label: str | None = None,
+        filename: str | None = None,
         key: str | None = None,
     ):
 
@@ -186,6 +187,9 @@ class Cache:
 
         if item_id:
             where.append(f'item_id = "{item_id}"')
+
+        if filename:
+            where.append(f'file_name = "{filename}"')
 
         if status is not None:
             status = str(_misc.to_set(status)).strip('{}')
@@ -236,6 +240,7 @@ class Cache:
             older_than: str | datetime.datetime | None = None,
             ext: str | None = None,
             label: str | None = None,
+            filename: str | None = None,
             key: str | None = None,
     ) -> list[CacheItem]:
         """
@@ -440,6 +445,7 @@ class Cache:
             label: str | None = None,
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
+            key: str | None = None,
     ): # Make it more safer later (avoid to delete everything accidentally)
         """
         Remove CacheItem or version
@@ -453,6 +459,7 @@ class Cache:
                 status = status,
                 newer_than = newer_than,
                 older_than = older_than,
+                key = key,
             )
 
             if not items:
@@ -596,7 +603,7 @@ class Cache:
             key = key,
         )
 
-    
+
     def move_in(
         self,
         path: str,
@@ -606,13 +613,13 @@ class Cache:
         status: int = _status.WRITE.value,
         ext: str | None = None,
         label: str | None = None,
-        filename: str | None = None,     
+        filename: str | None = None,
     ):
-        
+
         args = locals()
         args.pop('self')
         args.pop('path')
- 
+
         uri = uri or os.path.basename(path)
 
         item = self.create(**args)
