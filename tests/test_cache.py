@@ -134,7 +134,7 @@ class TestCache:
         assert isinstance(it, _item.CacheItem)
         assert it.status == 1
         assert it.version == 2
-    
+
 
     def test_update_status(self, test_cache):
 
@@ -170,7 +170,7 @@ class TestCache:
     def test_item_status(self, test_cache):
 
         it = test_cache.best_or_new('itemstatus')
-        
+
         assert it.status == 1
         assert it._status == 1
 
@@ -178,6 +178,17 @@ class TestCache:
 
         assert it.status == 3
         assert it._status == 3
+
+
+    def test_item_remove(self, test_cache):
+
+        it = test_cache.best_or_new('itemremove')
+
+        assert test_cache.search('itemremove')
+
+        it.remove()
+
+        assert not test_cache.search('itemremove')
 
 
     def test_move_in(self, test_cache):
@@ -190,5 +201,5 @@ class TestCache:
             item = test_cache.move_in(tmpfile.name)
 
             with open(item.path, 'rb') as fp:
-                
+
                 assert fp.read() == content
