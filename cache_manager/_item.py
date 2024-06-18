@@ -89,6 +89,15 @@ class CacheItem:
 
         return _utils.hash(_utils.serialize(params))
 
+
+    @property
+    def cache_fname(self):
+
+        ext = f'.{self.ext}' or ''
+
+        return f'{self.key}-{self.version}{ext}'
+
+
     @property
     def path(self):
         """
@@ -96,9 +105,8 @@ class CacheItem:
         """
 
         d = self.cache.dir if self.cache else ''
-        ext = f'.{self.ext}' or ''
 
-        return os.path.join(d, f'{self.key}-{self.version}{ext}')
+        return os.path.join(d, self.cache_fname)
 
 
     @property
@@ -110,9 +118,11 @@ class CacheItem:
         """
         Setting default values
         """
-        # TODO: Fix URI/filename
-        self.filename = self.filename# or os.path.basename(self.params['_uri'])
-        #self.ext = os.path.splitext(self.filename)[-1]
+
+        self.filename = (self.filename or
+                         os.path.basename(self.uri or "") or 
+                         self.cache_fname)
+        self.ext = self.ext or os.path.splitext(self.filename)[-1][1:] or None
         self.date = self.date or _utils.parse_time()
 
 
