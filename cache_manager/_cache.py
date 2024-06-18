@@ -5,6 +5,7 @@ import os
 import sqlite3
 import datetime
 import functools as ft
+import shutil
 
 from pypath_common import _misc
 
@@ -328,11 +329,13 @@ class Cache:
             status: int = _status.UNINITIALIZED.value,
             ext: str | None = None,
             label: str | None = None,
+            filename: str | None = None,
     ) -> CacheItem:
 
         self._ensure_sqlite()
 
-        args = locals().pop('self')
+        args = locals()
+        args.pop('self')
         param_str = _utils.serialize(args)
 
         _log(f'Creating new version for item {param_str}')
@@ -550,6 +553,7 @@ class Cache:
         ext: str | None = None,
         label: str | None = None,
         new_status: int = 1,
+        filename: str | None = None,
     ) -> CacheItem:
 
         args = locals()
@@ -592,6 +596,27 @@ class Cache:
             key = key,
         )
 
+    
+    def move_in(
+        self,
+        path: str,
+        uri: str | None = None,
+        params: dict | None = None,
+        attrs: dict | None = None,
+        status: int = _status.WRITE.value,
+        ext: str | None = None,
+        label: str | None = None,
+        filename: str | None = None,     
+    ):
+        
+        args = locals()
+        args.pop('self')
+        args.pop('path')
+ 
+        uri = uri or os.path.basename(path)
+
+        item = self.create(**args)
+        shutil.copy(path, item.path)
 
 
     ready = ft.partialmethod(update_status, status = _status.READY.value)

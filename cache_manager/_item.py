@@ -89,14 +89,13 @@ class CacheItem:
 
         return _utils.hash(_utils.serialize(params))
 
-    def path(self, version: int | None = None):
+    @property
+    def path(self):
         """
         Defines the path of the file.
         """
 
-        version = self.default_version if version is None else version
-
-        return f'{self.key}-{version}.{self.ext}'
+        return f'{self.key}-{self.version}.{self.ext}'
 
     @property
     def uri(self):
@@ -148,5 +147,8 @@ class CacheItem:
 
 
     def failed(self):
+        """
+        Sets the status to failed.
+        """
 
         self.status = _status.FAILED.value
