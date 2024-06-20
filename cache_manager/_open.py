@@ -18,7 +18,7 @@ ARCHIVES = {'zip', 'tar.gz', 'tar.bz2', 'tar.xz'}
 
 
 
-class FileOpener:
+class Opener:
     """
     Opens a file.
 
@@ -64,6 +64,7 @@ class FileOpener:
 
             setattr(self, k, v)
 
+        self.set_type()
 
 
     def __del__(self):
@@ -145,7 +146,7 @@ class FileOpener:
         if not self.large:
 
             self.tarfile.close()
-            self._log(f'File closed: `{self.path}`.')
+            _log(f'File closed: `{self.path}`.')
 
         self.result = self.files
 
@@ -257,7 +258,7 @@ class FileOpener:
 
         ext = self.ext or _common.ext(self.path)
         ext = ext.strip(".")
-        ext = 'tar.gz' if ext == 'tgz' else ext
+        self.ext = 'tar.gz' if ext == 'tgz' else ext
 
         self.type = ext if ext in COMPRESSED | ARCHIVES else 'plain'
         self.type = 'tar' if self.type.startswith('tar') else self.type

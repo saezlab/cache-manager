@@ -35,7 +35,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.8"
 toml = "*"
-pypath-common = "^0.2.2"
+pypath-common = { git = "https://github.com/saezlab/pypath-common.git", branch = "master" }
 
 [tool.poetry.dev-dependencies]
 pytest = ">=6.0"
