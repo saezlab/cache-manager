@@ -39,6 +39,10 @@ class FileOpener:
             setattr(self, k, v)
 
 
+    def __del__(self):
+        self.close()
+
+
     def open(self):
         """
         Opens the file if exists.
@@ -50,13 +54,21 @@ class FileOpener:
             _log(msg)
             raise FileNotFoundError(msg)
 
-
         mode, encoding = (
             (self.default_mode, self.encoding)
                 if self.type == 'plain' else
             ('rb', None)
         )
         self.fileobj = open(self.path, mode = mode, encoding = encoding)
+
+
+    def close(self):
+        """
+        Close the file.
+        """
+
+        if hasattr(self, "fileobj") and hasattr(self.fileobj, "close"):
+            self.fileobj.close()
 
 
     def extract(self):
