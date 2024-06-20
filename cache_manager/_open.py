@@ -20,6 +20,8 @@ ARCHIVES = {'zip', 'tar.gz', 'tar.bz2', 'tar.xz'}
 
 class FileOpener:
     """
+    Opens a file.
+
     This class opens a file, extracts it in case it is a
     gzip, tar.gz, tar.bz2 or zip archive, selects the requested
     files if you only need certain files from a multifile archive,
@@ -38,6 +40,22 @@ class FileOpener:
             default_mode: str = 'r',
             encoding: str | None = None,
         ):
+        """
+        Args:
+            path:
+                Path to a file.
+            ext:
+                Extension of the file, such as "zip", "tar.gz", etc.
+            needed:
+                A list of paths to be extracted within an archive. If not
+                provided, all paths will be included.
+            large:
+                Return file pointers instead of the contents of the files.
+            default_mode:
+                Mode for the returned file objects: "r" or "rb".
+            encoding:
+                Encoding for the returned file objects.
+        """
 
         for k, v in locals().items():
 
@@ -54,7 +72,7 @@ class FileOpener:
 
     def open(self):
         """
-        Opens the file if exists.
+        Open the file if exists.
         """
 
         if not os.path.exists(self.path):
@@ -82,7 +100,7 @@ class FileOpener:
 
     def extract(self):
         """
-        Calls the extracting method for compressed files.
+        Call the extracting method for compressed files.
         """
 
         getattr(self, 'open_%s' % self.type)()
@@ -133,6 +151,9 @@ class FileOpener:
 
 
     def open_gz(self):
+        """
+        Opens a gzip file.
+        """
 
         _log(f'Opening gzip file: {self.path}')
 
@@ -163,6 +184,9 @@ class FileOpener:
 
 
     def open_zip(self):
+        """
+        Opens a zip file.
+        """
 
         _log(f'Opening zip file {self.path}')
 
@@ -207,6 +231,9 @@ class FileOpener:
 
 
     def open_plain(self):
+        """
+        Opens any file.
+        """
 
         _log(f'Opening plain text file {self.path}')
 
@@ -222,7 +249,11 @@ class FileOpener:
             self.fileobj.close()
             _log(f'Contents of {self.path} has been read and the file has been closed.')
 
+
     def set_type(self):
+        """
+        Determine the file type based on the extension.
+        """
 
         ext = self.ext or _common.ext(self.path)
         ext = ext.strip(".")
@@ -232,8 +263,18 @@ class FileOpener:
         self.type = 'tar' if self.type.startswith('tar') else self.type
 
 
+    def __iter__(self):
+
+        self.fileobj.seek(0)
+
+        return self.fileobj.__iter__()
+
+
     @staticmethod
     def iterfile(fileobj):
+        """
+        Returns an iterator over the lines of a file.
+        """
 
         for line in fileobj:
 
