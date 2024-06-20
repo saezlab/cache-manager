@@ -13,6 +13,7 @@ from cache_manager import _open
 
 @pytest.fixture
 def temp_tar_gz_file(tmpdir):
+
     subfolder = tmpdir.mkdir('subfolder')
     file1 = subfolder.join('file1.txt')
     file2 = subfolder.join('file2.txt')
@@ -26,8 +27,10 @@ def temp_tar_gz_file(tmpdir):
 
     return gz_path
 
+
 @pytest.fixture
 def temp_xz_file(tmpdir):
+
     subfolder = tmpdir.mkdir('subfolder')
     file1 = subfolder.join('file1.txt')
     file2 = subfolder.join('file2.txt')
@@ -41,8 +44,10 @@ def temp_xz_file(tmpdir):
 
     return xz_path
 
+
 @pytest.fixture
 def temp_bz2_file(tmpdir):
+
     subfolder = tmpdir.mkdir('subfolder')
     file1 = subfolder.join('file1.txt')
     file2 = subfolder.join('file2.txt')
@@ -56,8 +61,10 @@ def temp_bz2_file(tmpdir):
 
     return bz2_path
 
+
 @pytest.fixture
 def temp_zip_file(tmpdir):
+
     subfolder = tmpdir.mkdir('subfolder')
     file1 = subfolder.join('file1.txt')
     file2 = subfolder.join('file2.txt')
@@ -72,8 +79,10 @@ def temp_zip_file(tmpdir):
 
     return zip_path
 
+
 @pytest.fixture
 def temp_gz_file(tmpdir):
+
     gz_path = tmpdir.join('archive.gz')
 
     with gzip.open(gz_path, 'w') as gz:
@@ -81,33 +90,39 @@ def temp_gz_file(tmpdir):
 
     return gz_path
 
+
 def test_gz_file(temp_gz_file):
+
     assert temp_gz_file.check(file=1)
 
+
 def test_xz_file(temp_xz_file):
+
     assert temp_xz_file.check(file=1)
 
+
 def test_bz2_file(temp_bz2_file):
+
     assert temp_bz2_file.check(file=1)
 
+
 def test_zip_file(temp_zip_file):
+
     assert temp_zip_file.check(file=1)
 
+
 def test_tar_gz_file(temp_tar_gz_file):
+
     assert temp_tar_gz_file.check(file=1)
 
 
 def test_open_gz(temp_gz_file):
 
     opener = _open.Opener(temp_gz_file.strpath)
-    opener.open()
-    opener.extract()
 
     assert isinstance(opener.result, Generator)
 
     opener = _open.Opener(temp_gz_file.strpath, large = False)
-    opener.open()
-    opener.extract()
 
     assert opener.result == b'This is the first file.'
 
@@ -115,14 +130,11 @@ def test_open_gz(temp_gz_file):
 def test_open_tar_gz(temp_tar_gz_file):
 
     opener = _open.Opener(temp_tar_gz_file.strpath)
-    opener.open()
-    opener.extract()
 
     assert isinstance(opener.result, dict)
     assert set(opener.result.keys()) == {'subfolder/file1.txt', 'subfolder/file2.txt'}
     assert opener.result['subfolder/file2.txt'].read() == b'This is the second file.'
 
     opener = _open.Opener(temp_tar_gz_file.strpath, large = False)
-    opener.open()
-    opener.extract()
+
     assert opener.result['subfolder/file1.txt'] == b'This is the first file.'
