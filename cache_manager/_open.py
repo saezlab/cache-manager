@@ -30,11 +30,11 @@ class FileOpener:
     def __init__(
             self,
             path: str,
-            ext: str,
-            files_needed = None,
-            large = True,
-            default_mode = 'r',
-            encoding = None,
+            ext: str | None = None,
+            files_needed: list[str] | None = None,
+            large: bool = True,
+            default_mode: str = 'r',
+            encoding: str | None = None,
         ):
 
         for k, v in locals().items():
@@ -43,6 +43,7 @@ class FileOpener:
                 continue
 
             setattr(self, k, v)
+
 
 
     def __del__(self):
