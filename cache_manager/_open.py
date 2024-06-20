@@ -1,4 +1,14 @@
+import re
+import os
+import gzip
+import tarfile
+import zipfile
+import io
+import struct
 
+from pypath_common import _constants as _const
+
+from cache_manager._session import _log
 
 class FileOpener:
     """
@@ -23,10 +33,6 @@ class FileOpener:
             default_mode = 'r',
             encoding = 'utf-8',
         ):
-
-        if not hasattr(self, '_logger'):
-
-            session_mod.Logger.__init__(self, name = 'file')
 
         if not hasattr(self, 'encoding') or not self.encoding:
 
