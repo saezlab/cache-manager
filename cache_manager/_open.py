@@ -7,8 +7,14 @@ import io
 import struct
 
 from pypath_common import _constants as _const
+from pypath_common import _misc as _common
 
 from cache_manager._session import _log
+
+COMPRESSED =  {'gz', 'xz', 'bz2'}
+ARCHIVES = {'zip', 'targz', 'tarbz2', 'tarxz'}
+
+
 
 class FileOpener:
     """
@@ -79,7 +85,7 @@ class FileOpener:
         getattr(self, 'open_%s' % self.type)()
 
 
-    def open_tgz(self):
+    def open_targz(self):
         """
         Extracts files from tar gz.
         """
@@ -210,21 +216,13 @@ class FileOpener:
                 'and the file has been closed.' % self.fileobj.name
             )
 
-    def get_type(self):
+    def set_type(self):
 
-        self.multifile = False
-        if self.fname[-3:].lower() == 'zip' or self.compr == 'zip':
-            self.type = 'zip'
-            self.multifile = True
-        elif self.fname[-3:].lower() == 'tgz' or \
-                self.fname[-6:].lower() == 'tar.gz' or \
-                self.compr == 'tgz' or self.compr == 'tar.gz':
-            self.type = 'tgz'
-            self.multifile = True
-        elif self.fname[-2:].lower() == 'gz' or self.compr == 'gz':
-            self.type = 'gz'
-        else:
-            self.type = 'plain'
+        ext = self.ext or _common.ext(self.path)
+        ext = ext.replace('.', '')
+        ext = 'targz' if ext == 'tgz' else ext
+
+        self.type = ext if ext in COMPRESSED | ARCHIVES else 'plain'
 
 
     @staticmethod
