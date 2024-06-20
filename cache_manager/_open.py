@@ -23,41 +23,20 @@ class FileOpener:
 
     def __init__(
             self,
-            file_param,
-            compr = None,
-            extract = True,
-            _open = True,
-            set_fileobj = True,
+            path: str,
+            ext: str,
             files_needed = None,
             large = True,
             default_mode = 'r',
             encoding = 'utf-8',
         ):
 
-        if not hasattr(self, 'encoding') or not self.encoding:
+        for k, v in locals().items():
 
-            self.encoding = encoding
+            if k == "self":
+                continue
 
-        if not hasattr(self, 'default_mode'):
-
-            self.default_mode = default_mode
-
-        if not hasattr(self, 'compr'):
-            self.compr = compr
-        if not hasattr(self, 'files_needed'):
-            self.files_needed = files_needed
-        if not hasattr(self, 'large'):
-            self.large = large
-        self.fname = file_param \
-            if type(file_param) in _const.CHAR_TYPES else file_param.name
-        self.fileobj = None \
-            if type(file_param) in _const.CHAR_TYPES else file_param
-        if not hasattr(self, 'type'):
-            self.get_type()
-        if _open:
-            self.open()
-        if extract:
-            self.extract()
+            setattr(self, k, v)
 
 
     def open(self):
