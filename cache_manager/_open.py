@@ -65,9 +65,12 @@ class Opener:
             setattr(self, k, v)
 
         self.set_type()
+        self.open()
+        self.extract()
 
 
     def __del__(self):
+
         self.close()
 
 
