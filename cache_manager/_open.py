@@ -28,7 +28,7 @@ class FileOpener:
             files_needed = None,
             large = True,
             default_mode = 'r',
-            encoding = 'utf-8',
+            encoding = None,
         ):
 
         for k, v in locals().items():
@@ -44,21 +44,19 @@ class FileOpener:
         Opens the file if exists.
         """
 
-        if self.fileobj is None and os.path.exists(self.fname):
+        if not os.path.exists(self.path):
 
-            if self.encoding and self.type == 'plain':
+            msg = f'No such file: `{self.path}`.'
+            _log(msg)
+            raise FileNotFoundError(msg)
 
-                self.fileobj = open(
-                    self.fname,
-                    self.default_mode,
-                    encoding = (
-                        None if self.default_mode == 'rb' else self.encoding
-                    ),
-                )
 
-            else:
-
-                self.fileobj = open(self.fname, 'rb')
+        mode, encoding = (
+            (self.default_mode, self.encoding)
+                if self.type == 'plain' else
+            ('rb', None)
+        )
+        self.fileobj = open(self.path, mode = mode, encoding = encoding)
 
 
     def extract(self):
