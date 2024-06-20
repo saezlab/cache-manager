@@ -33,7 +33,7 @@ class FileOpener:
             self,
             path: str,
             ext: str | None = None,
-            files_needed: list[str] | None = None,
+            needed: list[str] | None = None,
             large: bool = True,
             default_mode: str = 'r',
             encoding: str | None = None,
@@ -103,24 +103,31 @@ class FileOpener:
 
         for m in self.members:
 
-            if (self.files_needed is None or m.name in self.files_needed) \
-                    and m.size != 0:
+            if (
+                (
+                    self.needed is None or
+                    m.name in self.needed
+                )
                 # m.size is 0 for dierctories
+                and m.size != 0
+            ):
+
                 this_file = self.tarfile.extractfile(m)
                 self.sizes[m.name] = m.size
+
                 if self.large:
+
                     self.files[m.name] = this_file
+
                 else:
-                    self._log(
-                        'Reading contents of file '
-                        'from archive: `%s`.' % m.name
-                    )
+                    _log(f'Reading contents of file from archive: `{m.name}`.')
                     self.files[m.name] = this_file.read()
                     this_file.close()
 
         if not self.large:
+
             self.tarfile.close()
-            self._log('File closed: `%s`.' % self.fileobj.name)
+            self._log(f'File closed: `{self.path}`.')
 
         self.result = self.files
 
@@ -170,10 +177,15 @@ class FileOpener:
         self.fileobj.seek(0)
         self.zipfile = zipfile.ZipFile(self.fileobj, 'r')
         self.members = self.zipfile.namelist()
+
         for i, m in enumerate(self.members):
+
             self.sizes[m] = self.zipfile.filelist[i].file_size
-            if self.files_needed is None or m in self.files_needed:
+
+            if self.needed is None or m in self.needed:
+
                 this_file = self.zipfile.open(m)
+
                 if self.large:
 
                     if self.default_mode == 'rb':
@@ -188,6 +200,7 @@ class FileOpener:
                             this_file, encoding=self.encoding
                         )
                 else:
+
                     self.files_multipart[m] = this_file.read()
                     this_file.close()
 
