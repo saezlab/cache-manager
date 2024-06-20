@@ -134,7 +134,7 @@ class FileOpener:
 
     def open_gz(self):
 
-        self._log('Opening gzip file `%s`.' % self.fileobj.name)
+        _log(f'Opening gzip file: {self.path}')
 
         self.fileobj.seek(-4, 2)
         self.size = struct.unpack('I', self.fileobj.read(4))[0]
@@ -153,24 +153,18 @@ class FileOpener:
                     if self.default_mode == 'rb' else
                 self._gzfile_mode_r
             )
-            self._log(
-                'Result is an iterator over the '
-                'lines of `%s`.' % self.fileobj.name
-            )
+            _log(f'Result is an iterator over the lines of {self.path}')
 
         else:
 
             self.result = self.gzfile.read()
             self.gzfile.close()
-            self._log(
-                'Data has been read from gzip file `%s`. '
-                'The file has been closed' % self.fileobj.name
-            )
+            _log(f'Data has been read from gzip file {self.path}. The file has been closed.')
 
 
     def open_zip(self):
 
-        self._log('Opening zip file `%s`.' % self.fileobj.name)
+        _log(f'Opening zip file {self.path}')
 
         self.files_multipart = {}
         self.sizes = {}
@@ -207,16 +201,14 @@ class FileOpener:
         if not self.large:
 
             self.zipfile.close()
-            self._log(
-                'Data has been read from zip file `%s`.'
-                'File has been closed' % self.fileobj.name
-            )
+            _log(f'Data has been read from zip file {self.path}. File has been closed')
 
         self.result = self.files_multipart
 
+
     def open_plain(self):
 
-        self._log('Opening plain text file `%s`.' % self.fileobj.name)
+        _log(f'Opening plain text file {self.path}')
 
         self.size = os.path.getsize(self.fileobj.name)
 
@@ -228,10 +220,7 @@ class FileOpener:
 
             self.result = self.fileobj.read()
             self.fileobj.close()
-            self._log(
-                'Contents of `%s` has been read '
-                'and the file has been closed.' % self.fileobj.name
-            )
+            _log(f'Contents of {self.path} has been read and the file has been closed.')
 
     def set_type(self):
 
@@ -249,5 +238,3 @@ class FileOpener:
         for line in fileobj:
 
             yield line
-
-
