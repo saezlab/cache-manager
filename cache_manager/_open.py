@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import re
 import os
 import gzip
@@ -12,7 +14,7 @@ from pypath_common import _misc as _common
 from cache_manager._session import _log
 
 COMPRESSED =  {'gz', 'xz', 'bz2'}
-ARCHIVES = {'zip', 'targz', 'tarbz2', 'tarxz'}
+ARCHIVES = {'zip', 'tar.gz', 'tar.bz2', 'tar.xz'}
 
 
 
@@ -86,16 +88,17 @@ class FileOpener:
         getattr(self, 'open_%s' % self.type)()
 
 
-    def open_targz(self):
+    def open_tar(self):
         """
-        Extracts files from tar gz.
+        Extracts files from tar.
         """
 
-        self._log('Opening tar.gz file `%s`.' % self.fileobj.name)
+        _log(f'Opening tar file: {self.path}')
 
-        self.files_multipart = {}
+        self.files = {}
         self.sizes = {}
-        self.tarfile = tarfile.open(fileobj = self.fileobj, mode = 'r:gz')
+        compr = self.ext.split('.')[-1]
+        self.tarfile = tarfile.open(fileobj = self.fileobj, mode = f'r:{compr}')
         self.members = self.tarfile.getmembers()
 
         for m in self.members:
@@ -106,20 +109,20 @@ class FileOpener:
                 this_file = self.tarfile.extractfile(m)
                 self.sizes[m.name] = m.size
                 if self.large:
-                    self.files_multipart[m.name] = this_file
+                    self.files[m.name] = this_file
                 else:
                     self._log(
                         'Reading contents of file '
                         'from archive: `%s`.' % m.name
                     )
-                    self.files_multipart[m.name] = this_file.read()
+                    self.files[m.name] = this_file.read()
                     this_file.close()
 
         if not self.large:
             self.tarfile.close()
             self._log('File closed: `%s`.' % self.fileobj.name)
 
-        self.result = self.files_multipart
+        self.result = self.files
 
 
     def open_gz(self):
@@ -220,10 +223,11 @@ class FileOpener:
     def set_type(self):
 
         ext = self.ext or _common.ext(self.path)
-        ext = ext.replace('.', '')
-        ext = 'targz' if ext == 'tgz' else ext
+        ext = ext.strip(".")
+        ext = 'tar.gz' if ext == 'tgz' else ext
 
         self.type = ext if ext in COMPRESSED | ARCHIVES else 'plain'
+        self.type = 'tar' if self.type.startswith('tar') else self.type
 
 
     @staticmethod
