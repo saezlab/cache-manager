@@ -181,7 +181,7 @@ class CacheItem:
 
             self.cache.remove(key = self.key, version = self.version)
 
-    def _open(self, **kwargs) -> _opener.Opener:
+    def _open(self, **kwargs) -> _open.Opener:
         self.cache._accessed(self._id)
 
         return _open.Opener(self.path, **kwargs)
