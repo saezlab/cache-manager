@@ -2,17 +2,17 @@ from __future__ import annotations
 
 from typing import Any
 import os
+import shutil
 import sqlite3
 import datetime
 import functools as ft
-import shutil
 
 from pypath_common import _misc
 
 from cache_manager._item import CacheItem
+from cache_manager._status import status as _status
 from cache_manager._session import _log
 import cache_manager.utils as _utils
-from cache_manager._status import status as _status
 from . import _data
 from ._lock import Lock
 
@@ -408,6 +408,7 @@ class Cache:
             q = f'SELECT id FROM main WHERE version_id = "{new.key}-{new.version}"'
             self._execute(q)
             key = self.cur.fetchone()[0]
+            new._id = key
 
             for actual_typ in ATTR_TYPES:
 
