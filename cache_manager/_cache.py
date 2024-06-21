@@ -569,7 +569,7 @@ class Cache:
         attrs: dict | None = None,
         ext: str | None = None,
         label: str | None = None,
-        new_status: int = 1,
+        new_status: int = _status.WRITE.value,
         filename: str | None = None,
     ) -> CacheItem:
 

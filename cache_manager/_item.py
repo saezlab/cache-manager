@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+from typing import IO
 import os
 
 from pypath_common import _misc
 
 import cache_manager.utils as _utils
 from cache_manager._status import status as _status
+from cache_manager import _open
 
 __all__ = [
     'CacheItem',
@@ -120,7 +122,7 @@ class CacheItem:
         """
 
         self.filename = (self.filename or
-                         os.path.basename(self.uri or "") or 
+                         os.path.basename(self.uri or "") or
                          self.cache_fname)
         self.ext = self.ext or os.path.splitext(self.filename)[-1][1:] or None
         self.date = self.date or _utils.parse_time()
@@ -176,3 +178,14 @@ class CacheItem:
         if self.cache:
 
             self.cache.remove(key = self.key, version = self.version)
+
+    def _open(self) -> _opener.Opener:
+
+        return _open.Opener(self.path)
+
+
+    def open(self) -> str | IO | dict[str, str | IO] | None:
+
+        if self.status == _status.READY.value:
+
+            return self._open().get('result', None)
