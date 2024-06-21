@@ -7,5 +7,9 @@
     "file_name": "VARCHAR",
     "label": "VARCHAR",
     "date": "DATETIME",
-    "ext": "VARCHAR"
+    "ext": "VARCHAR",
+    "last_read": "DATETIME",
+    "last_search": "DATETIME",
+    "read_count": "INT",
+    "search_count": "INT"
 }

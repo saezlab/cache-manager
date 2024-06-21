@@ -288,6 +288,11 @@ class Cache:
 
                         results[verid].attrs[row['name']] = row['value']
 
+            ids = ','.join(str(item._id) for item in results.values())
+            update_q = f'UPDATE main SET last_search = DATETIME("now"), \
+                        search_count = search_count + 1 WHERE id IN ({ids});'
+            self._execute(update_q)
+
         _log(f'Retrieved {len(results)} results')
 
         return list(results.values())
@@ -378,7 +383,11 @@ class Cache:
                     file_name,
                     label,
                     date,
-                    ext
+                    ext,
+                    last_read,
+                    last_search,
+                    read_count,
+                    search_count
                 )
                 VALUES (
                     {self._quotes(new.key)},
@@ -388,7 +397,11 @@ class Cache:
                     {self._quotes(new.filename)},
                     {self._quotes(new.label)},
                     {self._quotes(new.date)},
-                    {self._quotes(new.ext)}
+                    {self._quotes(new.ext)},
+                    NULL,
+                    {self._quotes(new.date)},
+                    0,
+                    0
                 )
             ''')
 
