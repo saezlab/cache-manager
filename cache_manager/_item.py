@@ -5,9 +5,9 @@ import os
 
 from pypath_common import _misc
 
-import cache_manager.utils as _utils
-from cache_manager._status import status as _status
 from cache_manager import _open
+from cache_manager._status import status as _status
+import cache_manager.utils as _utils
 
 __all__ = [
     'CacheItem',
@@ -121,9 +121,11 @@ class CacheItem:
         Setting default values
         """
 
-        self.filename = (self.filename or
-                         os.path.basename(self.uri or "") or
-                         self.cache_fname)
+        self.filename = (
+            self.filename or
+            os.path.basename(self.uri or '') or
+            self.cache_fname
+        )
         self.ext = self.ext or os.path.splitext(self.filename)[-1][1:] or None
         self.date = self.date or _utils.parse_time()
 
@@ -179,13 +181,13 @@ class CacheItem:
 
             self.cache.remove(key = self.key, version = self.version)
 
-    def _open(self) -> _opener.Opener:
+    def _open(self, **kwargs) -> _opener.Opener:
 
-        return _open.Opener(self.path)
+        return _open.Opener(self.path, **kwargs)
 
 
-    def open(self) -> str | IO | dict[str, str | IO] | None:
+    def open(self, **kwargs) -> str | IO | dict[str, str | IO] | None:
 
         if self.status == _status.READY.value:
 
-            return self._open().get('result', None)
+            return self._open(**kwargs).get('result', None)
