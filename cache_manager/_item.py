@@ -187,6 +187,9 @@ class CacheItem:
 
 
     def open(self, **kwargs) -> str | IO | dict[str, str | IO] | None:
+        """
+        Opens the file in reading mode
+        """
 
         if self.status == _status.READY.value:
 
