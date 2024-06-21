@@ -654,3 +654,13 @@ class Cache:
 
     ready = ft.partialmethod(update_status, status = _status.READY.value)
     failed = ft.partialmethod(update_status, status = _status.FAILED.value)
+
+
+    def _accessed(self, item_id: int):
+
+        q = (
+            'UPDATE main SET '
+            'last_read = DATETIME("now"), read_count = read_count + 1 '
+            f'WHERE id = {item_id};'
+        )
+        self._execute(q)
