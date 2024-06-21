@@ -1,4 +1,4 @@
-from __future__ import annotations
+self._open()from __future__ import annotations
 
 import re
 import os
