@@ -1,10 +1,13 @@
-import pytest
-
 import datetime
 import tempfile
 
-from cache_manager import utils
-from cache_manager import _item
+import pytest
+
+from cache_manager import _item, utils
+
+__all__ = [
+    'TestCache',
+]
 
 
 def _keys(items):
@@ -17,18 +20,18 @@ def _keys(items):
 class TestCache:
 
     def test_create(self, test_cache):
-        hashname = utils.hash({"_uri": "testdb"})
-        test_cache.create("testdb")
-        test_cache._execute("SELECT * FROM main")
+        hashname = utils.hash({'_uri': 'testdb'})
+        test_cache.create('testdb')
+        test_cache._execute('SELECT * FROM main')
         keys = {it[1] for it in test_cache.cur.fetchall()}
 
         assert hashname in keys
 
 
     def test_search(self, test_cache):
-        hashname = utils.hash({"_uri": "testsearch"})
-        test_cache.create("testsearch")
-        items = test_cache.search("testsearch")
+        hashname = utils.hash({'_uri': 'testsearch'})
+        test_cache.create('testsearch')
+        items = test_cache.search('testsearch')
         items = {it.key for it in items}
 
         assert hashname in items
@@ -36,8 +39,8 @@ class TestCache:
 
     def test_search_by_date(self, test_cache):
 
-        hashname = utils.hash({"_uri": "searchdate"})
-        test_cache.create("searchdate")
+        hashname = utils.hash({'_uri': 'searchdate'})
+        test_cache.create('searchdate')
         keys = lambda items: {it.key for it in items}
 
         older_than = test_cache.search(
@@ -69,11 +72,11 @@ class TestCache:
         args = {
             'status': 0,
             'ext': 'tsv',
-            'label': 'testlabel'
+            'label': 'testlabel',
         }
 
-        hashname = utils.hash({"_uri": "searchmain"})
-        test_cache.create("searchmain", **args)
+        hashname = utils.hash({'_uri': 'searchmain'})
+        test_cache.create('searchmain', **args)
 
         search_args = [
             {'status': 0},
@@ -105,14 +108,21 @@ class TestCache:
 
 
     def test_remove(self, test_cache):
-        hashname = utils.hash({"_uri": "testremove"})
-        test_cache.create("testremove")
-        test_cache.remove("testremove")
-        test_cache._execute("SELECT * FROM main")
-        keys = {it[1] for it in test_cache.cur.fetchall()}
+        test_cache.create('testremove')
+        test_cache.remove('testremove')
+        its = test_cache.search('testremove', include_removed=True)
+        status = {it._status for it in its}
 
-        assert hashname not in keys
+        assert status == {-1}
 
+#    def test_remove(self, test_cache):
+#        hashname = utils.hash({"_uri": "testremove"})
+#        test_cache.create("testremove")
+#        test_cache.remove("testremove")
+#        test_cache._execute("SELECT * FROM main")
+#        keys = {it[1] for it in test_cache.cur.fetchall()}
+#
+#        assert hashname not in keys
 
     def test_best_or_new(self, test_cache):
 
@@ -194,7 +204,7 @@ class TestCache:
     def test_move_in(self, test_cache):
 
         with tempfile.NamedTemporaryFile() as tmpfile:
-            content = b"Test tmp file"
+            content = b'Test tmp file'
             tmpfile.write(content)
             tmpfile.file.flush()
 

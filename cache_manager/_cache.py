@@ -170,6 +170,7 @@ class Cache:
         label: str | None = None,
         filename: str | None = None,
         key: str | None = None,
+        include_removed: bool = False,
     ):
 
         where = []
@@ -191,8 +192,14 @@ class Cache:
         if filename:
             where.append(f'file_name = "{filename}"')
 
-        if status is not None:
-            status = str(_misc.to_set(status)).strip('{}')
+        status = _misc.to_set(status)
+        print(status)
+
+        if -1 not in status and not include_removed:
+            where.append('status != -1')
+
+        if not status:
+            status = str(status).strip('{}')
             where.append(f'status IN ({status})')
 
         if version is not None and version != -1:
@@ -242,6 +249,7 @@ class Cache:
             label: str | None = None,
             filename: str | None = None,
             key: str | None = None,
+            include_removed: bool = False,
     ) -> list[CacheItem]:
         """
         Look up items in the cache.
@@ -251,6 +259,7 @@ class Cache:
         args.pop('self')
         param_str = _utils.serialize(args)
         _log(f'Searching cache: {param_str}')
+        where = self._where(**args)
 
         results = {}
 
@@ -258,7 +267,7 @@ class Cache:
 
             for actual_typ in ATTR_TYPES:
                 q = f'SELECT * FROM main LEFT JOIN attr_{actual_typ}'
-                q += self._where(**args)
+                q += where
 
                 self._execute(q)
 
