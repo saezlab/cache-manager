@@ -485,6 +485,17 @@ class Cache:
             where = ','.join(str(item._id) for item in items)
             where = f' WHERE id IN ({where})'
 
+            q = f'UPDATE main SET status = {_status.DELETED.value} {where};'
+            self._execute(q)
+
+
+    def _delete(self, items: list[int, CacheItem]):
+
+        with Lock(self.con):
+
+            where = ','.join(str(getattr(i, '_id', i)) for i in items)
+            where = f' WHERE id IN ({where})'
+
             for actual_typ in ATTR_TYPES:
                 attr_table = f'attr_{actual_typ}'
 
