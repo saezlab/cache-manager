@@ -723,3 +723,26 @@ class Cache:
             vid: dict(**db.get(vid, {}), disk_fname = disk.get(vid, None))
             for vid in set(disk.keys()) | set(db.keys())
         }
+
+
+    def clean_disk(self):
+        """
+        Remove items on disk, which doesn't have any DB record
+        """
+        
+        fnames = {
+            os.path.join(self.dir, fname) for item in self.contents() 
+            if (fname := item["disk_fname"]) and 
+            not item.get("status", False)
+        }
+
+        for file in fnames:
+            os.remove(file)
+
+
+    def clean_db(self):
+        pass
+
+
+    def autoclean(self):
+        pass
