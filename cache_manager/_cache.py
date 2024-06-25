@@ -473,6 +473,7 @@ class Cache:
             older_than: str | datetime.datetime | None = None,
             key: str | None = None,
             disk: bool = False,
+            keep_record: bool = True,
     ): # Make it more safer later (avoid to delete everything accidentally)
         """
         Remove CacheItem or version
@@ -501,10 +502,13 @@ class Cache:
             self._execute(q)
 
             if disk:
-                self._delete_file(items)
+                self._delete_files(items)
+
+            if not keep_record:
+                self._delete_records(items)
 
 
-    def _delete_record(self, items: list[int, CacheItem]):
+    def _delete_records(self, items: list[int, CacheItem]):
 
         with Lock(self.con):
 
@@ -528,7 +532,7 @@ class Cache:
             _log(f'Deleted {len(items)} results.')
 
 
-    def _delete_file(self, items: list[int, CacheItem]):
+    def _delete_files(self, items: list[int, CacheItem]):
 
         for item in items:
 
