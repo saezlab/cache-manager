@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 import os
+import re
 import shutil
 import sqlite3
 import datetime
@@ -702,6 +703,18 @@ class Cache:
 
     def _contents(self):
 
-        disk = os.listdir(self.dir)
-        {it.version_id: (it._status, it.cache_fname)
-         for it in self.search(include_removed = True)}
+        disk = {
+            m.group(): fname
+            for fname in os.listdir(self.dir)
+            if (m := re.search(r'[\dabcdef]{32}-\d+', fname))
+        }
+
+        db = {
+            it.version_id: (it._status, it.cache_fname)
+            for it in self.search(include_removed = True)
+        }
+
+        return [
+            ()
+            for version_id in set(disk.keys()) | set(db.keys())
+        ]
