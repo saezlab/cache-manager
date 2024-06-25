@@ -472,7 +472,7 @@ class Cache:
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
             key: str | None = None,
-            disk: bool = True,
+            disk: bool = False,
     ): # Make it more safer later (avoid to delete everything accidentally)
         """
         Remove CacheItem or version
@@ -495,9 +495,13 @@ class Cache:
 
             where = ','.join(str(item._id) for item in items)
             where = f' WHERE id IN ({where})'
+            new_status = _status.DELETED.value if disk else _status.TRASH.value
 
-            q = f'UPDATE main SET status = {_status.TRASH.value} {where};'
+            q = f'UPDATE main SET status = {new_status} {where};'
             self._execute(q)
+
+            if disk:
+                self._delete_file(items)
 
 
     def _delete_record(self, items: list[int, CacheItem]):
@@ -525,12 +529,13 @@ class Cache:
 
 
     def _delete_file(self, items: list[int, CacheItem]):
-            for item in items:
 
-                if disk and os.path.exists(item.path):
+        for item in items:
 
-                    _log(f'Deleting from disk: `{item.path}`.')
-                    os.remove(item.path)
+            if os.path.exists(item.path):
+
+                _log(f'Deleting from disk: `{item.path}`.')
+                os.remove(item.path)
 
 
     def update(
