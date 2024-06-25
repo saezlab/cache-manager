@@ -711,7 +711,7 @@ class Cache:
 
         db = {
             it.version_id: {
-                'status: 'it._status,
+                'status': it._status,
                 'fname': it.cache_fname,
                 'last_read': it.last_read,
                 'read_count': it.read_count
