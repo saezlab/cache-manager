@@ -698,3 +698,10 @@ class Cache:
             f'WHERE id = {item_id};'
         )
         self._execute(q)
+
+
+    def _contents(self):
+
+        disk = os.listdir(self.dir)
+        {it.version_id: (it._status, it.cache_fname)
+         for it in self.search(include_removed = True)}

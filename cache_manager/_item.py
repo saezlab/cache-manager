@@ -97,7 +97,13 @@ class CacheItem:
 
         ext = f'.{self.ext}' or ''
 
-        return f'{self.key}-{self.version}{ext}'
+        return f'{self.version_id}{ext}'
+    
+
+    @property
+    def version_id(self):
+
+        return f'{self.key}-{self.version}'
 
 
     @property
