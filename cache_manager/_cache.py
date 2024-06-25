@@ -197,6 +197,9 @@ class Cache:
         if -1 not in status and not include_removed:
             where.append('status != -1')
 
+        if -2 not in status and not include_removed:
+            where.append('status != -2')
+
         if status:
             status = str(status).strip('{}')
             where.append(f'status IN ({status})')
@@ -493,11 +496,11 @@ class Cache:
             where = ','.join(str(item._id) for item in items)
             where = f' WHERE id IN ({where})'
 
-            q = f'UPDATE main SET status = {_status.DELETED.value} {where};'
+            q = f'UPDATE main SET status = {_status.TRASH.value} {where};'
             self._execute(q)
 
 
-    def _delete(self, items: list[int, CacheItem]):
+    def _delete_record(self, items: list[int, CacheItem]):
 
         with Lock(self.con):
 
@@ -520,6 +523,8 @@ class Cache:
 
             _log(f'Deleted {len(items)} results.')
 
+
+    def _delete_file(self, items: list[int, CacheItem]):
             for item in items:
 
                 if disk and os.path.exists(item.path):

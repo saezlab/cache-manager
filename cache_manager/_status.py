@@ -11,7 +11,9 @@ class status(enum.Enum):
     WRITE = 1
     FAILED = 2
     READY = 3
-    DELETED = -1
+    TRASH = -1
+    DELETED = -2
+
 
     @classmethod
     def from_str(cls, name: str) -> status:
