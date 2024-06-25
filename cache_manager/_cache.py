@@ -710,11 +710,16 @@ class Cache:
         }
 
         db = {
-            it.version_id: (it._status, it.cache_fname)
+            it.version_id: {
+                'status: 'it._status,
+                'fname': it.cache_fname,
+                'last_read': it.last_read,
+                'read_count': it.read_count
+            }
             for it in self.search(include_removed = True)
         }
 
-        return [
-            ()
-            for version_id in set(disk.keys()) | set(db.keys())
-        ]
+        return {
+            vid: db.get(vid, {}) | {'disk_fname': disk.get(vid, None)}
+            for vid in set(disk.keys()) | set(db.keys())
+        }
