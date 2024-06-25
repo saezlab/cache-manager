@@ -21,8 +21,8 @@ class TestRemove:
         assert os.path.exists(it.path)
 
     def test_remove_from_disk(self, test_cache):
-
         it = test_cache.create('testremove2')
+        
         with open(it.path, 'w') as f:
             f.write("Something")
 
@@ -45,8 +45,9 @@ class TestRemove:
 
         assert not its
 
-        test_cache._execute("SELECT * FROM main")
-        keys = {it[1] for it in test_cache.cur.fetchall() if it._status != -1}
+        test_cache._execute("SELECT item_id, status FROM main")
+        print()
+        keys = {it[0] for it in test_cache.cur.fetchall() if it[1] != -1}
 
         assert hashname not in keys
 
@@ -60,3 +61,18 @@ class TestRemove:
         it.remove()
 
         assert not test_cache.search('itemremove4')
+
+    def test_removed_all(self, test_cache):        
+        it = test_cache.create('testremove5')
+        
+        with open(it.path, 'w') as f:
+            f.write("Something")
+
+        assert os.path.exists(it.path)
+
+        test_cache.remove('testremove5', disk = True, keep_record=False)
+        its = test_cache.search('testremove5', include_removed=True)
+        status = {it._status for it in its}
+
+        assert status == set()
+        assert not os.path.exists(it.path)
