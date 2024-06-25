@@ -193,12 +193,11 @@ class Cache:
             where.append(f'file_name = "{filename}"')
 
         status = _misc.to_set(status)
-        print(status)
 
         if -1 not in status and not include_removed:
             where.append('status != -1')
 
-        if not status:
+        if status:
             status = str(status).strip('{}')
             where.append(f'status IN ({status})')
 
