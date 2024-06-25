@@ -701,7 +701,7 @@ class Cache:
         self._execute(q)
 
 
-    def _contents(self):
+    def contents(self):
 
         disk = {
             m.group(): fname
@@ -720,6 +720,6 @@ class Cache:
         }
 
         return {
-            vid: db.get(vid, {}) | {'disk_fname': disk.get(vid, None)}
+            vid: dict(**db.get(vid, {}), disk_fname = disk.get(vid, None))
             for vid in set(disk.keys()) | set(db.keys())
         }
