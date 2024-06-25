@@ -172,14 +172,20 @@ class CacheItem:
         self.status = _status.FAILED.value
 
 
-    def remove(self):
+    def remove(self, disk: bool = False, keep_record: bool = True):
         """
         Remove the item from the database.
         """
 
         if self.cache:
 
-            self.cache.remove(key = self.key, version = self.version)
+            self.cache.remove(
+                key = self.key,
+                version = self.version,
+                disk = disk,
+                keep_record = keep_record,
+            )
+
 
     def _open(self, **kwargs) -> _open.Opener:
         self.cache._accessed(self._id)
