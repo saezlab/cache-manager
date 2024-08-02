@@ -731,7 +731,7 @@ class Cache:
         """
 
         fnames = {
-            os.path.join(self.dir, fname) for item in self.contents()
+            os.path.join(self.dir, fname) for item in self.contents().values()
             if (fname := item['disk_fname']) and
             not item.get('status', False)
         }
