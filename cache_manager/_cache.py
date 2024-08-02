@@ -291,8 +291,15 @@ class Cache:
                             key = row['item_id'],
                             version = row['version'],
                             status = row['status'],
+                            date = row['date'],
+                            filename = row['file_name'],
                             ext = row['ext'],
+                            label = row['label'],
                             _id = row['id'],
+                            last_read = row['last_read'],
+                            last_search = row['last_search'],
+                            read_count = row['read_count'],
+                            search_count = row['search_count'],
                             cache = self,
                         )
 
