@@ -714,7 +714,7 @@ class Cache:
                 'status': it._status,
                 'fname': it.cache_fname,
                 'last_read': it.last_read,
-                'read_count': it.read_count
+                'read_count': it.read_count,
             }
             for it in self.search(include_removed = True)
         }
@@ -729,20 +729,25 @@ class Cache:
         """
         Remove items on disk, which doesn't have any DB record
         """
-        
+
         fnames = {
-            os.path.join(self.dir, fname) for item in self.contents() 
-            if (fname := item["disk_fname"]) and 
-            not item.get("status", False)
+            os.path.join(self.dir, fname) for item in self.contents()
+            if (fname := item['disk_fname']) and
+            not item.get('status', False)
         }
 
         for file in fnames:
             os.remove(file)
 
 
-    def clean_db(self):
+    def clean_db(self): # HERE
+        """
+        Remove records without file on disk
+        """
         pass
 
-
     def autoclean(self):
+        """
+        Keep only ready items and for each item the best version
+        """
         pass
