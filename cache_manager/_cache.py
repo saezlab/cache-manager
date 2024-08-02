@@ -752,7 +752,15 @@ class Cache:
         """
         Remove records without file on disk
         """
-        pass
+
+        items = {
+            item
+            for vid, item in self.contents().items()
+            if not os.path.exists(os.path.join(self.dir, item['disk_fname']))
+        }
+
+        self._delete_records(items)
+
 
     def autoclean(self):
         """
