@@ -7,6 +7,7 @@ import shutil
 import sqlite3
 import datetime
 import functools as ft
+import collections
 
 from pypath_common import _misc
 
@@ -338,7 +339,7 @@ class Cache:
             newer_than = newer_than,
             older_than = older_than,
         )
-
+        # TODO: Consider also date
         items = sorted(items, key = lambda it: it.version)
 
         if items:
@@ -722,7 +723,7 @@ class Cache:
                 'fname': it.cache_fname,
                 'last_read': it.last_read,
                 'read_count': it.read_count,
-                'item': it
+                'item': it,
             }
             for it in self.search(include_removed = True)
         }
@@ -766,6 +767,24 @@ class Cache:
 
     def autoclean(self):
         """
-        Keep only ready items and for each item the best version
+        Keep only ready/in writing items and for each item the best version
         """
-        pass
+
+        items = collections.defaultdict(set)
+        best = dict()
+
+        for it in self.contents().values():
+            if (item := it['item']):
+                items[item.key].add(item)
+                best[item.key] = _misc.first([
+                    elem for elem in sorted(it, key=lambda x: x.version)[::-1]
+                    if elem.status in {_status.READY, _status.WRITE}
+                ])
+
+        to_remove = [
+            it for k, v in items.items()
+            for it in v - _misc.to_set(best.get(k, []))
+        ]
+
+        self._delete_records(to_remove)
+        self.clean_disk()
