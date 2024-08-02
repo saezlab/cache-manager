@@ -1,6 +1,7 @@
 import pytest
 import os
 
+
 def test_clean_disk(test_cache):
 
     it = test_cache.create('test-clean-disk')
@@ -17,3 +18,15 @@ def test_clean_disk(test_cache):
     test_cache.clean_disk()
 
     assert not os.path.exists(path)
+
+
+def test_clean_db(test_cache):
+
+    it = test_cache.create('test-clean-db')
+    test_cache.clean_db()
+
+    assert not os.path.exists(it.path)
+
+    search = test_cache.search('test-clean-db', include_removed = True)
+
+    assert len(search) == 0

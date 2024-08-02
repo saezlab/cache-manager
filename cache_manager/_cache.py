@@ -722,6 +722,7 @@ class Cache:
                 'fname': it.cache_fname,
                 'last_read': it.last_read,
                 'read_count': it.read_count,
+                'item': it
             }
             for it in self.search(include_removed = True)
         }
@@ -748,15 +749,16 @@ class Cache:
             os.remove(file)
 
 
-    def clean_db(self): # HERE
+    def clean_db(self):
         """
         Remove records without file on disk
         """
 
         items = {
             item
-            for vid, item in self.contents().items()
-            if not os.path.exists(os.path.join(self.dir, item['disk_fname']))
+            for it in self.contents().values()
+            if (item := it['item']) and
+            not os.path.exists(it['item'].path)
         }
 
         self._delete_records(items)
