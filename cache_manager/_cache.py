@@ -737,6 +737,7 @@ class Cache:
         }
 
         for file in fnames:
+
             os.remove(file)
 
 
