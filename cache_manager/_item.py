@@ -30,6 +30,10 @@ class CacheItem:
             label: str | None = None,
             attrs: dict | None = None,
             _id: int | None = None,
+            last_read: str = None,
+            last_search: str = None,
+            read_count: int | None = None,
+            search_count: int | None = None,
             cache = None,
     ):
         """
@@ -45,6 +49,10 @@ class CacheItem:
         self.label = label
         self.attrs = attrs or {}
         self._id = _id
+        self.last_read = last_read
+        self.last_search = last_search
+        self.read_count = read_count
+        self.search_count = search_count
         self.cache = cache
         self._setup()
 
@@ -60,6 +68,10 @@ class CacheItem:
         ext: str | None = None,
         label: str | None = None,
         attrs: dict | None = None,
+        last_read: str = None,
+        last_search: str = None,
+        read_count: int = 0,
+        search_count: int = 0,
         cache: None = None,
     ):
         """
