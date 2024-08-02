@@ -729,14 +729,15 @@ class Cache:
         """
         Remove items on disk, which doesn't have any DB record
         """
-        
+
         fnames = {
-            os.path.join(self.dir, fname) for item in self.contents() 
-            if (fname := item["disk_fname"]) and 
+            os.path.join(self.dir, fname) for item in self.contents()
+            if (fname := item["disk_fname"]) and
             not item.get("status", False)
         }
 
         for file in fnames:
+
             os.remove(file)
 
 
