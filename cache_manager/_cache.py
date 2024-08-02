@@ -776,10 +776,14 @@ class Cache:
         for it in self.contents().values():
             if (item := it['item']):
                 items[item.key].add(item)
-                best[item.key] = _misc.first([
-                    elem for elem in sorted(it, key=lambda x: x.version)[::-1]
-                    if elem.status in {_status.READY, _status.WRITE}
-                ])
+
+        best = {
+            item.key: _misc.first([
+                it for it in sorted(its, key=lambda x: x.version)[::-1]
+                if it.status in {_status.READY.value, _status.WRITE.value}
+            ])
+            for key, its in items.items()
+        }
 
         to_remove = [
             it for k, v in items.items()
