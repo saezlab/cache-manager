@@ -56,6 +56,7 @@ class CacheItem:
         self.cache = cache
         self._setup()
 
+
     @classmethod
     def new(
         cls,
@@ -110,7 +111,7 @@ class CacheItem:
         ext = f'.{self.ext}' or ''
 
         return f'{self.version_id}{ext}'
-    
+
 
     @property
     def version_id(self):
@@ -133,6 +134,7 @@ class CacheItem:
     def uri(self):
 
         return self.attrs.get('_uri', None)
+
 
     def _setup(self):
         """
@@ -159,6 +161,13 @@ class CacheItem:
     def status(self):
 
         return getattr(self._from_main(), '_status', self._status)
+
+
+    @property
+    def rstatus(self):
+
+        return self._status
+
 
     @status.setter
     def status(self, value: int):
@@ -219,3 +228,11 @@ class CacheItem:
         if self.status == _status.READY.value:
 
             return self._open(**kwargs).get('result', None)
+
+
+    def __repr__(self):
+
+        return (
+            f'CacheItem[{self.uri or self.key} V:{self.version} '
+            f'{_status(self.rstatus).name}]'
+        )
