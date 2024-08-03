@@ -45,6 +45,7 @@ class Cache:
         """
 
         self.con, self.cur = None, None
+        self._fields = {}
         self._set_path(path)
         self._ensure_sqlite()
 
@@ -154,10 +155,13 @@ class Cache:
             return 'FLOAT'
 
 
-    @staticmethod
-    def _table_fields(name: str = 'main') -> dict[str, str]:
+    def _table_fields(self, name: str = 'main') -> dict[str, str]:
 
-        return _data.load(f'{name}.yaml')
+        if name not in self._fields:
+
+            self._fields[name] = _data.load(f'{name}.yaml')
+
+        return self._fields[name]
 
 
     @staticmethod
