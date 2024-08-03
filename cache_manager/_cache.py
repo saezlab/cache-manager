@@ -319,10 +319,16 @@ class Cache:
 
                         results[verid].attrs[row['name']] = row['value']
 
-            ids = ','.join(str(item._id) for item in results.values())
-            update_q = f'UPDATE main SET last_search = DATETIME("now"), \
-                        search_count = search_count + 1 WHERE id IN ({ids});'
-            self._execute(update_q)
+            if results:
+
+                ids = ','.join(str(item._id) for item in results.values())
+                update_q = (
+                    'UPDATE main SET '
+                    'last_search = DATETIME("now"), '
+                    'search_count = search_count + 1 '
+                    f'WHERE id IN ({ids});'
+                )
+                self._execute(update_q)
 
         _log(f'Retrieved {len(results)} results')
         _log('END SEARCH')
