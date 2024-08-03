@@ -441,7 +441,7 @@ class Cache:
                     {self._quotes(new.key)},
                     "{new.key}-{new.version}",
                     {new.version},
-                    {new.status},
+                    {new._status},
                     {self._quotes(new.filename)},
                     {self._quotes(new.label)},
                     {self._quotes(new.date)},
@@ -825,9 +825,9 @@ class Cache:
                 items[item.key].add(item)
 
         best = {
-            item.key: _misc.first([
+            key: _misc.first([
                 it for it in sorted(its, key=lambda x: x.version)[::-1]
-                if it.status in {_status.READY.value, _status.WRITE.value}
+                if it._status in {_status.READY.value, _status.WRITE.value}
             ])
             for key, its in items.items()
         }
