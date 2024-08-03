@@ -276,8 +276,11 @@ class Cache:
         with Lock(self.con):
 
             for actual_typ in ATTR_TYPES:
-                q = f'SELECT * FROM main LEFT JOIN attr_{actual_typ}'
-                q += where
+                q = (
+                    'SELECT * FROM main '
+                    f'LEFT JOIN attr_{actual_typ} attr ON main.id = attr.id '
+                    f'{where}'
+                )
 
                 self._execute(q)
 
