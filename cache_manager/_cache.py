@@ -264,6 +264,7 @@ class Cache:
         Look up items in the cache.
         """
 
+        _log('SEARCH')
         args = locals()
         args.pop('self')
         param_str = _utils.serialize(args)
@@ -293,6 +294,8 @@ class Cache:
 
                     if verid not in results:
 
+                        _log(f'Found version: `{verid}`')
+
                         results[verid] = CacheItem(
                             key = row['item_id'],
                             version = row['version'],
@@ -319,6 +322,7 @@ class Cache:
             self._execute(update_q)
 
         _log(f'Retrieved {len(results)} results')
+        _log('END SEARCH')
 
         return list(results.values())
 
@@ -369,6 +373,7 @@ class Cache:
 
         self._ensure_sqlite()
 
+        _log(f'CREATE {uri}')
         args = locals()
         args.pop('self')
         param_str = _utils.serialize(args)
@@ -377,12 +382,21 @@ class Cache:
 
         with Lock(self.con):
 
+            _log(f'Looking up existing versions of item `{uri}`')
             items = self.search(
                 uri = uri,
                 params = params,
             )
 
             last_version = max((i.version for i in items), default = 0)
+
+            if last_version == 0:
+
+                _log('No existing version found.')
+
+            else:
+
+                _log(f'Latest version: `{last_version}`')
 
             new = CacheItem.new(
                 uri,
@@ -463,6 +477,8 @@ class Cache:
 
             _log(f'Successfully created: {new.key}-{new.version}')
 
+        _log('END CREATE')
+
         return new
 
 
@@ -528,6 +544,8 @@ class Cache:
 
             where = ','.join(str(getattr(i, '_id', i)) for i in items)
             where = f' WHERE id IN ({where})'
+            _log(f'_delete_records: {len(items)} IDs to be deleted.')
+            n_before = len(self)
 
             for actual_typ in ATTR_TYPES:
                 attr_table = f'attr_{actual_typ}'
@@ -543,7 +561,7 @@ class Cache:
 
             self._execute(q)
 
-            _log(f'Deleted {len(items)} results.')
+            _log(f'Deleted {n_before - len(self)} records.')
 
 
     def _delete_files(self, items: list[int, CacheItem]):
@@ -694,7 +712,7 @@ class Cache:
         uri = uri or os.path.basename(path)
 
         item = self.create(**args)
-        _log(f'Copying {path} ot {item.path}')
+        _log(f'Copying `{path}` to `{item.path}`.')
         shutil.copy(path, item.path)
 
         return item
@@ -744,15 +762,22 @@ class Cache:
         Remove items on disk, which doesn't have any DB record
         """
 
+        _log('Cleaning disk: removing items without DB record.')
+
         fnames = {
             os.path.join(self.dir, fname) for item in self.contents().values()
             if (fname := item['disk_fname']) and
             not item.get('status', False)
         }
 
+        _log(f'Deleting {len(fnames)} files.')
+
         for file in fnames:
 
+            _log(f'Deleting from disk: `{file}`.')
             os.remove(file)
+
+        _log('Cleaning disk complete.')
 
 
     def clean_db(self):
@@ -760,14 +785,21 @@ class Cache:
         Remove records without file on disk
         """
 
+        _log(
+            'Cleaning cache database: removing records '
+            'without file on the disk.'
+        )
+
         items = {
             item
             for it in self.contents().values()
             if (item := it['item']) and
             not os.path.exists(it['item'].path)
         }
+        _log(f'Deleting {len(items)} records.')
 
         self._delete_records(items)
+        _log('Cleaning cache database complete.')
 
 
     def autoclean(self):
@@ -775,6 +807,7 @@ class Cache:
         Keep only ready/in writing items and for each item the best version
         """
 
+        _log('Auto cleaning cache.')
         items = collections.defaultdict(set)
         best = dict()
 
@@ -795,5 +828,15 @@ class Cache:
             for it in v - _misc.to_set(best.get(k, []))
         ]
 
+        _log(f'Deleting {len(to_remove)} records.')
+
         self._delete_records(to_remove)
         self.clean_disk()
+        _log('Auto clean complete.')
+
+
+    def __len__(self):
+
+        self._ensure_sqlite()
+
+        return self.cur.execute('SELECT COUNT(*) FROM main').fetchone()[0]
