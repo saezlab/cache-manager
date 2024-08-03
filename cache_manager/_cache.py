@@ -96,6 +96,7 @@ class Cache:
 
     def _execute(self, query: str):
 
+        query = re.sub(r'\s+', ' ', query)
         _log(f'Executing query: {query}')
         self.cur.execute(query)
         self.con.commit()
