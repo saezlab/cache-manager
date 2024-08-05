@@ -161,4 +161,7 @@ def parse_attr(value):
         atype = 'float'
         value = str(value)
 
+    else:
+        value = f'"{value}"'
+
     return operator, value, atype

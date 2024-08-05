@@ -361,6 +361,8 @@ class Cache:
         Selecting items by attributes
         """
 
+        result = []
+
         op = set.intersection if attrs.pop('__and', True) else set.union
         attrs = _utils.parse_attr_search(attrs)
 
@@ -370,7 +372,9 @@ class Cache:
 
                 self.cur.execute(f'SELECT id FROM attr_{atype} WHERE {query}')
 
-                self.cur.fetchall()
+                result.append((item["id"] for item in self.cur.fetchall()))
+
+        return op(*result)
 
 
     def best(
