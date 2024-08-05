@@ -7,6 +7,8 @@ import datetime
 
 import dateutil
 
+from pypath_common import _misc
+
 __all__ = [
     'hash',
     'list_like',
@@ -95,3 +97,29 @@ def parse_attr_search(dct): # TODO: WIP
 
         if not operator:
             pass
+
+def parse_attr(value):
+    """
+    Parse only one attribute.
+    """
+
+    atype = "varchar"
+    operator = None
+
+    if isinstance(value, tuple):
+        operator, value = value
+
+    if isinstance(value, str):
+
+        if value.lower().startswith("date:"):
+            value = datetime.datetime(value)
+
+        elif _misc.is_int(value):
+            value = _misc.to_int(value)
+
+        elif _misc.is_float(value):
+            value = _misc.to_float(value)
+
+    if isinstance(value, datetime.datetime):
+        atype = "datetime"
+        value = parse_time(value)
