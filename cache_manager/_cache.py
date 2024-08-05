@@ -258,6 +258,7 @@ class Cache:
             label: str | None = None,
             filename: str | None = None,
             key: str | None = None,
+            attrs: dict | None = None,
             include_removed: bool = False,
     ) -> list[CacheItem]:
         """
@@ -269,7 +270,13 @@ class Cache:
         args.pop('self')
         param_str = _utils.serialize(args)
         _log(f'Searching cache: {param_str}')
+        attrs = args.pop('attrs')
+        ids = self.by_attrs(attrs)
         where = self._where(**args)
+
+        if attrs:
+
+            where += f' AND main.id IN ({",".join(str(i) for i in ids)})'
 
         results = {}
 
