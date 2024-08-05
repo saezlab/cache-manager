@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import Any, Mapping, Iterable
+import re
 import hashlib
 import datetime
 
@@ -9,6 +10,7 @@ import dateutil
 __all__ = [
     'hash',
     'list_like',
+    'parse_attr_search',
     'parse_time',
     'serialize',
 ]
@@ -63,3 +65,17 @@ def parse_time(value: str | datetime.datetime | None = None) -> str:
         value = datetime.datetime.now()
 
     return value.strftime('%Y-%m-%d %H:%M:%S')
+
+def parse_attr_search(dct): # TODO: WIP
+    regex = re.compile(r'(.*[^<>=])([=<>]*)')
+
+    result = []
+
+    for k, v in dct.items():
+        if type(v) is tuple or type(v) is list:
+            pass
+
+        name, operator = regex.match(k).groups()
+
+        if not operator:
+            pass
