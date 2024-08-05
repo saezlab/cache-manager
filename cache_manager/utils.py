@@ -4,14 +4,15 @@ from typing import Any, Mapping, Iterable
 import re
 import hashlib
 import datetime
-
-import dateutil
+import collections
 
 from pypath_common import _misc
+import dateutil
 
 __all__ = [
     'hash',
     'list_like',
+    'parse_attr',
     'parse_attr_search',
     'parse_time',
     'serialize',
@@ -68,7 +69,7 @@ def parse_time(value: str | datetime.datetime | None = None) -> str:
 
     return value.strftime('%Y-%m-%d %H:%M:%S')
 
-def parse_attr_search(dct): # TODO: WIP
+def parse_attr_search(dct) -> dict:
     """
     Parse attribute search definition.
 
@@ -84,26 +85,52 @@ def parse_attr_search(dct): # TODO: WIP
             the values provided as their correct type, such as numeric
             types or `datetime`. Strings will be converted to dates only if
             prefixed with `"DATE:"`.
+
+    Returns:
+        Returns a dictionary where the keys are the data type of the attributes
+        and the values are a list of the different attributes to search on that
+        attribute type table.
     """
+
     regex = re.compile(r'(.*[^<>=])([=<>]*)')
 
-    result = []
+    result = collections.defaultdict(list)
+
+    default_operator = '='
 
     for k, v in dct.items():
-        if type(v) is tuple or type(v) is list:
-            pass
+        if isinstance(v, list):
+            values = [parse_attr(x) for x in v]
+
+        else:
+            values = [parse_attr(v)]
 
         name, operator = regex.match(k).groups()
 
-        if not operator:
-            pass
+        atype = {_atype for op, val, _atype in values}
+
+        if len(atype) > 1:
+            raise ValueError(f'Search values on attribute {name} have \
+                             heterogeneous types')
+
+        else:
+            atype = _misc.first(atype)
+
+        result[atype].append(
+            ' OR '.join(
+                f'{name} {op or operator or default_operator} {val}'
+                for op, val, _atype in values
+            ),
+        )
+
+    return result
 
 def parse_attr(value):
     """
     Parse only one attribute.
     """
 
-    atype = "varchar"
+    atype = 'varchar'
     operator = None
 
     if isinstance(value, tuple):
@@ -111,8 +138,8 @@ def parse_attr(value):
 
     if isinstance(value, str):
 
-        if value.lower().startswith("date:"):
-            value = datetime.datetime(value)
+        if value.lower().startswith('date:'):
+            value = dateutil.parser.parse(value)
 
         elif _misc.is_int(value):
             value = _misc.to_int(value)
@@ -121,5 +148,15 @@ def parse_attr(value):
             value = _misc.to_float(value)
 
     if isinstance(value, datetime.datetime):
-        atype = "datetime"
+        atype = 'datetime'
         value = parse_time(value)
+
+    elif isinstance(value, int):
+        atype = 'int'
+        value = str(value)
+
+    elif isinstance(value, float):
+        atype = 'float'
+        value = str(value)
+
+    return operator, value, atype
