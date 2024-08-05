@@ -69,6 +69,7 @@ def parse_time(value: str | datetime.datetime | None = None) -> str:
 
     return value.strftime('%Y-%m-%d %H:%M:%S')
 
+
 def parse_attr_search(dct) -> dict:
     """
     Parse attribute search definition.
@@ -116,14 +117,15 @@ def parse_attr_search(dct) -> dict:
         else:
             atype = _misc.first(atype)
 
-        result[atype].append(
-            ' OR '.join(
-                f'{name} {op or operator or default_operator} {val}'
-                for op, val, _atype in values
-            ),
+        values_str = ' OR '.join(
+            f'value {op or operator or default_operator} {val}'
+            for op, val, _atype in values
         )
 
+        result[atype].append(f'name = {name} AND ({values_str})')
+
     return result
+
 
 def parse_attr(value):
     """
