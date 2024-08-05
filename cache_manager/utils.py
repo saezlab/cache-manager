@@ -67,6 +67,22 @@ def parse_time(value: str | datetime.datetime | None = None) -> str:
     return value.strftime('%Y-%m-%d %H:%M:%S')
 
 def parse_attr_search(dct): # TODO: WIP
+    """
+    Parse attribute search definition.
+
+    Args:
+        dct:
+            Search by attributes. A dict of attribute names and values.
+            Operators can be included at the end of the names or in front
+            of the values, forming a tuple of length 2 in the latter case.
+            Multiple values can be provided as lists. By default the
+            attribute search parameters are joined by AND, this can be
+            overridden by including `"__and": False` in `attrs`. The types
+            of the attributes will be inferred from the values, except if
+            the values provided as their correct type, such as numeric
+            types or `datetime`. Strings will be converted to dates only if
+            prefixed with `"DATE:"`.
+    """
     regex = re.compile(r'(.*[^<>=])([=<>]*)')
 
     result = []
