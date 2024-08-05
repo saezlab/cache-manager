@@ -356,6 +356,23 @@ class Cache:
         return list(results.values())
 
 
+    def by_attrs(self, attrs: dict) -> list[int]:
+        """
+        Selecting items by attributes
+        """
+
+        op = set.intersection if attrs.pop('__and', True) else set.union
+        attrs = _utils.parse_attr_search(attrs)
+
+        for atype, queries in attrs.items():
+
+            for query in queries:
+
+                self.cur.execute(f'SELECT id FROM attr_{atype} WHERE {query}')
+
+                self.cur.fetchall()
+
+
     def best(
             self,
             uri: str,
