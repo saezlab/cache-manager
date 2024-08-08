@@ -891,3 +891,15 @@ class Cache:
         self._ensure_sqlite()
 
         return self.cur.execute('SELECT COUNT(*) FROM main').fetchone()[0]
+
+
+    @property
+    def free_space(self):
+        total, used, free = shutil.disk_usage(self.dir)
+
+        return free
+
+
+    def does_it_fit(self, size: int) -> bool:
+
+        return size <= self.free_space
