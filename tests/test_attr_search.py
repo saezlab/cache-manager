@@ -54,6 +54,7 @@ def test_search_by_attrs_int(test_cache):
 
     assert len(result) == 0
 
+
 def test_search_by_attrs_datetime(test_cache):
     it = test_cache.best_or_new(
         'search_by_attrs_datetime',
@@ -69,5 +70,24 @@ def test_search_by_attrs_datetime(test_cache):
     assert result[0].key == it.key
 
     result = test_cache.search(attrs = {'foo>=': dateparse('2021/12/31')})
+
+    assert len(result) == 0
+
+def test_search_by_attrs_datetime2(test_cache):
+
+    it = test_cache.best_or_new(
+        'search_by_attrs_datetime2',
+        attrs = {'foo2': dateparse('2020/12/31')},
+    )
+
+    result = test_cache.search(attrs = {'foo2': 'DATE:2020/12/31'})
+
+    assert result[0].key == it.key
+
+    result = test_cache.search(attrs = {'foo2<=': 'date:2021/12/31'})
+
+    assert result[0].key == it.key
+
+    result = test_cache.search(attrs = {'foo2>=': 'date:2021/12/31'})
 
     assert len(result) == 0
