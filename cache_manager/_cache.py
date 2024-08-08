@@ -283,7 +283,7 @@ class Cache:
         args.pop('self')
         param_str = _utils.serialize(args)
         _log(f'Searching cache: {param_str}')
-        attrs = args.pop('attrs')
+        attrs = args.pop('attrs') or {}
         ids = self.by_attrs(attrs)
         where = self._where(**args)
 
