@@ -151,7 +151,7 @@ def parse_attr(value):
 
     if isinstance(value, datetime.datetime):
         atype = 'datetime'
-        value = parse_time(value)
+        value = f'"{parse_time(value)}"'
 
     elif isinstance(value, int):
         atype = 'int'
