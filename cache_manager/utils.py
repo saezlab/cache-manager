@@ -141,7 +141,8 @@ def parse_attr(value):
     if isinstance(value, str):
 
         if value.lower().startswith('date:'):
-            value = dateutil.parser.parse(value)
+
+            value = dateutil.parser.parse(value[5:])
 
         elif _misc.is_int(value):
             value = _misc.to_int(value)
