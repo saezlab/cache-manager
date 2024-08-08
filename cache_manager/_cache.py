@@ -361,6 +361,7 @@ class Cache:
         Selecting items by attributes
         """
 
+        _log(f'Searching by attributes: {attrs}')
         result = []
 
         op = set.intersection if attrs.pop('__and', True) else set.union
@@ -370,11 +371,11 @@ class Cache:
 
             for query in queries:
 
-                self.cur.execute(f'SELECT id FROM attr_{atype} WHERE {query}')
+                self._execute(f'SELECT id FROM attr_{atype} WHERE {query}')
 
-                result.append((item["id"] for item in self.cur.fetchall()))
+                result.append({item[0] for item in self.cur.fetchall()})
 
-        return op(*result)
+        return op(*result) if result else set()
 
 
     def best(
@@ -837,7 +838,7 @@ class Cache:
 
         _log(
             'Cleaning cache database: removing records '
-            'without file on the disk.'
+            'without file on the disk.',
         )
 
         items = {

@@ -122,7 +122,7 @@ def parse_attr_search(dct) -> dict:
             for op, val, _atype in values
         )
 
-        result[atype].append(f'name = {name} AND ({values_str})')
+        result[atype].append(f'name = "{name}" AND ({values_str})')
 
     return result
 
