@@ -1,9 +1,9 @@
 
 def test_search_by_attrs(test_cache):
 
-    it = test_cache.best_or_new('search_by_attrs', attrs = {'foo': 'bar'})
+    it = test_cache.best_or_new('search_by_attrs', attrs = {'foo': 'something'})
 
-    result = test_cache.search(attrs = {'foo': 'bar'})
+    result = test_cache.search(attrs = {'foo': 'something'})
 
     assert result[0].key == it.key
 
@@ -24,3 +24,8 @@ def test_search_by_attrs2(test_cache):
     result = test_cache.search('good-one', attrs = {'foo': 'baz'})
 
     assert len(result) == 0
+
+    result = test_cache.search(attrs = {'foo': 'bar'})
+
+    assert len(result) == 2
+    assert {r.uri for r in result} == {'good-one', 'wrong-one-2'}
