@@ -108,7 +108,22 @@ def hash(value: Any) -> str:
 
 def parse_time(value: str | datetime.datetime | None = None) -> str:
     """
-    Formats a date and time value.
+    Formats a given date and time value as a string. If none is given, takes the
+    current data and time as default.
+
+    Args:
+        value:
+            String or `datetime.datetime` instance defining the time to format
+            and convert to `str`. Optional, defaults to `None`
+
+    Returns:
+        Formatted date and time string as 'YYYY-MM-DD hh:mm:ss'
+
+    Examples:
+        >>> parse_time('21/12/20 12:31')
+        '2020-12-21 12:31:00'
+        >>> parse_time() # Will return current time
+        '2024-08-09 13:08:28'
     """
 
     if isinstance(value, str):
