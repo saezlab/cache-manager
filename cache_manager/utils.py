@@ -18,7 +18,17 @@ __all__ = [
     'serialize',
 ]
 
-def list_like(value: Any):
+def list_like(value: Any) -> bool:
+    """
+    Checks whether a give value is list-like (e.g. `list`, `tuple`, etc.).
+
+    Args:
+        value:
+            Any object instance or variable to ascertain.
+
+    Returns:
+        `True` if the value is iterable and not `str`, `False` otherwise.
+    """
 
     return (
         not isinstance(value, str) and
