@@ -82,6 +82,24 @@ def serialize(value: Any) -> str:
 
 
 def hash(value: Any) -> str:
+    """
+    Creates a unique hash for a given value. The value provided can be any type,
+    which will be serialized (see `utils.serialize()`) from which the hash is
+    generated using the MD5 hash function.
+
+    Args:
+        value:
+            Any object instance or variable to generate a hash from.
+
+    Returns:
+        The unique hash for the provided value.
+
+    Examples:
+        >>> hash('abc')
+        '900150983cd24fb0d6963f7d28e17f72'
+        >>> hash([1, 2, 'a', 'b', {0, 1}])
+        '94b41910362699b1f36754f78f1c90b2'
+    """
 
     value = serialize(value).encode()
 
