@@ -28,6 +28,16 @@ def list_like(value: Any) -> bool:
 
     Returns:
         `True` if the value is iterable and not `str`, `False` otherwise.
+
+    Examples:
+        >>> list_like(123)
+        False
+        >>> list_like('abc')
+        False
+        >>> list_like([1, 2, 3])
+        True
+        >>> list_like((1, 2, 3))
+        True
     """
 
     return (
@@ -36,9 +46,23 @@ def list_like(value: Any) -> bool:
     )
 
 
-def serialize(value: Any):
+def serialize(value: Any) -> str:
     """
-    Converts collection of variables into a single string
+    Converts a (collection of) variable(s) into a single string. NOTE: order of
+    elements may not be kept.
+
+    Args:
+        value:
+            Any object instance or variable to serialize as a string.
+
+    Returns:
+        The resulting serialized string of the value provided.
+
+    Examples:
+        >>> serialize({'a': 1, 'b': 2})
+        '[a=1,b=2]'
+        >>> serialize([{'a': [1, 2, 3, 4], 'b': {0, 1}}, 99, 'c'])
+        '[99,[a=[1,2,3,4],b=[0,1]],c]'
     """
 
     if list_like(value):
