@@ -137,27 +137,44 @@ def parse_time(value: str | datetime.datetime | None = None) -> str:
     return value.strftime('%Y-%m-%d %H:%M:%S')
 
 
-def parse_attr_search(dct) -> dict:
+def parse_attr_search(dct: dict) -> dict:
     """
-    Parse attribute search definition.
+    Parses the attribute search dictionary. Data types are inferred based on the
+    search terms and therefore which attribute table the search is performed on.
 
     Args:
         dct:
-            Search by attributes. A dict of attribute names and values.
-            Operators can be included at the end of the names or in front
-            of the values, forming a tuple of length 2 in the latter case.
-            Multiple values can be provided as lists. By default the
-            attribute search parameters are joined by AND, this can be
-            overridden by including `"__and": False` in `attrs`. The types
-            of the attributes will be inferred from the values, except if
-            the values provided as their correct type, such as numeric
-            types or `datetime`. Strings will be converted to dates only if
-            prefixed with `"DATE:"`.
+            Dictionary containing the search variables (keys) and search terms
+            (values). Operators can be included at the end of the attribute
+            names (dict keys, e.g. `'attribute_A>='`) or with the search term
+            (dict values) as a tuple of length 2 (e.g. `('>=', 123)`), Otherwise
+            defaults to equalty (`'='`). Multiple search values can be provided
+            as lists. Multiple attribute search values are joined by OR. The
+            types of the attributes will be inferred from the values (see
+            `utils.parse_attr` for more details).
 
     Returns:
         Returns a dictionary where the keys are the data type of the attributes
-        and the values are a list of the different attributes to search on that
-        attribute type table.
+        (namely: 'int', 'float', 'varchar' or 'datetime') and the values are a
+        list of strings with the SQL statements of the different attributes to
+        search on that attribute type table (e.g. `'name = "attribute_A" AND
+        value => 123'`).
+
+    Examples:
+        >>> parse_attr_search({'attribute_A>=': 123})
+        {'int': ['name = "attribute_A" AND (value >= 123)']}
+        >>> parse_attr_search({
+        ...     'attribute_A': [('>=', 123), ('<=', 100)],
+        ...     'attribute_B': 500
+        ... })
+        {'int': ['name = "attribute_A" AND (value >= 123 OR value <= 100)', \
+            'name = "attribute_B" AND (value = 500)']})
+        >>> parse_attr_search({
+        ...     'attribute_A': [('>=', 123), ('<=', 100)],
+        ...     'attribute_B': 'ABC'
+        ... })
+        {'int': ['name = "attribute_A" AND (value >= 123 OR value <= 100)'], \
+            'varchar': ['name = "attribute_B" AND (value = "ABC")']}
     """
 
     regex = re.compile(r'(.*[^<>=])([=<>]*)')
@@ -197,6 +214,7 @@ def parse_attr_search(dct) -> dict:
 def parse_attr(value):
     """
     Parse only one attribute.
+    prefix date for dates
     """
 
     atype = 'varchar'
