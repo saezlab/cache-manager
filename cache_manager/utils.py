@@ -211,10 +211,30 @@ def parse_attr_search(dct: dict) -> dict:
     return result
 
 
-def parse_attr(value):
+def parse_attr(value: Any) -> tuple[str | None, str, str]:
     """
-    Parse only one attribute.
-    prefix date for dates
+    Parses a attribute search value (or tuple of [operator, value]) to infer the
+    corresponding data type.
+
+    Args:
+        value:
+            The search value to parse type from. If a tuple is passed, it
+            assumes it is a pair of [operator, value]. Value is then parsed for
+            its type. When dealing with dates, these should be either an
+            explicit instance of `datetime.datetime` type or a string preceeded
+            by `'date:'`, see examples below.
+
+    Returns:
+        Triplet of strings defining operator (if any, `None` otherwise), value
+        and data type.
+
+    Examples:
+        >>> utils.parse_attr('attribute')
+        (None, '"attribute"', 'varchar')
+        >>> utils.parse_attr(('>=', 123))
+        ('>=', '123', 'int')
+        >>> utils.parse_attr('date:31.12.2024')
+        (None, '"2024-12-31 00:00:00"', 'datetime')
     """
 
     atype = 'varchar'
@@ -224,9 +244,7 @@ def parse_attr(value):
         operator, value = value
 
     if isinstance(value, str):
-
         if value.lower().startswith('date:'):
-
             value = dateutil.parser.parse(value[5:])
 
         elif _misc.is_int(value):
