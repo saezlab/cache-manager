@@ -40,7 +40,16 @@ class Lock:
     def __exit__(self, exc_type, exc_value, traceback):
         """
         Exits the context manager closing the exclusive transaction and
-        unlocking the connection.
+        unlocking the connection. If an exception occurs, changes will be rolled
+        back and the connection will be unlocked.
+
+        Args:
+            exc_type:
+                Exception type if any occurs inside the context.
+            exc_value:
+                Value of the exception if any occurs inside the context.
+            traceback:
+                Traceback of the exception if any occurs inside the context.
         """
 
         if locked_connections.get(id(self.con), None) == id(self):
