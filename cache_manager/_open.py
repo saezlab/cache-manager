@@ -1,17 +1,23 @@
 from __future__ import annotations
 
-import re
+import io
 import os
+import re
 import gzip
+import struct
 import tarfile
 import zipfile
-import io
-import struct
 
-from pypath_common import _constants as _const
 from pypath_common import _misc as _common
+from pypath_common import _constants as _const
 
 from cache_manager._session import _log
+
+__all__ = [
+    'ARCHIVES',
+    'COMPRESSED',
+    'Opener',
+]
 
 COMPRESSED =  {'gz', 'xz', 'bz2'}
 ARCHIVES = {'zip', 'tar.gz', 'tar.bz2', 'tar.xz'}
@@ -22,11 +28,11 @@ class Opener:
     """
     Opens a file.
 
-    This class opens a file, extracts it in case it is a
-    gzip, tar.gz, tar.bz2 or zip archive, selects the requested
-    files if you only need certain files from a multifile archive,
-    reads the data from the file, or returns the file pointer,
-    as you request. It examines the file type and size.
+    This class opens a file, extracts it in case it is a gzip, tar.gz, tar.bz2
+    or zip archive, selects the requested files if you only need certain files
+    from a multifile archive, reads the data from the file, or returns the file
+    pointer, as you request. It examines the file type and size. All these tasks
+    are performed automatically upon instantiation.
     """
 
     FORBIDDEN_CHARS = re.compile(r'[/\\<>:"\?\*\|]')
@@ -39,27 +45,32 @@ class Opener:
             large: bool = True,
             default_mode: str = 'r',
             encoding: str | None = None,
-        ):
+    ):
         """
         Args:
             path:
-                Path to a file.
+                Path to the file.
             ext:
-                Extension of the file, such as "zip", "tar.gz", etc.
+                Extension of the file, such as "zip", "tar.gz", etc. Optional,
+                defaults to `None`.
             needed:
                 A list of paths to be extracted within an archive. If not
-                provided, all paths will be included.
+                provided, all paths will be included. Optional, defaults to
+                `None`.
             large:
-                Return file pointers instead of the contents of the files.
+                Stores the file pointers instead of the contents of the files
+                themselves. Optional, defaults to `True`.
             default_mode:
-                Mode for the returned file objects: "r" or "rb".
+                Reading mode for the file objects: "r" (normal) or "rb"
+                (binary). Optional, defaults to `"r"` (normal mode).
             encoding:
-                Encoding for the returned file objects.
+                Encoding for the stored file objects. Optional, defaults to
+                `None`.
         """
 
         for k, v in locals().items():
 
-            if k == "self":
+            if k == 'self':
                 continue
 
             setattr(self, k, v)
@@ -76,7 +87,8 @@ class Opener:
 
     def open(self):
         """
-        Open the file if exists.
+        Loads the file if exists. The file pointer is stored under the
+        attribute `fileobj`.
         """
 
         if not os.path.exists(self.path):
@@ -95,16 +107,16 @@ class Opener:
 
     def close(self):
         """
-        Close the file.
+        Closes the file.
         """
 
-        if hasattr(self, "fileobj") and hasattr(self.fileobj, "close"):
+        if hasattr(self, 'fileobj') and hasattr(self.fileobj, 'close'):
             self.fileobj.close()
 
 
     def extract(self):
         """
-        Call the extracting method for compressed files.
+        Calls the right extracting method for a compressed file.
         """
 
         getattr(self, 'open_%s' % self.type)()
@@ -112,7 +124,8 @@ class Opener:
 
     def open_tar(self):
         """
-        Extracts files from tar.
+        Extracts files from `.tar` file. Resulting files are stored under the
+        attribute `result`.
         """
 
         _log(f'Opening tar file: {self.path}')
@@ -156,7 +169,8 @@ class Opener:
 
     def open_gz(self):
         """
-        Opens a gzip file.
+        Extracts files from `.gz` file. Resulting files are stored under the
+        attribute `result`.
         """
 
         _log(f'Opening gzip file: {self.path}')
@@ -176,7 +190,7 @@ class Opener:
             self.result = self.iterfile(
                 self.gzfile
                     if self.default_mode == 'rb' else
-                self._gzfile_mode_r
+                self._gzfile_mode_r,
             )
             _log(f'Result is an iterator over the lines of {self.path}')
 
@@ -184,12 +198,16 @@ class Opener:
 
             self.result = self.gzfile.read()
             self.gzfile.close()
-            _log(f'Data has been read from gzip file {self.path}. The file has been closed.')
+            _log(
+                f'Data has been read from gzip file {self.path}. The file has '
+                'been closed.',
+            )
 
 
     def open_zip(self):
         """
-        Opens a zip file.
+        Extracts files from `.zip` file. Resulting files are stored under the
+        attribute `result`.
         """
 
         _log(f'Opening zip file {self.path}')
@@ -219,7 +237,7 @@ class Opener:
 
                         # wrapping the file for decoding
                         self.files_multipart[m] = io.TextIOWrapper(
-                            this_file, encoding=self.encoding
+                            this_file, encoding=self.encoding,
                         )
                 else:
 
@@ -229,14 +247,18 @@ class Opener:
         if not self.large:
 
             self.zipfile.close()
-            _log(f'Data has been read from zip file {self.path}. File has been closed')
+            _log(
+                f'Data has been read from zip file {self.path}. File has been '
+                'closed',
+            )
 
         self.result = self.files_multipart
 
 
     def open_plain(self):
         """
-        Opens any file.
+        Opens a plain text file. Resulting file is stored under the attribute
+        `result`.
         """
 
         _log(f'Opening plain text file {self.path}')
@@ -256,11 +278,11 @@ class Opener:
 
     def set_type(self):
         """
-        Determine the file type based on the extension.
+        Determines the file type based on the extension.
         """
 
         ext = self.ext or _common.ext(self.path)
-        ext = ext.strip(".")
+        ext = ext.strip('.')
         self.ext = 'tar.gz' if ext == 'tgz' else ext
 
         self.type = ext if ext in COMPRESSED | ARCHIVES else 'plain'
@@ -280,6 +302,4 @@ class Opener:
         Returns an iterator over the lines of a file.
         """
 
-        for line in fileobj:
-
-            yield line
+        yield from fileobj
