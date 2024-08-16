@@ -12,7 +12,7 @@ import collections
 from pypath_common import _misc
 
 from cache_manager._item import CacheItem
-from cache_manager._status import status as _status
+from cache_manager._status import Status
 from cache_manager._session import _log
 import cache_manager.utils as _utils
 from . import _data
@@ -169,7 +169,7 @@ class Cache:
     def _where(
         uri: str | None = None,
         params: dict | None = None,
-        status: _status | set[int] | None = None,
+        status: Status | set[int] | None = None,
         version: int | set[int] | None = None,
         newer_than: str | datetime.datetime | None = None,
         older_than: str | datetime.datetime | None = None,
@@ -382,7 +382,7 @@ class Cache:
             self,
             uri: str,
             params: dict | None = None,
-            status: int | set[int] | None = _status.READY.value,
+            status: int | set[int] | None = Status.READY.value,
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
     ) -> CacheItem | None:
@@ -416,7 +416,7 @@ class Cache:
             uri: str,
             params: dict | None = None,
             attrs: dict | None = None,
-            status: int = _status.UNINITIALIZED.value,
+            status: int = Status.UNINITIALIZED.value,
             ext: str | None = None,
             label: str | None = None,
             filename: str | None = None,
@@ -577,7 +577,7 @@ class Cache:
 
             where = ','.join(str(item._id) for item in items)
             where = f' WHERE id IN ({where})'
-            new_status = _status.DELETED.value if disk else _status.TRASH.value
+            new_status = Status.DELETED.value if disk else Status.TRASH.value
 
             q = f'UPDATE main SET status = {new_status} {where};'
             self._execute(q)
@@ -693,13 +693,13 @@ class Cache:
         self,
         uri: str,
         params: dict | None = None,
-        status: set[int] | None = _status.READY.value,
+        status: set[int] | None = Status.READY.value,
         newer_than: str | datetime.datetime | None = None,
         older_than: str | datetime.datetime | None = None,
         attrs: dict | None = None,
         ext: str | None = None,
         label: str | None = None,
-        new_status: int = _status.WRITE.value,
+        new_status: int = Status.WRITE.value,
         filename: str | None = None,
     ) -> CacheItem:
 
@@ -731,7 +731,7 @@ class Cache:
         uri: str | None = None,
         params: dict | None = None,
         version: int | None = -1,
-        status: int = _status.READY.value,
+        status: int = Status.READY.value,
         key: str | None = None,
     ):
 
@@ -750,7 +750,7 @@ class Cache:
         uri: str | None = None,
         params: dict | None = None,
         attrs: dict | None = None,
-        status: int = _status.WRITE.value,
+        status: int = Status.WRITE.value,
         ext: str | None = None,
         label: str | None = None,
         filename: str | None = None,
@@ -769,8 +769,8 @@ class Cache:
         return item
 
 
-    ready = ft.partialmethod(update_status, status = _status.READY.value)
-    failed = ft.partialmethod(update_status, status = _status.FAILED.value)
+    ready = ft.partialmethod(update_status, status = Status.READY.value)
+    failed = ft.partialmethod(update_status, status = Status.FAILED.value)
 
 
     def _accessed(self, item_id: int):
@@ -869,7 +869,7 @@ class Cache:
         best = {
             key: _misc.first([
                 it for it in sorted(its, key=lambda x: x.version)[::-1]
-                if it._status in {_status.READY.value, _status.WRITE.value}
+                if it._status in {Status.READY.value, Status.WRITE.value}
             ])
             for key, its in items.items()
         }
