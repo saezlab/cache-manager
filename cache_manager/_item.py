@@ -6,7 +6,7 @@ import os
 from pypath_common import _misc
 
 from cache_manager import _open
-from cache_manager._status import status as _status
+from cache_manager._status import Status
 import cache_manager
 import cache_manager.utils as _utils
 
@@ -49,7 +49,7 @@ class CacheItem:
             version:
                 Version number of the item. Optional, defaults to `1`.
             status:
-                Status of the entry as integer (see `_status.status` for more
+                Status of the entry as integer (see `_status.Status` for more
                 info). Optional, defaults to `1`.
             date:
                 Date of the entry, if none is provided, takes the current time.
@@ -138,6 +138,7 @@ class CacheItem:
 
         return cls(**args)
 
+
     @classmethod
     def serialize(cls, params: dict | None = None):
         """
@@ -146,7 +147,7 @@ class CacheItem:
 
         params = params or {}
 
-        return _utils.hash(_utils.serialize(params))
+        return _utils.hash(params)
 
 
     @property
@@ -232,7 +233,7 @@ class CacheItem:
         Sets the status to ready.
         """
 
-        self.status = _status.READY.value
+        self.status = Status.READY.value
 
 
     def failed(self):
@@ -240,7 +241,7 @@ class CacheItem:
         Sets the status to failed.
         """
 
-        self.status = _status.FAILED.value
+        self.status = Status.FAILED.value
 
 
     def remove(self, disk: bool = False, keep_record: bool = True):
@@ -269,7 +270,7 @@ class CacheItem:
         Opens the file in reading mode
         """
 
-        if self.status == _status.READY.value:
+        if self.status == Status.READY.value:
 
             return self._open(**kwargs).get('result', None)
 
@@ -278,5 +279,5 @@ class CacheItem:
 
         return (
             f'CacheItem[{self.uri or self.key} V:{self.version} '
-            f'{_status(self.rstatus).name}]'
+            f'{Status(self.rstatus).name}]'
         )
