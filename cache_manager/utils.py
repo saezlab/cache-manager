@@ -1,5 +1,14 @@
 from __future__ import annotations
 
+__all__ = [
+    'hash',
+    'list_like',
+    'parse_attr',
+    'parse_attr_search',
+    'parse_time',
+    'serialize',
+]
+
 from typing import Any, Mapping, Iterable
 import re
 import hashlib
@@ -9,14 +18,31 @@ import collections
 from pypath_common import _misc
 import dateutil
 
-__all__ = [
-    'hash',
-    'list_like',
-    'parse_attr',
-    'parse_attr_search',
-    'parse_time',
-    'serialize',
-]
+
+def hash(value: Any) -> str:
+    """
+    Creates a unique hash for a given value. The value provided can be any type,
+    which will be serialized (see `utils.serialize()`) from which the hash is
+    generated using the MD5 hash function.
+
+    Args:
+        value:
+            Any object instance or variable to generate a hash from.
+
+    Returns:
+        The unique hash for the provided value.
+
+    Examples:
+        >>> hash('abc')
+        '900150983cd24fb0d6963f7d28e17f72'
+        >>> hash([1, 2, 'a', 'b', {0, 1}])
+        '94b41910362699b1f36754f78f1c90b2'
+    """
+
+    value = serialize(value).encode()
+
+    return hashlib.md5(value).hexdigest()
+
 
 def list_like(value: Any) -> bool:
     """
@@ -46,95 +72,73 @@ def list_like(value: Any) -> bool:
     )
 
 
-def serialize(value: Any) -> str:
+def parse_attr(value: Any) -> tuple[str | None, str, str]:
     """
-    Converts a (collection of) variable(s) into a single string. NOTE: order of
-    elements may not be kept.
+    Parses a attribute search value (or tuple of [operator, value]) to infer the
+    corresponding data type.
 
     Args:
         value:
-            Any object instance or variable to serialize as a string.
+            The search value to parse type from. If a tuple is passed, it
+            assumes it is a pair of [operator, value]. Value is then parsed for
+            its type. When dealing with dates, these should be either an
+            explicit instance of `datetime.datetime` type or a string preceeded
+            by `'date:'`, see examples below.
 
     Returns:
-        The resulting serialized string of the value provided.
+        Triplet of strings defining operator (if any, `None` otherwise), value
+        and data type.
 
     Examples:
-        >>> serialize({'a': 1, 'b': 2})
-        '[a=1,b=2]'
-        >>> serialize([{'a': [1, 2, 3, 4], 'b': {0, 1}}, 99, 'c'])
-        '[99,[a=[1,2,3,4],b=[0,1]],c]'
+        >>> utils.parse_attr('attribute')
+        (None, '"attribute"', 'varchar')
+        >>> utils.parse_attr(('>=', 123))
+        ('>=', '123', 'int')
+        >>> utils.parse_attr('date:31.12.2024')
+        (None, '"2024-12-31 00:00:00"', 'datetime')
     """
 
-    if list_like(value):
+    atype = 'varchar'
+    operator = None
 
-        if isinstance(value, Mapping):
+    if isinstance(value, tuple):
 
-            value = [
-                f'{serialize(k)}={serialize(v)}'
-                for k, v in value.items()
-            ]
-
-        return '[%s]' % ','.join(sorted(map(serialize, value)))
-
-    else:
-
-        return str(value)
-
-
-def hash(value: Any) -> str:
-    """
-    Creates a unique hash for a given value. The value provided can be any type,
-    which will be serialized (see `utils.serialize()`) from which the hash is
-    generated using the MD5 hash function.
-
-    Args:
-        value:
-            Any object instance or variable to generate a hash from.
-
-    Returns:
-        The unique hash for the provided value.
-
-    Examples:
-        >>> hash('abc')
-        '900150983cd24fb0d6963f7d28e17f72'
-        >>> hash([1, 2, 'a', 'b', {0, 1}])
-        '94b41910362699b1f36754f78f1c90b2'
-    """
-
-    value = serialize(value).encode()
-
-    return hashlib.md5(value).hexdigest()
-
-
-def parse_time(value: str | datetime.datetime | None = None) -> str:
-    """
-    Formats a given date and time value as a string. If none is given, takes the
-    current data and time as default.
-
-    Args:
-        value:
-            String or `datetime.datetime` instance defining the time to format
-            and convert to `str`. Optional, defaults to `None`
-
-    Returns:
-        Formatted date and time string as 'YYYY-MM-DD hh:mm:ss'
-
-    Examples:
-        >>> parse_time('21/12/20 12:31')
-        '2020-12-21 12:31:00'
-        >>> parse_time() # Will return current time
-        '2024-08-09 13:08:28'
-    """
+        operator, value = value
 
     if isinstance(value, str):
 
-        value = dateutil.parser.parse(value)
+        if value.lower().startswith('date:'):
 
-    elif value is None:
+            value = dateutil.parser.parse(value[5:])
 
-        value = datetime.datetime.now()
+        elif _misc.is_int(value):
 
-    return value.strftime('%Y-%m-%d %H:%M:%S')
+            value = _misc.to_int(value)
+
+        elif _misc.is_float(value):
+
+            value = _misc.to_float(value)
+
+    if isinstance(value, datetime.datetime):
+
+        atype = 'datetime'
+        value = f'"{parse_time(value)}"'
+
+    elif isinstance(value, int):
+
+        atype = 'int'
+        value = str(value)
+
+    elif isinstance(value, float):
+
+        atype = 'float'
+        value = str(value)
+
+    else:
+
+        value = f'"{value}"'
+
+    return operator, value, atype
 
 
 def parse_attr_search(dct: dict) -> dict:
@@ -211,61 +215,67 @@ def parse_attr_search(dct: dict) -> dict:
     return result
 
 
-def parse_attr(value: Any) -> tuple[str | None, str, str]:
+def parse_time(value: str | datetime.datetime | None = None) -> str:
     """
-    Parses a attribute search value (or tuple of [operator, value]) to infer the
-    corresponding data type.
+    Formats a given date and time value as a string. If none is given, takes the
+    current data and time as default.
 
     Args:
         value:
-            The search value to parse type from. If a tuple is passed, it
-            assumes it is a pair of [operator, value]. Value is then parsed for
-            its type. When dealing with dates, these should be either an
-            explicit instance of `datetime.datetime` type or a string preceeded
-            by `'date:'`, see examples below.
+            String or `datetime.datetime` instance defining the time to format
+            and convert to `str`. Optional, defaults to `None`
 
     Returns:
-        Triplet of strings defining operator (if any, `None` otherwise), value
-        and data type.
+        Formatted date and time string as 'YYYY-MM-DD hh:mm:ss'
 
     Examples:
-        >>> utils.parse_attr('attribute')
-        (None, '"attribute"', 'varchar')
-        >>> utils.parse_attr(('>=', 123))
-        ('>=', '123', 'int')
-        >>> utils.parse_attr('date:31.12.2024')
-        (None, '"2024-12-31 00:00:00"', 'datetime')
+        >>> parse_time('21/12/20 12:31')
+        '2020-12-21 12:31:00'
+        >>> parse_time() # Will return current time
+        '2024-08-09 13:08:28'
     """
 
-    atype = 'varchar'
-    operator = None
-
-    if isinstance(value, tuple):
-        operator, value = value
-
     if isinstance(value, str):
-        if value.lower().startswith('date:'):
-            value = dateutil.parser.parse(value[5:])
 
-        elif _misc.is_int(value):
-            value = _misc.to_int(value)
+        value = dateutil.parser.parse(value)
 
-        elif _misc.is_float(value):
-            value = _misc.to_float(value)
+    elif value is None:
 
-    if isinstance(value, datetime.datetime):
-        atype = 'datetime'
-        value = f'"{parse_time(value)}"'
+        value = datetime.datetime.now()
 
-    elif isinstance(value, int):
-        atype = 'int'
-        value = str(value)
+    return value.strftime('%Y-%m-%d %H:%M:%S')
 
-    elif isinstance(value, float):
-        atype = 'float'
-        value = str(value)
+
+def serialize(value: Any) -> str:
+    """
+    Converts a (collection of) variable(s) into a single string. NOTE: order of
+    elements may not be kept.
+
+    Args:
+        value:
+            Any object instance or variable to serialize as a string.
+
+    Returns:
+        The resulting serialized string of the value provided.
+
+    Examples:
+        >>> serialize({'a': 1, 'b': 2})
+        '[a=1,b=2]'
+        >>> serialize([{'a': [1, 2, 3, 4], 'b': {0, 1}}, 99, 'c'])
+        '[99,[a=[1,2,3,4],b=[0,1]],c]'
+    """
+
+    if list_like(value):
+
+        if isinstance(value, Mapping):
+
+            value = [
+                f'{serialize(k)}={serialize(v)}'
+                for k, v in value.items()
+            ]
+
+        return '[%s]' % ','.join(sorted(map(serialize, value)))
 
     else:
-        value = f'"{value}"'
 
-    return operator, value, atype
+        return str(value)
