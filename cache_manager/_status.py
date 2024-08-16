@@ -5,7 +5,7 @@ import enum
 __all__ = ['status']
 
 
-class status(enum.Enum):
+class status(enum.Enum): # FIXME: CamelCase for class?
     """
     Class defining status for cache items. Satus values define the following:
     - UNINITIALIZED: 0 - Newly created entry, to be initialized

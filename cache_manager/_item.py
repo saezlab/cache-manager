@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from typing import IO
+from typing import IO, Type
 import os
 
 from pypath_common import _misc
 
 from cache_manager import _open
 from cache_manager._status import status as _status
+import cache_manager
 import cache_manager.utils as _utils
 
 __all__ = [
@@ -17,11 +18,14 @@ __all__ = [
 class CacheItem:
     """
     Cache item class, stores a single cache item information.
+
+    NOTE: Actual creation function used is the class method `new` and not
+    `__init__`.
     """
 
     def __init__(
             self,
-            key,
+            key: str,
             version: int = 1,
             status: int = 0,
             date: str = None,
@@ -34,10 +38,50 @@ class CacheItem:
             last_search: str = None,
             read_count: int | None = None,
             search_count: int | None = None,
-            cache = None,
+            cache: Type[cache_manager.Cache] | None = None,
     ):
         """
-        Instantiates a new cache item.
+        Args:
+            key:
+                Unique key name for the item. The creation method
+                `CacheItem.new` provides it automatically as an alphanumeric
+                string (see `CacheItem.serialize` for details).
+            version:
+                Version number of the item. Optional, defaults to `1`.
+            status:
+                Status of the entry as integer (see `_status.status` for more
+                info). Optional, defaults to `1`.
+            date:
+                Date of the entry, if none is provided, takes the current time.
+                Optional, defaults to `None`.
+            filename:
+                Name of the file associated to the item. Optional, defaults to
+                `None`.
+            ext:
+                Extension of the file associated to the item. Optional, defaults
+                to `None`.
+            label:
+                Label for the item (e.g. type, group, category...). Optional,
+                defaults to `None`
+            attrs:
+                Extra attributes associated to the item. Keys are the attribute
+                names and values their content. These attributes will be stored
+                in the attribute tables according to their data type
+                automatically. Optional, defaults to `None`.
+            _id:
+                Internal ID number. Optional, defaults to `None`.
+            last_read:
+                Date of last reading of the entry. Optional, defaults to `None`.
+            last_search:
+                Date of last search for the item. Optional, defaults to `None`.
+            read_count:
+                Counter of reads for the item. Optional, defaults to `None`.
+            search_count:
+                Counter for the times the item has been searched. Optional,
+                defaults to `None`.
+            cache:
+                The `Cache` instance where the item belongs. Optional, defaults
+                to `None`.
         """
 
         self.key = key
