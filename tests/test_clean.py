@@ -1,7 +1,7 @@
 import pytest
 import os
 
-from cache_manager import _status
+from cache_manager._status import Status
 
 
 def test_clean_disk(test_cache):
@@ -41,7 +41,7 @@ def test_autoclean(test_cache):
         for _ in range(3)
     ]
 
-    items[1].status = _status.status.READY.value
+    items[1].status = Status.READY.value
 
     test_cache.autoclean()
 
@@ -49,4 +49,4 @@ def test_autoclean(test_cache):
 
     assert len(items) == 1
     assert items[0].version == 2
-    assert items[0].status == _status.status.READY.value
+    assert items[0].status == Status.READY.value
