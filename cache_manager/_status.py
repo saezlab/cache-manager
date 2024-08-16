@@ -1,29 +1,42 @@
 from __future__ import annotations
 
+__all__ = [
+    'Status',
+]
+
 import enum
 
-__all__ = ['status']
 
-
-class status(enum.Enum): # FIXME: CamelCase for class?
+class Status(enum.Enum):
     """
-    Class defining status for cache items. Satus values define the following:
-    - UNINITIALIZED: 0 - Newly created entry, to be initialized
-    - WRITE: 1 - Information currently being written on the item
-    - FAILED: 2 - Something went wrong
-    - READY: 3 - Entry is ready/initialized and not under writing
-    - TRASH: -1 - Entry is to be deleted but can be recovered, file still exists
-    - DELETED: -2 - File is deleted and entry is marked for deletion
+    Class defining the status for cache items.
 
     Arg:
         Integer defining current status as described above.
 
     Returns:
-        Instance of status with the specified status value provided.
+        Instance of `Status` with the specified status value provided.
+
+    Attrs:
+        UNINITIALIZED:
+            Has value 0. Newly created entry, to be initialized.
+        WRITE:
+            Has value 1. Information currently being written on the item.
+        FAILED:
+            Has value 2. Something went wrong.
+        READY:
+            Has value 3. Entry is ready/initialized and not under writing.
+        TRASH:
+            Has value -1. Entry is to be deleted but can be recovered, file
+            still exists.
+        DELETED:
+            Has value -2. File is deleted and entry is marked for deletion.
 
     Example:
-        >>> status(1)
-        <status.WRITE: 1>
+        >>> Status(1)
+        <Status.WRITE: 1>
+        >>> Status.WRITE
+        <Status.WRITE: 1>
     """
 
     UNINITIALIZED = 0
@@ -35,21 +48,23 @@ class status(enum.Enum): # FIXME: CamelCase for class?
 
 
     @classmethod
-    def from_str(cls, name: str) -> status:
+    def from_str(cls, name: str) -> Status:
         """
-        Creates an instance of status based on the passed status string instead
-        of the integer.
+        Creates an instance of `Status` based on the passed status string
+        instead of the integer.
 
         Arg:
             name:
-                String defining the status
+                String defining the status. Not case-sensitive.
 
         Returns:
-            Instance of status with the specified status value provided.
+            Instance of `Status` with the specified status value provided.
 
         Example:
-            >>> status('WRITE')
-            <status.WRITE: 1>
+            >>> Status('WRITE')
+            <Status.WRITE: 1>
+            >>> Status('ready')
+            <Status.READY: 3>
         """
 
         return cls.__dict__[name.upper()]
