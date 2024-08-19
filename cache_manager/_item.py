@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+__all__ = [
+    'CacheItem',
+]
+
 from typing import IO, Type
 import os
 
@@ -9,10 +13,6 @@ from cache_manager import _open
 from cache_manager._status import Status
 import cache_manager
 import cache_manager.utils as _utils
-
-__all__ = [
-    'CacheItem',
-]
 
 
 class CacheItem:
@@ -101,6 +101,15 @@ class CacheItem:
         self._setup()
 
 
+    def __repr__(self):
+
+        return (
+            f'CacheItem[{self.uri or self.key} V:{self.version} '
+            f'{Status(self.rstatus).name}]'
+        )
+
+
+    # FIXME: Shouldn't we override the __new__ method in this case?
     @classmethod
     def new(
         cls,
@@ -159,12 +168,6 @@ class CacheItem:
 
 
     @property
-    def version_id(self):
-
-        return f'{self.key}-{self.version}'
-
-
-    @property
     def path(self):
         """
         Defines the path of the file.
@@ -176,42 +179,15 @@ class CacheItem:
 
 
     @property
-    def uri(self):
+    def rstatus(self):
 
-        return self.attrs.get('_uri', None)
-
-
-    def _setup(self):
-        """
-        Setting default values
-        """
-
-        self.filename = (
-            self.filename or
-            os.path.basename(self.uri or '') or
-            self.cache_fname
-        )
-        self.ext = self.ext or os.path.splitext(self.filename)[-1][1:] or None
-        self.date = self.date or _utils.parse_time()
-
-
-    def _from_main(self) -> CacheItem | None:
-
-        if self.cache:
-
-            return self.cache.by_key(self.key, self.version)
+        return self._status
 
 
     @property
     def status(self):
 
         return getattr(self._from_main(), '_status', self._status)
-
-
-    @property
-    def rstatus(self):
-
-        return self._status
 
 
     @status.setter
@@ -228,12 +204,16 @@ class CacheItem:
         self._status = value
 
 
-    def ready(self):
-        """
-        Sets the status to ready.
-        """
+    @property
+    def uri(self):
 
-        self.status = Status.READY.value
+        return self.attrs.get('_uri', None)
+
+
+    @property
+    def version_id(self):
+
+        return f'{self.key}-{self.version}'
 
 
     def failed(self):
@@ -242,6 +222,24 @@ class CacheItem:
         """
 
         self.status = Status.FAILED.value
+
+
+    def open(self, **kwargs) -> str | IO | dict[str, str | IO] | None:
+        """
+        Opens the file in reading mode
+        """
+
+        if self.status == Status.READY.value:
+
+            return self._open(**kwargs).get('result', None)
+
+
+    def ready(self):
+        """
+        Sets the status to ready.
+        """
+
+        self.status = Status.READY.value
 
 
     def remove(self, disk: bool = False, keep_record: bool = True):
@@ -259,25 +257,28 @@ class CacheItem:
             )
 
 
+    def _from_main(self) -> CacheItem | None:
+
+        if self.cache:
+
+            return self.cache.by_key(self.key, self.version)
+
+
     def _open(self, **kwargs) -> _open.Opener:
         self.cache._accessed(self._id)
 
         return _open.Opener(self.path, **kwargs)
 
 
-    def open(self, **kwargs) -> str | IO | dict[str, str | IO] | None:
+    def _setup(self):
         """
-        Opens the file in reading mode
+        Setting default values
         """
 
-        if self.status == Status.READY.value:
-
-            return self._open(**kwargs).get('result', None)
-
-
-    def __repr__(self):
-
-        return (
-            f'CacheItem[{self.uri or self.key} V:{self.version} '
-            f'{Status(self.rstatus).name}]'
+        self.filename = (
+            self.filename or
+            os.path.basename(self.uri or '') or
+            self.cache_fname
         )
+        self.ext = self.ext or os.path.splitext(self.filename)[-1][1:] or None
+        self.date = self.date or _utils.parse_time()
