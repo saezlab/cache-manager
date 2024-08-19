@@ -3,7 +3,7 @@
 #
 # This file is part of the `cache_manager` Python module
 #
-# Copyright {% now 'utc', '%Y' %}
+# Copyright 2024
 # Heidelberg University Hospital
 #
 # File author(s): OmniPath Team (omnipathdb@gmail.com)
