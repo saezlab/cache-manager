@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-import sqlite3
-
 __all__ = [
     'Lock',
 ]
+
+import sqlite3
+
 locked_connections = {}
 
 
@@ -12,14 +13,17 @@ class Lock:
     """
     Context manager that keeps the SQLite database exclusively locked. This
     avoids concurrency when performing changes within a database connection.
+
+    Args:
+        con:
+            The current instance of `sqlite3.Connection` to be locked.
+
+    Attrs:
+        con:
+            Current connection to SQL database.
     """
 
     def __init__(self, con: sqlite3.Connection) -> None:
-        """
-        Args:
-            con:
-                The current instance of `sqlite3.Connection` to be locked.
-        """
 
         self.con = con
 
