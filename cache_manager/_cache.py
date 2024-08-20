@@ -66,7 +66,7 @@ class Cache:
 
 
     @property
-    def free_space(self):
+    def free_space(self) -> int:
         total, used, free = shutil.disk_usage(self.dir)
 
         return free
@@ -249,7 +249,7 @@ class Cache:
         _log('Cleaning disk complete.')
 
 
-    def contents(self):
+    def contents(self) -> dict[str, dict[str, int | str | CacheItem]]:
 
         disk = {
             m.group(): fname
@@ -450,7 +450,7 @@ class Cache:
             key: str | None = None,
             disk: bool = False,
             keep_record: bool = True,
-    ): # Make it more safer later (avoid to delete everything accidentally)
+    ) -> None: # Make it more safer later (avoid to delete everything accidentally)
         """
         Remove CacheItem or version
         """
@@ -796,7 +796,7 @@ class Cache:
 
 
     @staticmethod
-    def _typeof(value: Any):
+    def _typeof(value: Any) -> str:
 
         if isinstance(value, float) or _misc.is_int(value):
             return 'INT'
@@ -818,7 +818,7 @@ class Cache:
         filename: str | None = None,
         key: str | None = None,
         include_removed: bool = False,
-    ):
+    ) -> str:
 
         where = []
         item_id = key
