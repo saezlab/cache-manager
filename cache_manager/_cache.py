@@ -67,6 +67,7 @@ class Cache:
 
     @property
     def free_space(self) -> int:
+
         total, used, free = shutil.disk_usage(self.dir)
 
         return free
@@ -82,7 +83,9 @@ class Cache:
         best = dict()
 
         for it in self.contents().values():
+
             if (item := it['item']):
+
                 items[item.key].add(item)
 
         best = {
@@ -120,14 +123,14 @@ class Cache:
         status = _misc.to_set(status)
 
         items = self.search(
-            uri = uri,
-            params = params,
-            status = status,
-            newer_than = newer_than,
-            older_than = older_than,
+            uri=uri,
+            params=params,
+            status=status,
+            newer_than=newer_than,
+            older_than=older_than,
         )
         # TODO: Consider also date
-        items = sorted(items, key = lambda it: it.version)
+        items = sorted(items, key=lambda it: it.version)
 
         if items:
 
@@ -161,11 +164,11 @@ class Cache:
         with Lock(self.con):
 
             item = self.best(
-                uri = uri,
-                params = params,
-                status = status,
-                newer_than = newer_than,
-                older_than = older_than,
+                uri=uri,
+                params=params,
+                status=status,
+                newer_than=newer_than,
+                older_than=older_than,
             )
 
             if not item:
@@ -191,7 +194,6 @@ class Cache:
             for query in queries:
 
                 self._execute(f'SELECT id FROM attr_{atype} WHERE {query}')
-
                 result.append({item[0] for item in self.cur.fetchall()})
 
         return op(*result) if result else set()
@@ -217,8 +219,8 @@ class Cache:
         items = {
             item
             for it in self.contents().values()
-            if (item := it['item']) and
-            not os.path.exists(it['item'].path)
+            if (item := it['item'])
+            and not os.path.exists(it['item'].path)
         }
         _log(f'Deleting {len(items)} records.')
 
@@ -234,9 +236,10 @@ class Cache:
         _log('Cleaning disk: removing items without DB record.')
 
         fnames = {
-            os.path.join(self.dir, fname) for item in self.contents().values()
-            if (fname := item['disk_fname']) and
-            not item.get('status', False)
+            os.path.join(self.dir, fname)
+            for item in self.contents().values()
+            if (fname := item['disk_fname'])
+            and not item.get('status', False)
         }
 
         _log(f'Deleting {len(fnames)} files.')
@@ -298,8 +301,8 @@ class Cache:
 
             _log(f'Looking up existing versions of item `{uri}`')
             items = self.search(
-                uri = uri,
-                params = params,
+                uri=uri,
+                params=params,
             )
 
             last_version = max((i.version for i in items), default = 0)
@@ -358,7 +361,7 @@ class Cache:
                 )
             ''')
 
-            q = f'SELECT id FROM main WHERE version_id = "{new.key}-{new.version}"'
+            q = f'SELECT id FROM main WHERE version_id = "{new.version_id}"'
             self._execute(q)
             key = self.cur.fetchone()[0]
             new._id = key
@@ -385,11 +388,12 @@ class Cache:
                     if k not in main_fields
                 )
 
-                q = (f'INSERT INTO attr_{actual_typ} ( id, name, value )  VALUES {values}')
+                q = (f'INSERT INTO attr_{actual_typ} ( id, name, value ) '
+                     f'VALUES {values}')
 
                 self._execute(q)
 
-            _log(f'Successfully created: {new.key}-{new.version}')
+            _log(f'Successfully created: {new.version_id}')
 
         _log('END CREATE')
 
@@ -429,8 +433,10 @@ class Cache:
     def reload(self):
 
         modname = self.__class__.__module__
-        mod = __import__(modname, fromlist = [modname.split('.')[0]])
+        mod = __import__(modname, fromlist=[modname.split('.')[0]])
+
         import importlib as imp
+
         imp.reload(mod)
         new = getattr(mod, self.__class__.__name__)
         setattr(self, '__class__', new)
@@ -458,16 +464,17 @@ class Cache:
         with Lock(self.con):
 
             items = self.search(
-                uri = uri,
-                params = params,
-                status = status,
-                version = version,
-                newer_than = newer_than,
-                older_than = older_than,
-                key = key,
+                uri=uri,
+                params=params,
+                status=status,
+                version=version,
+                newer_than=newer_than,
+                older_than=older_than,
+                key=key,
             )
 
             if not items:
+
                 return
 
             where = ','.join(str(item._id) for item in items)
@@ -478,9 +485,11 @@ class Cache:
             self._execute(q)
 
             if disk:
+
                 self._delete_files(items)
 
             if not keep_record:
+
                 self._delete_records(items)
 
 
@@ -534,6 +543,7 @@ class Cache:
         with Lock(self.con):
 
             for actual_typ in ATTR_TYPES:
+
                 q = (
                     'SELECT * FROM main '
                     f'LEFT JOIN attr_{actual_typ} attr ON main.id = attr.id '
@@ -558,19 +568,19 @@ class Cache:
                         _log(f'Found version: `{verid}`')
 
                         results[verid] = CacheItem(
-                            key = row['item_id'],
-                            version = row['version'],
-                            status = row['status'],
-                            date = row['date'],
-                            filename = row['file_name'],
-                            ext = row['ext'],
-                            label = row['label'],
-                            _id = row['id'],
-                            last_read = row['last_read'],
-                            last_search = row['last_search'],
-                            read_count = row['read_count'],
-                            search_count = row['search_count'],
-                            cache = self,
+                            key=row['item_id'],
+                            version=row['version'],
+                            status=row['status'],
+                            date=row['date'],
+                            filename=row['file_name'],
+                            ext=row['ext'],
+                            label=row['label'],
+                            _id=row['id'],
+                            last_read=row['last_read'],
+                            last_search=row['last_search'],
+                            read_count=row['read_count'],
+                            search_count=row['search_count'],
+                            cache=self,
                         )
 
                     if row['name']:
@@ -615,13 +625,13 @@ class Cache:
         with Lock(self.con):
 
             items = self.search(
-                uri = uri,
-                params = params,
-                status = status,
+                uri=uri,
+                params=params,
+                status=status,
                 version=version,
-                newer_than = newer_than,
-                older_than = older_than,
-                key = key,
+                newer_than=newer_than,
+                older_than=older_than,
+                key=key,
             )
 
             update = update or {}
@@ -630,6 +640,7 @@ class Cache:
                 f'{k} = {self._quotes(v, main_fields[k])}'
                 for k, v in update.items() if k in main_fields
             )
+
             ids = [it._id for it in items]
             _log(f'Updating {len(ids)} items')
             where = f' WHERE id IN ({", ".join(map(str, ids))})'
@@ -649,10 +660,11 @@ class Cache:
                     )
                 )
 
-                if not values: continue
+                if not values:
+
+                    continue
 
                 q = f'UPDATE attr_{actual_typ} SET ({values}) {where}'
-
                 self._execute(q)
 
             _log(f'Finished updating attributes')
@@ -668,16 +680,16 @@ class Cache:
     ):
 
         self.update(
-            uri = uri,
-            params = params,
-            version = version,
-            update = {'status': status},
-            key = key,
+            uri=uri,
+            params=params,
+            version=version,
+            update={'status': status},
+            key=key,
         )
 
 
-    ready = ft.partialmethod(update_status, status = Status.READY.value)
-    failed = ft.partialmethod(update_status, status = Status.FAILED.value)
+    ready = ft.partialmethod(update_status, status=Status.READY.value)
+    failed = ft.partialmethod(update_status, status=Status.FAILED.value)
 
 
     def _accessed(self, item_id: int):
@@ -710,6 +722,7 @@ class Cache:
             n_before = len(self)
 
             for actual_typ in ATTR_TYPES:
+
                 attr_table = f'attr_{actual_typ}'
 
                 _log(f'Deleting attributes from {attr_table}')
@@ -754,7 +767,7 @@ class Cache:
         if not os.path.exists(path):
 
             stem, ext = os.path.splitext(path)
-            os.makedirs(stem if ext else path, exist_ok = True)
+            os.makedirs(stem if ext else path, exist_ok=True)
 
         if os.path.isdir(path):
 
@@ -776,7 +789,9 @@ class Cache:
 
     @staticmethod
     def _quotes(string: str | None, typ: str = 'VARCHAR') -> str:
+
         if string is None:
+
             return 'NULL'
 
         typ = typ.upper()
@@ -799,9 +814,11 @@ class Cache:
     def _typeof(value: Any) -> str:
 
         if isinstance(value, float) or _misc.is_int(value):
+
             return 'INT'
 
         elif isinstance(value, float) or _misc.is_float(value):
+
             return 'FLOAT'
 
 
@@ -834,24 +851,30 @@ class Cache:
             item_id = CacheItem.serialize(params)
 
         if item_id:
+
             where.append(f'item_id = "{item_id}"')
 
         if filename:
+
             where.append(f'file_name = "{filename}"')
 
         status = _misc.to_set(status)
 
         if -1 not in status and not include_removed:
+
             where.append('status != -1')
 
         if -2 not in status and not include_removed:
+
             where.append('status != -2')
 
         if status:
+
             status = str(status).strip('{}')
             where.append(f'status IN ({status})')
 
         if version is not None and version != -1:
+
             version = str(_misc.to_set(version)).strip('{}')
             where.append(f'version IN ({version})')
 
@@ -874,6 +897,7 @@ class Cache:
         where = f' WHERE {" AND ".join(where)}' if where else ''
 
         if version == -1: # TODO: Address cases where multiple items
+
             where += ' ORDER BY version DESC LIMIT 1'
 
         return  where
