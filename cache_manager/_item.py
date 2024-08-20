@@ -175,8 +175,8 @@ class CacheItem:
                 Uniform Resource Identifier. Optional, defaults to `None`.
             params:
                 Collection of parameters passed to the `__init__` method in dict
-                 format where key-value pairs correspond to parameter-value
-                 respectively. Optional, defaults to `None`.
+                format where key-value pairs correspond to parameter-value
+                respectively. Optional, defaults to `None`.
             version:
                 The version nuber of the new item. Optional, defaults to `0`.
             status:

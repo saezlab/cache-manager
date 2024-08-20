@@ -388,8 +388,10 @@ class Cache:
                     if k not in main_fields
                 )
 
-                q = (f'INSERT INTO attr_{actual_typ} ( id, name, value ) '
-                     f'VALUES {values}')
+                q = (
+                    f'INSERT INTO attr_{actual_typ} ( id, name, value ) '
+                    f'VALUES {values}'
+                )
 
                 self._execute(q)
 
@@ -836,6 +838,45 @@ class Cache:
         key: str | None = None,
         include_removed: bool = False,
     ) -> str:
+        """
+        Generates a SQL `WHERE` clause based on different parameters defined in
+        the function arguments.
+
+        Args:
+            uri:
+                Uniform Resource Identifier. Optional, defaults to `None`.
+            params:
+                Collection of parameters in dict format where key-value pairs
+                correspond to parameter-value respectively. Optional, defaults
+                to `None`.
+            status:
+                Status(es) of the item(s). Optional, defaults to `None`.
+            version:
+                Version(s) of the item(s). Optional, defaults to `None`.
+            newer_than:
+                Date the itmes are required to be newer than. Optional, defaults
+                to `None`.
+            older_than:
+                Date the itmes are required to be older than. Optional, defaults
+                to `None`.
+            ext:
+                Extension of the file associated to the item(s). Optional,
+                defaults to `None`.
+            label:
+                Label for the item (e.g. type, group, category...). Optional,
+                defaults to `None`.
+            filename:
+                Name of the file associated to the item. Optional, defaults to
+                `None`.
+            key:
+                Unique key name for the item. Optional, defaults to `None`.
+            include_removed:
+                Whether to include item(s) marked for removal. Optional,
+                defaults to `False`.
+
+        Returns:
+            The query string with the WHERE clause.
+        """
 
         where = []
         item_id = key
