@@ -114,16 +114,16 @@ class Opener:
         self.extract()
 
 
+    def __del__(self):
+
+        self.close()
+
+
     def __iter__(self):
 
         self.fileobj.seek(0)
 
         return self.fileobj.__iter__()
-
-
-    def __del__(self):
-
-        self.close()
 
 
     def close(self):

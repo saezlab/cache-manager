@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+__all__ = [
+    'ATTR_TYPES',
+    'Cache',
+    'TYPES',
+]
+
 from typing import Any
 import os
 import re
@@ -17,12 +23,6 @@ from cache_manager._session import _log
 import cache_manager.utils as _utils
 from . import _data
 from ._lock import Lock
-
-__all__ = [
-    'ATTR_TYPES',
-    'Cache',
-    'TYPES',
-]
 
 ATTR_TYPES = ['varchar', 'int', 'datetime', 'float']
 
@@ -49,14 +49,6 @@ class Cache:
         self._set_path(path)
         self._ensure_sqlite()
 
-    def reload(self):
-
-        modname = self.__class__.__module__
-        mod = __import__(modname, fromlist = [modname.split('.')[0]])
-        import importlib as imp
-        imp.reload(mod)
-        new = getattr(mod, self.__class__.__name__)
-        setattr(self, '__class__', new)
 
     def __del__(self):
 
@@ -65,317 +57,52 @@ class Cache:
             _log(f'Closing SQLite database path: {self.path}')
             self.con.close()
 
-    def _set_path(self, path: str):
 
-        if not os.path.exists(path):
-
-            stem, ext = os.path.splitext(path)
-            os.makedirs(stem if ext else path, exist_ok = True)
-
-        if os.path.isdir(path):
-
-            path = os.path.join(path, 'cache.sqlite')
-
-        _log(f'Setting SQLite database path: {path}')
-        self.path = path
-        self.dir = os.path.dirname(self.path)
-
-    def _open_sqlite(self):
-
-        _log(f'Opening SQLite database: {self.path}')
-        self.con = sqlite3.connect(self.path)
-        self.cur = self.con.cursor()
-        self._create_schema()
-
-
-    def _ensure_sqlite(self):
-
-        if self.con is None:
-
-            self._open_sqlite()
-
-    def _execute(self, query: str):
-
-        query = re.sub(r'\s+', ' ', query)
-        _log(f'Executing query: {query}')
-        self.cur.execute(query)
-        self.con.commit()
-
-    def _create_schema(self):
+    def __len__(self):
 
         self._ensure_sqlite()
 
-        _log(f'Initializing database')
-
-        fields = ', '.join(f'{k} {v}' for k, v in self._table_fields().items())
-
-        _log(f'Ensuring main table exists')
-        self._execute(f'''
-            CREATE TABLE IF NOT EXISTS
-            main (
-                {fields}
-            )
-        ''')
-
-        for typ in ATTR_TYPES:
-
-            _log(f'Ensuring attr_{typ} table exists')
-            self._execute(
-                '''
-                CREATE TABLE IF NOT EXISTS
-                attr_{} (
-                    id INT,
-                    name VARCHAR,
-                    value {},
-                    FOREIGN KEY(id) REFERENCES main(id)
-                )
-            '''.format(typ, typ.upper()),
-            )
+        return self.cur.execute('SELECT COUNT(*) FROM main').fetchone()[0]
 
 
-    @staticmethod
-    def _quotes(string: str | None, typ: str = 'VARCHAR') -> str:
-        if string is None:
-            return 'NULL'
+    @property
+    def free_space(self):
+        total, used, free = shutil.disk_usage(self.dir)
 
-        typ = typ.upper()
-
-        return f'"{string}"' if (
-                typ.startswith('VARCHAR') or
-                typ.startswith('DATETIME')
-        ) else string
+        return free
 
 
-    @staticmethod
-    def _typeof(value: Any):
-
-        if isinstance(value, float) or _misc.is_int(value):
-            return 'INT'
-
-        elif isinstance(value, float) or _misc.is_float(value):
-            return 'FLOAT'
-
-
-    def _table_fields(self, name: str = 'main') -> dict[str, str]:
-
-        if name not in self._fields:
-
-            self._fields[name] = _data.load(f'{name}.yaml')
-
-        return self._fields[name]
-
-
-    @staticmethod
-    def _where(
-        uri: str | None = None,
-        params: dict | None = None,
-        status: Status | set[int] | None = None,
-        version: int | set[int] | None = None,
-        newer_than: str | datetime.datetime | None = None,
-        older_than: str | datetime.datetime | None = None,
-        ext: str | None = None,
-        label: str | None = None,
-        filename: str | None = None,
-        key: str | None = None,
-        include_removed: bool = False,
-    ):
-
-        where = []
-        item_id = key
-
-        if not item_id and (uri or params):
-
-            params = params or {}
-
-            if uri:
-
-                params['_uri'] = uri
-
-            item_id = CacheItem.serialize(params)
-
-        if item_id:
-            where.append(f'item_id = "{item_id}"')
-
-        if filename:
-            where.append(f'file_name = "{filename}"')
-
-        status = _misc.to_set(status)
-
-        if -1 not in status and not include_removed:
-            where.append('status != -1')
-
-        if -2 not in status and not include_removed:
-            where.append('status != -2')
-
-        if status:
-            status = str(status).strip('{}')
-            where.append(f'status IN ({status})')
-
-        if version is not None and version != -1:
-            version = str(_misc.to_set(version)).strip('{}')
-            where.append(f'version IN ({version})')
-
-        if newer_than:
-
-            where.append(f'date > "{_utils.parse_time(newer_than)}"')
-
-        if older_than:
-
-            where.append(f'date < "{_utils.parse_time(older_than)}"')
-
-        if ext:
-
-            where.append(f'ext = "{ext}"')
-
-        if label:
-
-            where.append(f'label = "{label}"')
-
-        where = f' WHERE {" AND ".join(where)}' if where else ''
-
-        if version == -1: # TODO: Address cases where multiple items
-            where += ' ORDER BY version DESC LIMIT 1'
-
-        return  where
-
-
-    def by_key(self, key: str, version: int) -> CacheItem:
-
-        _log(f'Looking up key: {key}')
-
-        return _misc.first(self.search(key=key, version=version))
-
-
-    def search(
-            self,
-            uri: str | None = None,
-            params: dict | None = None,
-            status: int | set[int] | None = None,
-            version: int | set[int] | None = None,
-            newer_than: str | datetime.datetime | None = None,
-            older_than: str | datetime.datetime | None = None,
-            ext: str | None = None,
-            label: str | None = None,
-            filename: str | None = None,
-            key: str | None = None,
-            attrs: dict | None = None,
-            include_removed: bool = False,
-    ) -> list[CacheItem]:
+    def autoclean(self):
         """
-        Look up items in the cache.
-
-        Args:
-            attrs:
-                Search by attributes. A dict of attribute names and values.
-                Operators can be included at the end of the names or in front
-                of the values, forming a tuple of length 2 in the latter case.
-                Multiple values can be provided as lists. By default the
-                attribute search parameters are joined by AND, this can be
-                overridden by including `"__and": False` in `attrs`. The types
-                of the attributes will be inferred from the values, except if
-                the values provided as their correct type, such as numeric
-                types or `datetime`. Strings will be converted to dates only if
-                prefixed with `"DATE:"`.
+        Keep only ready/in writing items and for each item the best version
         """
 
-        _log('SEARCH')
-        args = locals()
-        args.pop('self')
-        param_str = _utils.serialize(args)
-        _log(f'Searching cache: {param_str}')
-        attrs = args.pop('attrs') or {}
-        ids = self.by_attrs(attrs)
-        where = self._where(**args)
+        _log('Auto cleaning cache.')
+        items = collections.defaultdict(set)
+        best = dict()
 
-        if attrs:
+        for it in self.contents().values():
+            if (item := it['item']):
+                items[item.key].add(item)
 
-            where += f' AND main.id IN ({",".join(str(i) for i in ids)})'
+        best = {
+            key: _misc.first([
+                it for it in sorted(its, key=lambda x: x.version)[::-1]
+                if it._status in {Status.READY.value, Status.WRITE.value}
+            ])
+            for key, its in items.items()
+        }
 
-        results = {}
+        to_remove = [
+            it for k, v in items.items()
+            for it in v - _misc.to_set(best.get(k, []))
+        ]
 
-        with Lock(self.con):
+        _log(f'Deleting {len(to_remove)} records.')
 
-            for actual_typ in ATTR_TYPES:
-                q = (
-                    'SELECT * FROM main '
-                    f'LEFT JOIN attr_{actual_typ} attr ON main.id = attr.id '
-                    f'{where}'
-                )
-
-                self._execute(q)
-
-                _log(f'Fetching results from attr_{actual_typ}')
-
-                for row in self.cur.fetchall():
-
-                    keys = (
-                        tuple(self._table_fields().keys()) +
-                        ('_id', 'name', 'value')
-                    )
-                    row = dict(zip(keys, row))
-                    verid = row['version_id']
-
-                    if verid not in results:
-
-                        _log(f'Found version: `{verid}`')
-
-                        results[verid] = CacheItem(
-                            key = row['item_id'],
-                            version = row['version'],
-                            status = row['status'],
-                            date = row['date'],
-                            filename = row['file_name'],
-                            ext = row['ext'],
-                            label = row['label'],
-                            _id = row['id'],
-                            last_read = row['last_read'],
-                            last_search = row['last_search'],
-                            read_count = row['read_count'],
-                            search_count = row['search_count'],
-                            cache = self,
-                        )
-
-                    if row['name']:
-
-                        results[verid].attrs[row['name']] = row['value']
-
-            if results:
-
-                ids = ','.join(str(item._id) for item in results.values())
-                update_q = (
-                    'UPDATE main SET '
-                    'last_search = DATETIME("now"), '
-                    'search_count = search_count + 1 '
-                    f'WHERE id IN ({ids});'
-                )
-                self._execute(update_q)
-
-        _log(f'Retrieved {len(results)} results')
-        _log('END SEARCH')
-
-        return list(results.values())
-
-
-    def by_attrs(self, attrs: dict) -> list[int]:
-        """
-        Selecting items by attributes
-        """
-
-        _log(f'Searching by attributes: {attrs}')
-        result = []
-
-        op = set.intersection if attrs.pop('__and', True) else set.union
-        attrs = _utils.parse_attr_search(attrs)
-
-        for atype, queries in attrs.items():
-
-            for query in queries:
-
-                self._execute(f'SELECT id FROM attr_{atype} WHERE {query}')
-
-                result.append({item[0] for item in self.cur.fetchall()})
-
-        return op(*result) if result else set()
+        self._delete_records(to_remove)
+        self.clean_disk()
+        _log('Auto clean complete.')
 
 
     def best(
@@ -409,6 +136,142 @@ class Cache:
             return items[-1]
 
         _log('No version found matching criteria')
+
+
+    def best_or_new(
+        self,
+        uri: str,
+        params: dict | None = None,
+        status: set[int] | None = Status.READY.value,
+        newer_than: str | datetime.datetime | None = None,
+        older_than: str | datetime.datetime | None = None,
+        attrs: dict | None = None,
+        ext: str | None = None,
+        label: str | None = None,
+        new_status: int = Status.WRITE.value,
+        filename: str | None = None,
+    ) -> CacheItem:
+
+        args = locals()
+        args.pop('self')
+        args['status'] = args.pop('new_status')
+        args.pop('newer_than')
+        args.pop('older_than')
+
+        with Lock(self.con):
+
+            item = self.best(
+                uri = uri,
+                params = params,
+                status = status,
+                newer_than = newer_than,
+                older_than = older_than,
+            )
+
+            if not item:
+
+                item = self.create(**args)
+
+        return item
+
+
+    def by_attrs(self, attrs: dict) -> list[int]:
+        """
+        Selecting items by attributes
+        """
+
+        _log(f'Searching by attributes: {attrs}')
+        result = []
+
+        op = set.intersection if attrs.pop('__and', True) else set.union
+        attrs = _utils.parse_attr_search(attrs)
+
+        for atype, queries in attrs.items():
+
+            for query in queries:
+
+                self._execute(f'SELECT id FROM attr_{atype} WHERE {query}')
+
+                result.append({item[0] for item in self.cur.fetchall()})
+
+        return op(*result) if result else set()
+
+
+    def by_key(self, key: str, version: int) -> CacheItem:
+
+        _log(f'Looking up key: {key}')
+
+        return _misc.first(self.search(key=key, version=version))
+
+
+    def clean_db(self):
+        """
+        Remove records without file on disk
+        """
+
+        _log(
+            'Cleaning cache database: removing records '
+            'without file on the disk.',
+        )
+
+        items = {
+            item
+            for it in self.contents().values()
+            if (item := it['item']) and
+            not os.path.exists(it['item'].path)
+        }
+        _log(f'Deleting {len(items)} records.')
+
+        self._delete_records(items)
+        _log('Cleaning cache database complete.')
+
+
+    def clean_disk(self):
+        """
+        Remove items on disk, which doesn't have any DB record
+        """
+
+        _log('Cleaning disk: removing items without DB record.')
+
+        fnames = {
+            os.path.join(self.dir, fname) for item in self.contents().values()
+            if (fname := item['disk_fname']) and
+            not item.get('status', False)
+        }
+
+        _log(f'Deleting {len(fnames)} files.')
+
+        for file in fnames:
+
+            _log(f'Deleting from disk: `{file}`.')
+            os.remove(file)
+
+        _log('Cleaning disk complete.')
+
+
+    def contents(self):
+
+        disk = {
+            m.group(): fname
+            for fname in os.listdir(self.dir)
+            if (m := re.search(r'[\dabcdef]{32}-\d+', fname))
+        }
+
+        db = {
+            it.version_id: {
+                'status': it._status,
+                'fname': it.cache_fname,
+                'last_read': it.last_read,
+                'read_count': it.read_count,
+                'item': it,
+            }
+            for it in self.search(include_removed = True)
+        }
+
+        return {
+            vid: dict(**db.get(vid, {}), disk_fname = disk.get(vid, None))
+            for vid in set(disk.keys()) | set(db.keys())
+        }
 
 
     def create(
@@ -533,12 +396,44 @@ class Cache:
         return new
 
 
-    @staticmethod
-    def _sqlite_type(obj: Any) -> str:
+    def does_it_fit(self, size: int) -> bool:
 
-        pytype = type(obj).__name__
+        return size <= self.free_space
 
-        return TYPES.get(pytype, None)
+
+    def move_in(
+        self,
+        path: str,
+        uri: str | None = None,
+        params: dict | None = None,
+        attrs: dict | None = None,
+        status: int = Status.WRITE.value,
+        ext: str | None = None,
+        label: str | None = None,
+        filename: str | None = None,
+    ) -> CacheItem:
+
+        args = locals()
+        args.pop('self')
+        args.pop('path')
+
+        uri = uri or os.path.basename(path)
+
+        item = self.create(**args)
+        _log(f'Copying `{path}` to `{item.path}`.')
+        shutil.copy(path, item.path)
+
+        return item
+
+
+    def reload(self):
+
+        modname = self.__class__.__module__
+        mod = __import__(modname, fromlist = [modname.split('.')[0]])
+        import importlib as imp
+        imp.reload(mod)
+        new = getattr(mod, self.__class__.__name__)
+        setattr(self, '__class__', new)
 
 
     def remove(
@@ -589,40 +484,114 @@ class Cache:
                 self._delete_records(items)
 
 
-    def _delete_records(self, items: list[int, CacheItem]):
+    def search(
+            self,
+            uri: str | None = None,
+            params: dict | None = None,
+            status: int | set[int] | None = None,
+            version: int | set[int] | None = None,
+            newer_than: str | datetime.datetime | None = None,
+            older_than: str | datetime.datetime | None = None,
+            ext: str | None = None,
+            label: str | None = None,
+            filename: str | None = None,
+            key: str | None = None,
+            attrs: dict | None = None,
+            include_removed: bool = False,
+    ) -> list[CacheItem]:
+        """
+        Look up items in the cache.
+
+        Args:
+            attrs:
+                Search by attributes. A dict of attribute names and values.
+                Operators can be included at the end of the names or in front
+                of the values, forming a tuple of length 2 in the latter case.
+                Multiple values can be provided as lists. By default the
+                attribute search parameters are joined by AND, this can be
+                overridden by including `"__and": False` in `attrs`. The types
+                of the attributes will be inferred from the values, except if
+                the values provided as their correct type, such as numeric
+                types or `datetime`. Strings will be converted to dates only if
+                prefixed with `"DATE:"`.
+        """
+
+        _log('SEARCH')
+        args = locals()
+        args.pop('self')
+        param_str = _utils.serialize(args)
+        _log(f'Searching cache: {param_str}')
+        attrs = args.pop('attrs') or {}
+        ids = self.by_attrs(attrs)
+        where = self._where(**args)
+
+        if attrs:
+
+            where += f' AND main.id IN ({",".join(str(i) for i in ids)})'
+
+        results = {}
 
         with Lock(self.con):
 
-            where = ','.join(str(getattr(i, '_id', i)) for i in items)
-            where = f' WHERE id IN ({where})'
-            _log(f'_delete_records: {len(items)} IDs to be deleted.')
-            n_before = len(self)
-
             for actual_typ in ATTR_TYPES:
-                attr_table = f'attr_{actual_typ}'
-
-                _log(f'Deleting attributes from {attr_table}')
-
-                q = f'DELETE FROM {attr_table} {where}'
+                q = (
+                    'SELECT * FROM main '
+                    f'LEFT JOIN attr_{actual_typ} attr ON main.id = attr.id '
+                    f'{where}'
+                )
 
                 self._execute(q)
 
-            q = f'DELETE FROM main'
-            q += where
+                _log(f'Fetching results from attr_{actual_typ}')
 
-            self._execute(q)
+                for row in self.cur.fetchall():
 
-            _log(f'Deleted {n_before - len(self)} records.')
+                    keys = (
+                        tuple(self._table_fields().keys()) +
+                        ('_id', 'name', 'value')
+                    )
+                    row = dict(zip(keys, row))
+                    verid = row['version_id']
 
+                    if verid not in results:
 
-    def _delete_files(self, items: list[int, CacheItem]):
+                        _log(f'Found version: `{verid}`')
 
-        for item in items:
+                        results[verid] = CacheItem(
+                            key = row['item_id'],
+                            version = row['version'],
+                            status = row['status'],
+                            date = row['date'],
+                            filename = row['file_name'],
+                            ext = row['ext'],
+                            label = row['label'],
+                            _id = row['id'],
+                            last_read = row['last_read'],
+                            last_search = row['last_search'],
+                            read_count = row['read_count'],
+                            search_count = row['search_count'],
+                            cache = self,
+                        )
 
-            if os.path.exists(item.path):
+                    if row['name']:
 
-                _log(f'Deleting from disk: `{item.path}`.')
-                os.remove(item.path)
+                        results[verid].attrs[row['name']] = row['value']
+
+            if results:
+
+                ids = ','.join(str(item._id) for item in results.values())
+                update_q = (
+                    'UPDATE main SET '
+                    'last_search = DATETIME("now"), '
+                    'search_count = search_count + 1 '
+                    f'WHERE id IN ({ids});'
+                )
+                self._execute(update_q)
+
+        _log(f'Retrieved {len(results)} results')
+        _log('END SEARCH')
+
+        return list(results.values())
 
 
     def update(
@@ -689,43 +658,6 @@ class Cache:
             _log(f'Finished updating attributes')
 
 
-    def best_or_new(
-        self,
-        uri: str,
-        params: dict | None = None,
-        status: set[int] | None = Status.READY.value,
-        newer_than: str | datetime.datetime | None = None,
-        older_than: str | datetime.datetime | None = None,
-        attrs: dict | None = None,
-        ext: str | None = None,
-        label: str | None = None,
-        new_status: int = Status.WRITE.value,
-        filename: str | None = None,
-    ) -> CacheItem:
-
-        args = locals()
-        args.pop('self')
-        args['status'] = args.pop('new_status')
-        args.pop('newer_than')
-        args.pop('older_than')
-
-        with Lock(self.con):
-
-            item = self.best(
-                uri = uri,
-                params = params,
-                status = status,
-                newer_than = newer_than,
-                older_than = older_than,
-            )
-
-            if not item:
-
-                item = self.create(**args)
-
-        return item
-
-
     def update_status(
         self,
         uri: str | None = None,
@@ -744,31 +676,6 @@ class Cache:
         )
 
 
-    def move_in(
-        self,
-        path: str,
-        uri: str | None = None,
-        params: dict | None = None,
-        attrs: dict | None = None,
-        status: int = Status.WRITE.value,
-        ext: str | None = None,
-        label: str | None = None,
-        filename: str | None = None,
-    ) -> CacheItem:
-
-        args = locals()
-        args.pop('self')
-        args.pop('path')
-
-        uri = uri or os.path.basename(path)
-
-        item = self.create(**args)
-        _log(f'Copying `{path}` to `{item.path}`.')
-        shutil.copy(path, item.path)
-
-        return item
-
-
     ready = ft.partialmethod(update_status, status = Status.READY.value)
     failed = ft.partialmethod(update_status, status = Status.FAILED.value)
 
@@ -783,123 +690,190 @@ class Cache:
         self._execute(q)
 
 
-    def contents(self):
+    def _delete_files(self, items: list[int, CacheItem]):
 
-        disk = {
-            m.group(): fname
-            for fname in os.listdir(self.dir)
-            if (m := re.search(r'[\dabcdef]{32}-\d+', fname))
-        }
+        for item in items:
 
-        db = {
-            it.version_id: {
-                'status': it._status,
-                'fname': it.cache_fname,
-                'last_read': it.last_read,
-                'read_count': it.read_count,
-                'item': it,
-            }
-            for it in self.search(include_removed = True)
-        }
+            if os.path.exists(item.path):
 
-        return {
-            vid: dict(**db.get(vid, {}), disk_fname = disk.get(vid, None))
-            for vid in set(disk.keys()) | set(db.keys())
-        }
+                _log(f'Deleting from disk: `{item.path}`.')
+                os.remove(item.path)
 
 
-    def clean_disk(self):
-        """
-        Remove items on disk, which doesn't have any DB record
-        """
+    def _delete_records(self, items: list[int, CacheItem]):
 
-        _log('Cleaning disk: removing items without DB record.')
+        with Lock(self.con):
 
-        fnames = {
-            os.path.join(self.dir, fname) for item in self.contents().values()
-            if (fname := item['disk_fname']) and
-            not item.get('status', False)
-        }
+            where = ','.join(str(getattr(i, '_id', i)) for i in items)
+            where = f' WHERE id IN ({where})'
+            _log(f'_delete_records: {len(items)} IDs to be deleted.')
+            n_before = len(self)
 
-        _log(f'Deleting {len(fnames)} files.')
+            for actual_typ in ATTR_TYPES:
+                attr_table = f'attr_{actual_typ}'
 
-        for file in fnames:
+                _log(f'Deleting attributes from {attr_table}')
 
-            _log(f'Deleting from disk: `{file}`.')
-            os.remove(file)
+                q = f'DELETE FROM {attr_table} {where}'
 
-        _log('Cleaning disk complete.')
+                self._execute(q)
 
+            q = f'DELETE FROM main'
+            q += where
 
-    def clean_db(self):
-        """
-        Remove records without file on disk
-        """
+            self._execute(q)
 
-        _log(
-            'Cleaning cache database: removing records '
-            'without file on the disk.',
-        )
-
-        items = {
-            item
-            for it in self.contents().values()
-            if (item := it['item']) and
-            not os.path.exists(it['item'].path)
-        }
-        _log(f'Deleting {len(items)} records.')
-
-        self._delete_records(items)
-        _log('Cleaning cache database complete.')
+            _log(f'Deleted {n_before - len(self)} records.')
 
 
-    def autoclean(self):
-        """
-        Keep only ready/in writing items and for each item the best version
-        """
+    def _ensure_sqlite(self):
 
-        _log('Auto cleaning cache.')
-        items = collections.defaultdict(set)
-        best = dict()
+        if self.con is None:
 
-        for it in self.contents().values():
-            if (item := it['item']):
-                items[item.key].add(item)
-
-        best = {
-            key: _misc.first([
-                it for it in sorted(its, key=lambda x: x.version)[::-1]
-                if it._status in {Status.READY.value, Status.WRITE.value}
-            ])
-            for key, its in items.items()
-        }
-
-        to_remove = [
-            it for k, v in items.items()
-            for it in v - _misc.to_set(best.get(k, []))
-        ]
-
-        _log(f'Deleting {len(to_remove)} records.')
-
-        self._delete_records(to_remove)
-        self.clean_disk()
-        _log('Auto clean complete.')
+            self._open_sqlite()
 
 
-    def __len__(self):
+    def _execute(self, query: str):
 
-        self._ensure_sqlite()
-
-        return self.cur.execute('SELECT COUNT(*) FROM main').fetchone()[0]
-
-
-    @property
-    def free_space(self):
-        total, used, free = shutil.disk_usage(self.dir)
-
-        return free
+        query = re.sub(r'\s+', ' ', query)
+        _log(f'Executing query: {query}')
+        self.cur.execute(query)
+        self.con.commit()
 
 
-    def does_it_fit(self, size: int) -> bool:
+    def _open_sqlite(self):
 
-        return size <= self.free_space
+        _log(f'Opening SQLite database: {self.path}')
+        self.con = sqlite3.connect(self.path)
+        self.cur = self.con.cursor()
+        self._create_schema()
+
+
+    def _set_path(self, path: str):
+
+        if not os.path.exists(path):
+
+            stem, ext = os.path.splitext(path)
+            os.makedirs(stem if ext else path, exist_ok = True)
+
+        if os.path.isdir(path):
+
+            path = os.path.join(path, 'cache.sqlite')
+
+        _log(f'Setting SQLite database path: {path}')
+        self.path = path
+        self.dir = os.path.dirname(self.path)
+
+
+    def _table_fields(self, name: str = 'main') -> dict[str, str]:
+
+        if name not in self._fields:
+
+            self._fields[name] = _data.load(f'{name}.yaml')
+
+        return self._fields[name]
+
+
+    @staticmethod
+    def _quotes(string: str | None, typ: str = 'VARCHAR') -> str:
+        if string is None:
+            return 'NULL'
+
+        typ = typ.upper()
+
+        return f'"{string}"' if (
+                typ.startswith('VARCHAR') or
+                typ.startswith('DATETIME')
+        ) else string
+
+
+    @staticmethod
+    def _sqlite_type(obj: Any) -> str:
+
+        pytype = type(obj).__name__
+
+        return TYPES.get(pytype, None)
+
+
+    @staticmethod
+    def _typeof(value: Any):
+
+        if isinstance(value, float) or _misc.is_int(value):
+            return 'INT'
+
+        elif isinstance(value, float) or _misc.is_float(value):
+            return 'FLOAT'
+
+
+    @staticmethod
+    def _where(
+        uri: str | None = None,
+        params: dict | None = None,
+        status: Status | set[int] | None = None,
+        version: int | set[int] | None = None,
+        newer_than: str | datetime.datetime | None = None,
+        older_than: str | datetime.datetime | None = None,
+        ext: str | None = None,
+        label: str | None = None,
+        filename: str | None = None,
+        key: str | None = None,
+        include_removed: bool = False,
+    ):
+
+        where = []
+        item_id = key
+
+        if not item_id and (uri or params):
+
+            params = params or {}
+
+            if uri:
+
+                params['_uri'] = uri
+
+            item_id = CacheItem.serialize(params)
+
+        if item_id:
+            where.append(f'item_id = "{item_id}"')
+
+        if filename:
+            where.append(f'file_name = "{filename}"')
+
+        status = _misc.to_set(status)
+
+        if -1 not in status and not include_removed:
+            where.append('status != -1')
+
+        if -2 not in status and not include_removed:
+            where.append('status != -2')
+
+        if status:
+            status = str(status).strip('{}')
+            where.append(f'status IN ({status})')
+
+        if version is not None and version != -1:
+            version = str(_misc.to_set(version)).strip('{}')
+            where.append(f'version IN ({version})')
+
+        if newer_than:
+
+            where.append(f'date > "{_utils.parse_time(newer_than)}"')
+
+        if older_than:
+
+            where.append(f'date < "{_utils.parse_time(older_than)}"')
+
+        if ext:
+
+            where.append(f'ext = "{ext}"')
+
+        if label:
+
+            where.append(f'label = "{label}"')
+
+        where = f' WHERE {" AND ".join(where)}' if where else ''
+
+        if version == -1: # TODO: Address cases where multiple items
+            where += ' ORDER BY version DESC LIMIT 1'
+
+        return  where
