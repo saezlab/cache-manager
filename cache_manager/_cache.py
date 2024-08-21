@@ -814,6 +814,17 @@ class Cache:
 
     @staticmethod
     def _typeof(value: Any) -> str:
+        """
+        Checks a given value for the numerical type.
+
+        Args:
+            value:
+                The variable to check for the type.
+
+        Returns:
+            The resulting type as a string, `'INT'` if the value is an integer
+            or `'FLOAT'` if its a floating point number.
+        """
 
         if isinstance(value, float) or _misc.is_int(value):
 
