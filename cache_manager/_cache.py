@@ -813,6 +813,30 @@ class Cache:
 
 
     def _table_fields(self, name: str = 'main') -> dict[str, str]:
+        """
+        Retrieves the available fields in the requested table (i.e. column
+        names).
+
+        Args:
+            name:
+                Name of the table from which to retreive the field names.
+                Optional, defaults to `'main'`.
+
+        Returns:
+            Dictionary containing the field names as keys and values correspond
+            to the SQL data types and column specifications.
+
+        Example:
+            >>> cache = Cache('./')
+            >>> cache._table_fields()
+            OrderedDict([('id', 'INTEGER PRIMARY KEY AUTOINCREMENT'), \
+                ('item_id', 'VARCHAR'), ('version_id', 'VARCHAR'), \
+                ('version', 'INT'), ('status', 'INT'), \
+                ('file_name', 'VARCHAR'), ('label', 'VARCHAR'), \
+                ('date', 'DATETIME'), ('ext', 'VARCHAR'), \
+                ('last_read', 'DATETIME'), ('last_search', 'DATETIME'), \
+                ('read_count', 'INT'), ('search_count', 'INT')])
+        """
 
         if name not in self._fields:
 
