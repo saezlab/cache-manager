@@ -797,6 +797,8 @@ class Cache:
 
 
     def _set_path(self, path: str):
+        """
+        """
 
         if not os.path.exists(path):
 
@@ -906,7 +908,6 @@ class Cache:
         return TYPES.get(pytype, None)
 
 
-    # FIXME: from pypath_commons, _misc.is_int('1.23') returns True :(
     @staticmethod
     def _typeof(value: Any) -> str:
         """
