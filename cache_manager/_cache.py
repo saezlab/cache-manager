@@ -704,6 +704,39 @@ class Cache:
         self._execute(q)
 
 
+    def _create_schema(self):
+
+        self._ensure_sqlite()
+
+        _log(f'Initializing database')
+
+        fields = ', '.join(f'{k} {v}' for k, v in self._table_fields().items())
+
+        _log(f'Ensuring main table exists')
+        self._execute(f'''
+            CREATE TABLE IF NOT EXISTS
+            main (
+                {fields}
+            )
+        ''')
+
+        for typ in ATTR_TYPES:
+
+            _log(f'Ensuring attr_{typ} table exists')
+            self._execute(
+                '''
+                CREATE TABLE IF NOT EXISTS
+                attr_{} (
+                    id INT,
+                    name VARCHAR,
+                    value {},
+                    FOREIGN KEY(id) REFERENCES main(id)
+                )
+            '''.format(typ, typ.upper()),
+            )
+
+
+
     def _delete_files(self, items: list[int, CacheItem]):
 
         for item in items:
@@ -806,6 +839,15 @@ class Cache:
 
     @staticmethod
     def _sqlite_type(obj: Any) -> str:
+        """
+        Checks a given value for the type and gives corresponding SQL
+        equivalent.
+
+        Args:
+            obj:
+
+        Returns:
+        """
 
         pytype = type(obj).__name__
 
