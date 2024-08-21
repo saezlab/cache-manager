@@ -864,8 +864,17 @@ class Cache:
                 The variable to check for the type.
 
         Returns:
-            The resulting type as a string, `'INT'` if the value is an integer
-            or `'FLOAT'` if its a floating point number.
+            The resulting type as a string in SQL format. `'INT'` if the value
+            is an integer or `'FLOAT'` if its a floating point number.
+
+        Examples:
+            >>> cache = Cache('./')
+            >>> cache._typeof(123)
+            'INT'
+            >>> cache._typeof(9.01)
+            'FLOAT'
+            >>> cache._typeof('123')
+            'INT'
         """
 
         if (
@@ -935,8 +944,7 @@ class Cache:
             The query string with the WHERE clause.
 
         Example:
-            >>> import cache_manager as cm
-            >>> cache = cm.Cache('./')
+            >>> cache = Cache('./')
             >>> cache.create('test_entry')
             CacheItem[test_entry V:1 UNINITIALIZED]
             >>> cache._where('test_entry')
