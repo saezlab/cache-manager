@@ -844,8 +844,19 @@ class Cache:
 
         Args:
             obj:
+                The value to check the type for.
 
         Returns:
+            The resulting SQL data type as a string.
+
+        Examples:
+            >>> cache = Cache('./')
+            >>> cache._sqlite_type(123)
+            'INT'
+            >>> cache._sqlite_type(1.25)
+            'FLOAT'
+            >>> cache._sqlite_type('abc')
+            'VARCHAR'
         """
 
         pytype = type(obj).__name__
