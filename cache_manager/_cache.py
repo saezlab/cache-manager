@@ -736,7 +736,6 @@ class Cache:
             )
 
 
-
     def _delete_files(self, items: list[int, CacheItem]):
 
         for item in items:
@@ -929,6 +928,15 @@ class Cache:
 
         Returns:
             The query string with the WHERE clause.
+
+        Example:
+            >>> import cache_manager as cm
+            >>> cache = cm.Cache('./')
+            >>> cache.create('test_entry')
+            CacheItem[test_entry V:1 UNINITIALIZED]
+            >>> cache._where('test_entry')
+            ' WHERE item_id = "224eeebf8db5634d8d9b2a31755d4a97" AND status != \
+                -1 AND status != -2'
         """
 
         where = []
