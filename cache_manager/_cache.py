@@ -16,6 +16,7 @@ import functools as ft
 import collections
 
 from pypath_common import _misc
+import platformdirs
 
 from cache_manager._item import CacheItem
 from cache_manager._status import Status
@@ -39,14 +40,14 @@ class Cache:
     The Cache class.
     """
 
-    def __init__(self, path: str):
+    def __init__(self, path: str | None = None, pkg: str | None = None):
         """
         This is not empty.
         """
 
         self.con, self.cur = None, None
         self._fields = {}
-        self._set_path(path)
+        self._set_path(path=path, pkg=pkg)
         self._ensure_sqlite()
 
 
@@ -796,9 +797,15 @@ class Cache:
         self._create_schema()
 
 
-    def _set_path(self, path: str):
+    def _set_path(self, path: str | None, pkg: str | None = None):
         """
-        """
+        """# HERE
+
+        if not path and not pkg:
+
+            raise ValueError('Please provide a valid path or package name')
+
+        path = path or platformdirs.user_cache_dir(pkg)
 
         if not os.path.exists(path):
 
