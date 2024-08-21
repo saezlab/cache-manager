@@ -823,6 +823,24 @@ class Cache:
 
     @staticmethod
     def _quotes(string: str | None, typ: str = 'VARCHAR') -> str:
+        """
+        Double-quotes strings to convert them to literals in SQL.
+
+        Args:
+            string:
+                The string to be quoted.
+            typ:
+                Type of variable the string contains. Optional, defaults to
+                `'VARCHAR'`.
+
+        Returns:
+            The resulting quoted string.
+
+        Example:
+            >>> cache = Cache('./')
+            >>> cache._quotes('abc')
+            '"abc"'
+        """
 
         if string is None:
 
