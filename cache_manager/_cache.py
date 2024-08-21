@@ -853,6 +853,7 @@ class Cache:
         return TYPES.get(pytype, None)
 
 
+    # FIXME: from pypath_commons, _misc.is_int('1.23') returns True :(
     @staticmethod
     def _typeof(value: Any) -> str:
         """
@@ -867,12 +868,16 @@ class Cache:
             or `'FLOAT'` if its a floating point number.
         """
 
-        if isinstance(value, float) or _misc.is_int(value):
-
+        if (
+            isinstance(value, int)
+            or (isinstance(value, str) and _misc.is_int(value))
+        ):
             return 'INT'
 
-        elif isinstance(value, float) or _misc.is_float(value):
-
+        elif (
+            isinstance(value, float)
+            or (isinstance(value, str) and _misc.is_float(value))
+        ):
             return 'FLOAT'
 
 
