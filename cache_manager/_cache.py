@@ -775,6 +775,9 @@ class Cache:
 
 
     def _ensure_sqlite(self):
+        """
+        Ensures the connection to the SQL database is open.
+        """
 
         if self.con is None:
 
@@ -782,6 +785,13 @@ class Cache:
 
 
     def _execute(self, query: str):
+        """
+        Executes a given SQL query in the database.
+
+        Args:
+            query:
+                The SQL query string to execute in the database.
+        """
 
         query = re.sub(r'\s+', ' ', query)
         _log(f'Executing query: {query}')
@@ -790,6 +800,9 @@ class Cache:
 
 
     def _open_sqlite(self):
+        """
+        Opens the cache registry (SQL database) connection.
+        """
 
         _log(f'Opening SQLite database: {self.path}')
         self.con = sqlite3.connect(self.path)
