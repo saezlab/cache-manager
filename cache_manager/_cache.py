@@ -748,6 +748,15 @@ class Cache:
 
 
     def _delete_records(self, items: list[int, CacheItem]):
+        """
+        Permanently deletes a given list of items from the cache.
+
+        Args:
+            items:
+                List of items to be deleted, these can be either the `CacheItem`
+                instances or an integer corresponding to the internal
+                `CacheItem._id` attribute.
+        """
 
         with Lock(self.con):
 
