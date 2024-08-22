@@ -799,7 +799,26 @@ class Cache:
 
     def _set_path(self, path: str | None, pkg: str | None = None):
         """
-        """# HERE
+        Sets the path for the cache. It can either be a explicitly defined path
+        or can take a module/package name and set the path to the OS default
+        cache directory and create a cache folder under the package name.
+
+        Args:
+            path:
+                Explicit path to set the cache in. Overrides the `pkg` keyword
+                argument. Optional, defaults to `None`.
+            pkg:
+                Package/module name the cache is used on. This sets the cache
+                directory in a folder located in the OS default cache directory.
+
+        Example:
+        >>> cache = cm.Cache('.')
+        >>> cache._set_path(path='./test_cache')
+        >>> cache.dir
+        './test_cache'
+        >>> cache.path
+        './test_cache/cache.sqlite'
+        """
 
         if not path and not pkg:
 
@@ -846,6 +865,7 @@ class Cache:
                 ('read_count', 'INT'), ('search_count', 'INT')])
         """
 
+        # TODO: Make other tables available?
         if name not in self._fields:
 
             self._fields[name] = _data.load(f'{name}.yaml')
