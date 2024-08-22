@@ -823,13 +823,12 @@ class Cache:
 
     def _table_fields(self, name: str = 'main') -> dict[str, str]:
         """
-        Retrieves the available fields in the requested table (i.e. column
-        names).
+        Retrieves the available fields in the main table (i.e. column names).
 
         Args:
             name:
                 Name of the table from which to retreive the field names.
-                Optional, defaults to `'main'`.
+                Optional, defaults to `'main'` (currently only option).
 
         Returns:
             Dictionary containing the field names as keys and values correspond
