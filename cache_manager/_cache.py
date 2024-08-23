@@ -706,6 +706,10 @@ class Cache:
 
 
     def _create_schema(self):
+        """
+        Initializes the SQL registry database and creates the main and attribute
+        tables if not already existing.
+        """
 
         self._ensure_sqlite()
 
