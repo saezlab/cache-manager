@@ -445,6 +445,8 @@ class Cache:
         setattr(self, '__class__', new)
 
 
+    # FIXME: attrs, ext and label are not used
+    # TODO: Make it more safer later (avoid to delete everything accidentally)
     def remove(
             self,
             uri: str | None = None,
@@ -459,9 +461,58 @@ class Cache:
             key: str | None = None,
             disk: bool = False,
             keep_record: bool = True,
-    ) -> None: # Make it more safer later (avoid to delete everything accidentally)
+    ) -> None:
         """
-        Remove CacheItem or version
+        Removes item(s) from the cache. The removal procedure will depend on the
+        parameters `disk` and `keep_record`, see argument description below for
+        specifics on their behavior.
+
+        Args:
+            uri:
+                Uniform Resource Identifier. Optional, defaults to `None`.
+            params:
+                Collection of parameters in dict format where key-value pairs
+                correspond to parameter-value respectively. Optional, defaults
+                to `None`.
+            version:
+                Integer defining the version of the item to update. Optional,
+                defaults to `None`.
+            attrs:
+                Extra attributes associated to the item. Keys are the attribute
+                names and values their content. Optional, defaults to `None`.
+                Currently not implemented
+            status:
+                Integer defining the status of the item to update. Optional,
+                defaults to `None`.
+            ext:
+                Extension of the file associated to the item. Optional, defaults
+                to `None`. Currently not implemented.
+            label:
+                Label for the item (e.g. type, group, category...). Optional,
+                defaults to `None`. Currently not implemented.
+            newer_than:
+                Date the times are required to be newer than. Optional, defaults
+                to `None`.
+            older_than:
+                Date the times are required to be older than. Optional, defaults
+                to `None`.
+            key:
+                Unique key name for the item. Optional, defaults to `None`.
+            disk:
+                Whether to also remove the files associated to the entry(ies)
+                from disk too. Optional, defaults to `False`.
+            keep_record:
+                Whether to keep the record of the entry in the registry (marks
+                the entry status as trashed, status = -1). Otherwise the entry
+                is permanently deleted. Optional, `True` by default.
+
+        Example:
+            >>> cache = cm.Cache('./')
+            >>> cache.create('foo')
+            CacheItem[foo V:1 UNINITIALIZED]
+            >>> cache.remove(uri='foo')
+            >>> cache.search(uri='foo')
+            []
         """
 
         with Lock(self.con):
