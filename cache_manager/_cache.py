@@ -681,6 +681,35 @@ class Cache:
         status: int = Status.READY.value,
         key: str | None = None,
     ):
+        """
+        Updates the status of a given entry(ies) in the registry. All arguments
+        other than `status` are used to identify/search the entry(ies) to
+        update.
+
+        Args:
+            uri:
+                Uniform Resource Identifier. Optional, defaults to `None`.
+            params:
+                Collection of parameters in dict format where key-value pairs
+                correspond to parameter-value respectively. Optional, defaults
+                to `None`.
+            version:
+                Version number of the item(s). Optional, defaults to `None`.
+            status:
+                Integer defining the new status to be set. Optional, defaults to
+                `3` (READY status).
+            key:
+                Unique identifier for the item (alphanumeric hash).
+
+        Example:
+            >>> cache = cm.Cache('./')
+            >>> it = cache.create('foo')
+            >>> it.status
+            0
+            >>> cache.update_status(uri='foo')
+            >>> it.status
+            3
+        """
 
         self.update(
             uri=uri,
