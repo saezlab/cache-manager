@@ -738,6 +738,16 @@ class Cache:
 
 
     def _delete_files(self, items: list[int, CacheItem]):
+        """
+        Permanently deletes the files from a given list of items in the cache
+        from the disk.
+
+        Args:
+            items:
+                List of items to be deleted, these can be either the `CacheItem`
+                instances or an integer corresponding to the internal
+                `CacheItem._id` attribute.
+        """
 
         for item in items:
 
@@ -749,7 +759,7 @@ class Cache:
 
     def _delete_records(self, items: list[int, CacheItem]):
         """
-        Permanently deletes a given list of items from the cache.
+        Permanently deletes a given list of items from the cache registry.
 
         Args:
             items:
