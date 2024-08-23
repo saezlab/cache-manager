@@ -696,6 +696,15 @@ class Cache:
 
 
     def _accessed(self, item_id: int):
+        """
+        Updates the 'last_read' and 'read_count' attributes of a given item to
+        current date/time and +1 respectively.
+
+        Args:
+            item_id:
+                Integer corresponding to the internal `CacheItem._id` attribute
+                that has just been accessed.
+        """
 
         q = (
             'UPDATE main SET '
