@@ -512,9 +512,38 @@ class Cache:
             include_removed: bool = False,
     ) -> list[CacheItem]:
         """
-        Look up items in the cache.
+        Looks up for items in the cache based on the passed parameter(s).
 
         Args:
+            uri:
+                Uniform Resource Identifier. Optional, defaults to `None`.
+            params:
+                Collection of parameters in dict format where key-value pairs
+                correspond to parameter-value respectively. Optional, defaults
+                to `None`.
+            status:
+                Integer defining the status of the item to update. Optional,
+                defaults to `None`.
+            version:
+                Integer defining the version of the item to update. Optional,
+                defaults to `None`.
+            newer_than:
+                Date the times are required to be newer than. Optional, defaults
+                to `None`.
+            older_than:
+                Date the times are required to be older than. Optional, defaults
+                to `None`.
+            ext:
+                Extension of the file associated to the item. Optional, defaults
+                to `None`.
+            label:
+                Label for the item (e.g. type, group, category...). Optional,
+                defaults to `None`.
+            filename:
+                Name of the file associated to the item. Optional, defaults to
+                `None`.
+            key:
+                Unique key name for the item. Optional, defaults to `None`.
             attrs:
                 Search by attributes. A dict of attribute names and values.
                 Operators can be included at the end of the names or in front
@@ -525,7 +554,20 @@ class Cache:
                 of the attributes will be inferred from the values, except if
                 the values provided as their correct type, such as numeric
                 types or `datetime`. Strings will be converted to dates only if
-                prefixed with `"DATE:"`.
+                prefixed with `"DATE:"`. Optional, defaults to `None`.
+            include_removed:
+                Whether to include items marked for removal (i.e. trashed,
+                status = -1) in the search.
+
+        Returns:
+            List of `CacheItem` instances of the items fulfilling the search.
+            terms.
+
+        Example:
+            >>> cache = cm.Cache('./')
+            >>> it = cache.create('foo')
+            >>> cache.search(uri='foo)
+            [CacheItem[foo V:1 UNINITIALIZED]]
         """
 
         _log('SEARCH')
@@ -609,6 +651,7 @@ class Cache:
 
     # FIXME: attrs, ext and label are not used
     # FIXME: SQL error in WHERE if only uri is provided
+    # TODO: Add example when above are solved
     def update(
             self,
             uri: str | None = None,
@@ -617,7 +660,7 @@ class Cache:
             status: int | None = None,
             version: int | None = None,
             ext: str | None = None,
-            label: str | None = None,
+            label: str | None = None, 
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
             key: str | None = None,
