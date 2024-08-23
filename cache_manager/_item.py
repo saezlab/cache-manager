@@ -141,6 +141,7 @@ class CacheItem:
         self._setup()
 
 
+    # FIXME: prints CacheItem instance rstatus, not the Cache status
     def __repr__(self):
 
         return (

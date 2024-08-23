@@ -607,6 +607,8 @@ class Cache:
         return list(results.values())
 
 
+    # FIXME: attrs, ext and label are not used
+    # FIXME: SQL error in WHERE if only uri is provided
     def update(
             self,
             uri: str | None = None,
@@ -622,7 +624,44 @@ class Cache:
             update: dict | None = None,
     ):
         """
-        Update one or more items.
+        Updates one or more items. All arguments except `update` are used to
+        search for the items to be updated.
+
+        Args:
+            uri:
+                Uniform Resource Identifier. Optional, defaults to `None`.
+            params:
+                Collection of parameters in dict format where key-value pairs
+                correspond to parameter-value respectively. Optional, defaults
+                to `None`.
+            attrs:
+                Extra attributes associated to the item. Keys are the attribute
+                names and values their content. Optional, defaults to `None`.
+                Currently not implemented
+            status:
+                Integer defining the status of the item to update. Optional,
+                defaults to `None`.
+            version:
+                Integer defining the version of the item to update. Optional,
+                defaults to `None`.
+            ext:
+                Extension of the file associated to the item. Optional, defaults
+                to `None`. Currently not implemented.
+            label:
+                Label for the item (e.g. type, group, category...). Optional,
+                defaults to `None`. Currently not implemented.
+            newer_than:
+                Date the times are required to be newer than. Optional, defaults
+                to `None`.
+            older_than:
+                Date the times are required to be older than. Optional, defaults
+                to `None`.
+            key:
+                Unique key name for the item. Optional, defaults to `None`.
+            update:
+                Dictionary containing the key-value pairs of fields/attributes
+                and the new values respectively to be updated. Optional,
+                defaults to `None`.
         """
 
         with Lock(self.con):
@@ -1074,10 +1113,10 @@ class Cache:
             version:
                 Version(s) of the item(s). Optional, defaults to `None`.
             newer_than:
-                Date the itmes are required to be newer than. Optional, defaults
+                Date the times are required to be newer than. Optional, defaults
                 to `None`.
             older_than:
-                Date the itmes are required to be older than. Optional, defaults
+                Date the times are required to be older than. Optional, defaults
                 to `None`.
             ext:
                 Extension of the file associated to the item(s). Optional,
