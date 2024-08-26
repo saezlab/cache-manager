@@ -434,6 +434,10 @@ class Cache:
 
 
     def reload(self):
+        """
+        Reloads the cache_manager at the module level and reloads the current
+        instance of `Cache`
+        """
 
         modname = self.__class__.__module__
         mod = __import__(modname, fromlist=[modname.split('.')[0]])
