@@ -792,21 +792,16 @@ class Cache:
 
                 _log(f'Updating attributes in attr_{actual_typ}')
 
-                values = ', '.join(
-                    f'{k} = {self._quotes(v, TYPES[type(v).__name__])}'
-                    for k, v in update.items()
-                    if (
-                        k not in main_fields and
-                        type(v).__name__ == actual_typ
-                    )
-                )
+                for k, v in update.items():
 
-                if not values:
+                    typ = type(v).__name__
 
-                    continue
+                    if k not in main_fields and typ == actual_typ:
 
-                q = f'UPDATE attr_{actual_typ} SET ({values}) {where}'
-                self._execute(q)
+                        val = f'value = {self._quotes(v, TYPES[typ])}'
+                        name_where = where + f' AND name = {self._quotes(k)}'
+                        q = f'UPDATE attr_{actual_typ} SET {val} {name_where}'
+                        self._execute(q)
 
             _log(f'Finished updating attributes')
 
