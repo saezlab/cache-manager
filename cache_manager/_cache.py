@@ -781,8 +781,11 @@ class Cache:
             ids = [it._id for it in items]
             _log(f'Updating {len(ids)} items')
             where = f' WHERE id IN ({", ".join(map(str, ids))})'
-            q = f'UPDATE main SET {main}{where};'
-            self._execute(q)
+
+            if main:
+
+                q = f'UPDATE main SET {main}{where};'
+                self._execute(q)
 
             # Updating elements in attribute tables
             for actual_typ in ATTR_TYPES:
