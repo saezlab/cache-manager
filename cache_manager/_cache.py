@@ -701,8 +701,6 @@ class Cache:
 
 
     # FIXME: attrs, ext and label are not used
-    # FIXME: SQL error in WHERE if only uri is provided
-    # TODO: Add example when above are solved
     def update(
             self,
             uri: str | None = None,
@@ -756,6 +754,16 @@ class Cache:
                 Dictionary containing the key-value pairs of fields/attributes
                 and the new values respectively to be updated. Optional,
                 defaults to `None`.
+
+        Example:
+            >>> cache = cm.Cache('./')
+            >>> it = cache.create('foo', attrs={'bar': 123, 'baz': 456})
+            >>> it.attrs
+            {'bar': 123, 'baz': 456, '_uri': 'foo'}
+            >>> cache.update(uri='foo', update={'bar': 0})
+            >>> it = cache.search('foo')[0]
+            >>> it.attrs
+            {'_uri': 'foo', 'bar': 0, 'baz': 456}
         """
 
         with Lock(self.con):
