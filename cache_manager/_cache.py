@@ -404,10 +404,21 @@ class Cache:
 
 
     def does_it_fit(self, size: int) -> bool:
+        """
+        Checks whether a given size is lower than the current available space.
+
+        Args:
+            size:
+                Integer corresponding to the size to be checked (in bytes).
+
+        Returns:
+            Whether the requested space is available.
+        """
 
         return size <= self.free_space
 
 
+    # TODO: Should method below include a call to `does_it_fit`?
     def move_in(
         self,
         path: str,
