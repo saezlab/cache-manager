@@ -419,6 +419,40 @@ class Cache:
         label: str | None = None,
         filename: str | None = None,
     ) -> CacheItem:
+        """
+        Copies a file into the cache directory and creates the corresponding
+        cache item registry.
+
+        Args:
+            path:
+                Current/original path of the file that has to be moved into the
+                cache.
+            uri:
+                Uniform Resource Identifier. Optional, defaults to `None`.
+            params:
+                Collection of parameters in dict format where key-value pairs
+                correspond to parameter-value respectively. Optional, defaults
+                to `None`.
+            attrs:
+                Extra attributes associated to the item. Keys are the attribute
+                names and values their content. These attributes will be stored
+                in the attribute tables according to their data type
+                automatically. Optional, defaults to `None`.
+            status:
+                Status of the new item. Optional, defaults to `1`.
+            ext:
+                Extension of the file associated to the item. Optional, defaults
+                to `None` (automatically extracted from the file name).
+            label:
+                Label for the item (e.g. type, group, category...). Optional,
+                defaults to `None`.
+            filename:
+                Name of the file associated to the item. Optional, defaults to
+                `None` (automatically set).
+
+        Returns:
+            The newly created `CacheItem` instance.
+        """
 
         args = locals()
         args.pop('self')
