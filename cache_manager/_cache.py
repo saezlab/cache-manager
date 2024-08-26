@@ -288,6 +288,42 @@ class Cache:
             label: str | None = None,
             filename: str | None = None,
     ) -> CacheItem:
+        """
+        Creates a new entry in the registry.
+
+        Args:
+            uri:
+                Uniform Resource Identifier.
+            params:
+                Collection of parameters in dict format where key-value pairs
+                correspond to parameter-value respectively. Optional, defaults
+                to `None`.
+            attrs:
+                Extra attributes associated to the item. Keys are the attribute
+                names and values their content. These attributes will be stored
+                in the attribute tables according to their data type
+                automatically. Optional, defaults to `None`.
+            status:
+                Status of the new item. Optional, defaults to `0`.
+            ext:
+                Extension of the file associated to the item. Optional, defaults
+                to `None` (automatically extracted from the file name).
+            label:
+                Label for the item (e.g. type, group, category...). Optional,
+                defaults to `None`.
+            filename:
+                Name of the file associated to the item. Optional, defaults to
+                `None` (automatically set).
+
+        Returns:
+            The newly created `CacheItem` instance.
+
+        Example:
+            >>> cache = cm.Cache('./')
+            >>> cache.create('foo')
+            CacheItem[31d0e534960b07c0bde745c17b05eaba V:1 UNINITIALIZED]
+
+        """
 
         self._ensure_sqlite()
 
