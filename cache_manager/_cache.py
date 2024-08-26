@@ -773,26 +773,28 @@ class Cache:
             update = update or {}
             main_fields = self._table_fields()
             main = ', '.join(
-                f'{k} = {self._quotes(v, main_fields[k])}'
+                f'{k} = {self._quotes(v, TYPES[type(v).__name__])}'
                 for k, v in update.items() if k in main_fields
             )
 
+            # Updating elements in main table
             ids = [it._id for it in items]
             _log(f'Updating {len(ids)} items')
             where = f' WHERE id IN ({", ".join(map(str, ids))})'
             q = f'UPDATE main SET {main}{where};'
             self._execute(q)
 
+            # Updating elements in attribute tables
             for actual_typ in ATTR_TYPES:
 
                 _log(f'Updating attributes in attr_{actual_typ}')
 
                 values = ', '.join(
-                    f'{k} = {self._quotes(v, main_fields[k])}'
+                    f'{k} = {self._quotes(v, TYPES[type(v).__name__])}'
                     for k, v in update.items()
                     if (
                         k not in main_fields and
-                        str(type(v)) == actual_typ
+                        type(v).__name__ == actual_typ
                     )
                 )
 
