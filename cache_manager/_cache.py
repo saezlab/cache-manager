@@ -118,7 +118,36 @@ class Cache:
             older_than: str | datetime.datetime | None = None,
     ) -> CacheItem | None:
         """
-        Selecting best version of an item
+        Searches for the best (latest) version of an item in the cache registry.
+
+        Args:
+            uri:
+                Uniform Resource Identifier.
+            params:
+                Collection of parameters in dict format where key-value pairs
+                correspond to parameter-value respectively. Optional, defaults
+                to `None`.
+            status:
+                Integer (or set of) defining the valid status of the item to be
+                searched. Optional, defaults to `3` (READY status).
+            newer_than:
+                Date the times are required to be newer than. Optional, defaults
+                to `None`.
+            older_than:
+                Date the times are required to be older than. Optional, defaults
+                to `None`.
+
+        Returns:
+            The `CacheItem` instance corresponding to the latest version of it.
+
+        Example:
+            >>> cache = cm.Cache('./')
+            >>> cache.create('foo')
+            CacheItem[foo V:1 UNINITIALIZED]
+            >>> cache.create('foo')
+            CacheItem[foo V:2 UNINITIALIZED]
+            >>> cache.best('foo', status=0)
+            CacheItem[foo V:2 UNINITIALIZED]
         """
 
         status = _misc.to_set(status)
