@@ -201,6 +201,26 @@ class Cache:
 
 
     def by_key(self, key: str, version: int) -> CacheItem:
+        """
+        Searches a single item by its key and version number.
+
+        Args:
+            key:
+                The key of the item to be fetched.
+            version:
+                The specific version of the item to be retrieved.
+
+        Returns:
+            The `CacheItem` instance of the item searched (if any).
+
+        Example:
+            >>> cache = cm.Cache('./')
+            >>> it = cache.create('foo')
+            >>> it.key
+            '31d0e534960b07c0bde745c17b05eaba'
+            >>> cache.by_key('31d0e534960b07c0bde745c17b05eaba', 1)
+            CacheItem[foo V:1 UNINITIALIZED]
+        """
 
         _log(f'Looking up key: {key}')
 
