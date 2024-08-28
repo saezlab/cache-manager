@@ -254,6 +254,29 @@ class Cache:
 
 
     def contents(self) -> dict[str, dict[str, int | str | CacheItem]]:
+        """
+        Generates a collection of all the items in the database registry and
+        files in the cache directory on the disk.
+
+        Returns:
+            Dictionary where keys correspond to each item's `version_id` and
+            values to dictionary with some of the item's attributes, namely:
+            `status` (current status of the item as integer), `fname` (file name
+            as stored in the cache database), `last_read` (date where the item
+            was last accessed), `read_count` (number of times the item has been
+            accessed), `item` (the instance of the `CacheItem` itself),
+            `disk_fname` (file name as stored in the cache directory on the
+            disk).
+
+        Example:
+            >>> cache = cm.Cache('./')
+            >>> cache.create('foo')
+            CacheItem[foo V:1 UNINITIALIZED]
+            >>> cache.contents()
+            {'31d0e534960b07c0bde745c17b05eaba-1': {'status': 0, 'fname': '31d0\
+            e534960b07c0bde745c17b05eaba-1', 'last_read': None, 'read_count': 0\
+            , 'item': CacheItem[foo V:1 UNINITIALIZED], 'disk_fname': None}}
+        """
 
         disk = {
             m.group(): fname
