@@ -1,0 +1,2042 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cache_manager._cache &#8212; cache_manager  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/style.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/cache_manager/_cache';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../contents.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">cache_manager  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_cache.html">
+                        _cache module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_item.html">
+                        _item module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_lock.html">
+                        _lock module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_open.html">
+                        _open module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_status.html">
+                        _status module
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_cache.html">
+                        _cache module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_item.html">
+                        _item module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_lock.html">
+                        _lock module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_open.html">
+                        _open module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_status.html">
+                        _status module
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../contents.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">cache_manager._cache</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for cache_manager._cache</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;ATTR_TYPES&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Cache&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;TYPES&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">functools</span> <span class="k">as</span> <span class="nn">ft</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="kn">from</span> <span class="nn">pypath_common</span> <span class="kn">import</span> <span class="n">_misc</span>
+<span class="kn">import</span> <span class="nn">platformdirs</span>
+
+<span class="kn">from</span> <span class="nn">cache_manager._item</span> <span class="kn">import</span> <span class="n">CacheItem</span>
+<span class="kn">from</span> <span class="nn">cache_manager._status</span> <span class="kn">import</span> <span class="n">Status</span>
+<span class="kn">from</span> <span class="nn">cache_manager._session</span> <span class="kn">import</span> <span class="n">_log</span>
+<span class="kn">import</span> <span class="nn">cache_manager.utils</span> <span class="k">as</span> <span class="nn">_utils</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_data</span>
+<span class="kn">from</span> <span class="nn">._lock</span> <span class="kn">import</span> <span class="n">Lock</span>
+
+<span class="n">ATTR_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;varchar&#39;</span><span class="p">,</span> <span class="s1">&#39;int&#39;</span><span class="p">,</span> <span class="s1">&#39;datetime&#39;</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">]</span>
+
+<span class="n">TYPES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;str&#39;</span><span class="p">:</span> <span class="s1">&#39;VARCHAR&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;int&#39;</span><span class="p">:</span> <span class="s1">&#39;INT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;float&#39;</span><span class="p">:</span> <span class="s1">&#39;FLOAT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;datetime&#39;</span><span class="p">:</span> <span class="s1">&#39;DATETIME&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="Cache"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache">[docs]</a><span class="k">class</span> <span class="nc">Cache</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cache manager class, stores and manages the information in the registry</span>
+<span class="sd">    database as well as the files in the cache directory.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path:</span>
+<span class="sd">            Explicit path to set the cache in. Overrides the `pkg` keyword</span>
+<span class="sd">            argument. Optional, defaults to `None`.</span>
+<span class="sd">        pkg:</span>
+<span class="sd">            Package/module name the cache is used on. This sets the cache</span>
+<span class="sd">            directory in a folder located in the OS default cache directory.</span>
+
+<span class="sd">    Attrs:</span>
+<span class="sd">        con:</span>
+<span class="sd">            Current connection to the SQL database, an instance of</span>
+<span class="sd">            `sqlite3.Connection`.</span>
+<span class="sd">        cur:</span>
+<span class="sd">            Current cursor of the SQL database, an instance of `sqlite3.Cursor`.</span>
+<span class="sd">        path:</span>
+<span class="sd">            Path to the current cache registry.</span>
+<span class="sd">        dir:</span>
+<span class="sd">            The directory of the cache.</span>
+<span class="sd">        free_space:</span>
+<span class="sd">            Amount of free space available in the cache (in bytes).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pkg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">con</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_path</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">pkg</span><span class="o">=</span><span class="n">pkg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_sqlite</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;con&#39;</span><span class="p">):</span>
+
+            <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Closing SQLite database path: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">con</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_sqlite</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT COUNT(*) FROM main&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">free_space</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the available free space in the cache directory.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The available space in bytes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">total</span><span class="p">,</span> <span class="n">used</span><span class="p">,</span> <span class="n">free</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">disk_usage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">free</span>
+
+
+<div class="viewcode-block" id="Cache.autoclean"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache.autoclean">[docs]</a>    <span class="k">def</span> <span class="nf">autoclean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Keeps only ready/in writing items and for each item the best version and</span>
+<span class="sd">        deletes anything else in the cache registry.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="s1">&#39;Auto cleaning cache.&#39;</span><span class="p">)</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contents</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">item</span> <span class="o">:=</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">]):</span>
+
+                <span class="n">items</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="n">best</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span> <span class="n">_misc</span><span class="o">.</span><span class="n">first</span><span class="p">([</span>
+                <span class="n">it</span> <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">its</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">version</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">it</span><span class="o">.</span><span class="n">_status</span> <span class="ow">in</span> <span class="p">{</span><span class="n">Status</span><span class="o">.</span><span class="n">READY</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">Status</span><span class="o">.</span><span class="n">WRITE</span><span class="o">.</span><span class="n">value</span><span class="p">}</span>
+            <span class="p">])</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">its</span> <span class="ow">in</span> <span class="n">items</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+
+        <span class="n">to_remove</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">it</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">items</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">v</span> <span class="o">-</span> <span class="n">_misc</span><span class="o">.</span><span class="n">to_set</span><span class="p">(</span><span class="n">best</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">[]))</span>
+        <span class="p">]</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Deleting </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">to_remove</span><span class="p">)</span><span class="si">}</span><span class="s1"> records.&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_records</span><span class="p">(</span><span class="n">to_remove</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clean_disk</span><span class="p">()</span>
+        <span class="n">_log</span><span class="p">(</span><span class="s1">&#39;Auto clean complete.&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Cache.best"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache.best">[docs]</a>    <span class="k">def</span> <span class="nf">best</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">status</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Status</span><span class="o">.</span><span class="n">READY</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">newer_than</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">older_than</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CacheItem</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Searches for the best (latest) version of an item in the cache registry.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            uri:</span>
+<span class="sd">                Uniform Resource Identifier.</span>
+<span class="sd">            params:</span>
+<span class="sd">                Collection of parameters in dict format where key-value pairs</span>
+<span class="sd">                correspond to parameter-value respectively. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            status:</span>
+<span class="sd">                Integer (or set of) defining the valid status of the item to be</span>
+<span class="sd">                searched. Optional, defaults to `3` (READY status).</span>
+<span class="sd">            newer_than:</span>
+<span class="sd">                Date the times are required to be newer than. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            older_than:</span>
+<span class="sd">                Date the times are required to be older than. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The `CacheItem` instance corresponding to the latest version of it.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; cache = cm.Cache(&#39;./&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; cache.create(&#39;foo&#39;)</span>
+<span class="sd">            CacheItem[foo V:1 UNINITIALIZED]</span>
+<span class="sd">            &gt;&gt;&gt; cache.create(&#39;foo&#39;)</span>
+<span class="sd">            CacheItem[foo V:2 UNINITIALIZED]</span>
+<span class="sd">            &gt;&gt;&gt; cache.best(&#39;foo&#39;, status=0)</span>
+<span class="sd">            CacheItem[foo V:2 UNINITIALIZED]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">status</span> <span class="o">=</span> <span class="n">_misc</span><span class="o">.</span><span class="n">to_set</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
+
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+            <span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+            <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
+            <span class="n">newer_than</span><span class="o">=</span><span class="n">newer_than</span><span class="p">,</span>
+            <span class="n">older_than</span><span class="o">=</span><span class="n">older_than</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># TODO: Consider also date</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">it</span><span class="p">:</span> <span class="n">it</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">items</span><span class="p">:</span>
+
+            <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Best matching version: </span><span class="si">{</span><span class="n">items</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">items</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="s1">&#39;No version found matching criteria&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Cache.best_or_new"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache.best_or_new">[docs]</a>    <span class="k">def</span> <span class="nf">best_or_new</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">status</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Status</span><span class="o">.</span><span class="n">READY</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+        <span class="n">newer_than</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">older_than</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">attrs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ext</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">new_status</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Status</span><span class="o">.</span><span class="n">WRITE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+        <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CacheItem</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Searches for the best version of an item (i.e. last version). If such</span>
+<span class="sd">        item could not be found, it creates a new one.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            uri:</span>
+<span class="sd">                Uniform Resource Identifier.</span>
+<span class="sd">            params:</span>
+<span class="sd">                Collection of parameters in dict format where key-value pairs</span>
+<span class="sd">                correspond to parameter-value respectively. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            status:</span>
+<span class="sd">                Integer (or set of) defining the valid status of the item to be</span>
+<span class="sd">                searched. Optional, defaults to `3` (READY status).</span>
+<span class="sd">            newer_than:</span>
+<span class="sd">                Date the times are required to be newer than. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            older_than:</span>
+<span class="sd">                Date the times are required to be older than. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            attrs:</span>
+<span class="sd">                Attributes of the item to be searched or created as dictionary</span>
+<span class="sd">                of key-value pairs corresponding to the name and value of the</span>
+<span class="sd">                attributes. Optional, defaults to `None`.</span>
+<span class="sd">            ext:</span>
+<span class="sd">                Extension of the file associated to the item. Optional, defaults</span>
+<span class="sd">                to `None`. Currently not implemented.</span>
+<span class="sd">            label:</span>
+<span class="sd">                Label for the item (e.g. type, group, category...). Optional,</span>
+<span class="sd">                defaults to `None`.</span>
+<span class="sd">            new_status:</span>
+<span class="sd">                Integer defining the new status to be set in the case a new item</span>
+<span class="sd">                is created. Optional, defaults to `1` (WRITE status).</span>
+<span class="sd">            filename:</span>
+<span class="sd">                Name of the file associated to the item. Optional, defaults to</span>
+<span class="sd">                `None`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The `CacheItem` instance of the best or new item according to the</span>
+<span class="sd">            provided attributes.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; cache = cm.Cache(&#39;./&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; cache.create(&#39;foo&#39;)</span>
+<span class="sd">            CacheItem[foo V:1 UNINITIALIZED]</span>
+<span class="sd">            &gt;&gt;&gt; cache.create(&#39;foo&#39;)</span>
+<span class="sd">            CacheItem[foo V:2 UNINITIALIZED]</span>
+<span class="sd">            &gt;&gt;&gt; cache.best_or_new(&#39;foo&#39;, status=0)</span>
+<span class="sd">            CacheItem[foo V:2 UNINITIALIZED]</span>
+<span class="sd">            &gt;&gt;&gt; cache.best_or_new(&#39;bar&#39;)</span>
+<span class="sd">            CacheItem[bar V:1 WRITE]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">)</span>
+        <span class="n">args</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;new_status&#39;</span><span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;newer_than&#39;</span><span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;older_than&#39;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">Lock</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">con</span><span class="p">):</span>
+
+            <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">best</span><span class="p">(</span>
+                <span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span>
+                <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
+                <span class="n">newer_than</span><span class="o">=</span><span class="n">newer_than</span><span class="p">,</span>
+                <span class="n">older_than</span><span class="o">=</span><span class="n">older_than</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="p">:</span>
+
+                <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">item</span></div>
+
+
+<div class="viewcode-block" id="Cache.by_attrs"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache.by_attrs">[docs]</a>    <span class="k">def</span> <span class="nf">by_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Searches entries in the registry based on their attributes (stored in</span>
+<span class="sd">        the differen type-based attribute tables).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            attrs:</span>
+<span class="sd">                Attributes and corresponding values of the items to search for.</span>
+<span class="sd">                By default, the different attributes in the search must be</span>
+<span class="sd">                satisfied. This is, items that fulfill all the attribute-value</span>
+<span class="sd">                pairs, will be included in the search result. In case one wants</span>
+<span class="sd">                the results of the search to just fulfill at least one term, it</span>
+<span class="sd">                must include the following key-value pair in the argument:</span>
+<span class="sd">                `&#39;__and&#39;: False`. See example below.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Set of keys corresponding to the elements in the registry with the</span>
+<span class="sd">            searched attributes.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; cache = cm.Cache(&#39;./&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; cache.create(&#39;foo1&#39;, attrs={&#39;bar&#39;: 1, &#39;baz&#39;: 2})</span>
+<span class="sd">            CacheItem[foo1 V:1 UNINITIALIZED]</span>
+<span class="sd">            &gt;&gt;&gt; cache.create(&#39;foo2&#39;, attrs={&#39;bar&#39;: 1, &#39;baz&#39;: 5})</span>
+<span class="sd">            CacheItem[foo2 V:1 UNINITIALIZED]</span>
+<span class="sd">            &gt;&gt;&gt; cache.by_attrs({&#39;bar&#39;: 1, &#39;baz&#39;: 5})</span>
+<span class="sd">            {2}</span>
+<span class="sd">            &gt;&gt;&gt; cache.by_attrs({&#39;bar&#39;: 1, &#39;baz&#39;: 5, &#39;__and&#39;: False})</span>
+<span class="sd">            {1, 2}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Searching by attributes: </span><span class="si">{</span><span class="n">attrs</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">op</span> <span class="o">=</span> <span class="nb">set</span><span class="o">.</span><span class="n">intersection</span> <span class="k">if</span> <span class="n">attrs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;__and&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span> <span class="k">else</span> <span class="nb">set</span><span class="o">.</span><span class="n">union</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="n">_utils</span><span class="o">.</span><span class="n">parse_attr_search</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">atype</span><span class="p">,</span> <span class="n">queries</span> <span class="ow">in</span> <span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+            <span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">:</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SELECT id FROM attr_</span><span class="si">{</span><span class="n">atype</span><span class="si">}</span><span class="s1"> WHERE </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">aux</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">aux</span><span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">op</span><span class="p">(</span><span class="o">*</span><span class="n">result</span><span class="p">)</span> <span class="k">if</span> <span class="n">result</span> <span class="k">else</span> <span class="nb">set</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Cache.by_key"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache.by_key">[docs]</a>    <span class="k">def</span> <span class="nf">by_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CacheItem</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Searches a single item by its key and version number.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            key:</span>
+<span class="sd">                The key of the item to be fetched.</span>
+<span class="sd">            version:</span>
+<span class="sd">                The specific version of the item to be retrieved.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The `CacheItem` instance of the item searched (if any).</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; cache = cm.Cache(&#39;./&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; it = cache.create(&#39;foo&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; it.key</span>
+<span class="sd">            &#39;31d0e534960b07c0bde745c17b05eaba&#39;</span>
+<span class="sd">            &gt;&gt;&gt; cache.by_key(&#39;31d0e534960b07c0bde745c17b05eaba&#39;, 1)</span>
+<span class="sd">            CacheItem[foo V:1 UNINITIALIZED]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Looking up key: </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">_misc</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Cache.clean_db"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache.clean_db">[docs]</a>    <span class="k">def</span> <span class="nf">clean_db</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes records from the database registry that do not have the</span>
+<span class="sd">        corresponding file on the cache disk directory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="s1">&#39;Cleaning cache database: removing records without file on disk.&#39;</span><span class="p">)</span>
+
+        <span class="n">items</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">item</span>
+            <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contents</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">item</span> <span class="o">:=</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">])</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">it</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Deleting </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span><span class="si">}</span><span class="s1"> records.&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_records</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+        <span class="n">_log</span><span class="p">(</span><span class="s1">&#39;Cleaning cache database complete.&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Cache.clean_disk"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache.clean_disk">[docs]</a>    <span class="k">def</span> <span class="nf">clean_disk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes files from the disk cache directory if they don&#39;t have any</span>
+<span class="sd">        record in the database registry.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="s1">&#39;Cleaning disk: removing items without DB record.&#39;</span><span class="p">)</span>
+
+        <span class="n">fnames</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contents</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">fname</span> <span class="o">:=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;disk_fname&#39;</span><span class="p">])</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Deleting </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">fnames</span><span class="p">)</span><span class="si">}</span><span class="s1"> files.&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">fnames</span><span class="p">:</span>
+
+            <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Deleting from disk: `</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s1">`.&#39;</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="s1">&#39;Cleaning disk complete.&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Cache.contents"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache.contents">[docs]</a>    <span class="k">def</span> <span class="nf">contents</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">CacheItem</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a collection of all the items in the database registry and</span>
+<span class="sd">        files in the cache directory on the disk.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary where keys correspond to each item&#39;s `version_id` and</span>
+<span class="sd">            values to dictionary with some of the item&#39;s attributes, namely:</span>
+<span class="sd">            `status` (current status of the item as integer), `fname` (file name</span>
+<span class="sd">            as stored in the cache database), `last_read` (date where the item</span>
+<span class="sd">            was last accessed), `read_count` (number of times the item has been</span>
+<span class="sd">            accessed), `item` (the instance of the `CacheItem` itself),</span>
+<span class="sd">            `disk_fname` (file name as stored in the cache directory on the</span>
+<span class="sd">            disk).</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; cache = cm.Cache(&#39;./&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; cache.create(&#39;foo&#39;)</span>
+<span class="sd">            CacheItem[foo V:1 UNINITIALIZED]</span>
+<span class="sd">            &gt;&gt;&gt; cache.contents()</span>
+<span class="sd">            {&#39;31d0e534960b07c0bde745c17b05eaba-1&#39;: {&#39;status&#39;: 0, &#39;fname&#39;: &#39;31d0\</span>
+<span class="sd">            e534960b07c0bde745c17b05eaba-1&#39;, &#39;last_read&#39;: None, &#39;read_count&#39;: 0\</span>
+<span class="sd">            , &#39;item&#39;: CacheItem[foo V:1 UNINITIALIZED], &#39;disk_fname&#39;: None}}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">disk</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">():</span> <span class="n">fname</span>
+            <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">m</span> <span class="o">:=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[\dabcdef]</span><span class="si">{32}</span><span class="s1">-\d+&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="p">))</span>
+        <span class="p">}</span>
+
+        <span class="n">db</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">it</span><span class="o">.</span><span class="n">version_id</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">it</span><span class="o">.</span><span class="n">_status</span><span class="p">,</span>
+                <span class="s1">&#39;fname&#39;</span><span class="p">:</span> <span class="n">it</span><span class="o">.</span><span class="n">cache_fname</span><span class="p">,</span>
+                <span class="s1">&#39;last_read&#39;</span><span class="p">:</span> <span class="n">it</span><span class="o">.</span><span class="n">last_read</span><span class="p">,</span>
+                <span class="s1">&#39;read_count&#39;</span><span class="p">:</span> <span class="n">it</span><span class="o">.</span><span class="n">read_count</span><span class="p">,</span>
+                <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="n">it</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">include_removed</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">vid</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">vid</span><span class="p">,</span> <span class="p">{}),</span> <span class="n">disk_fname</span> <span class="o">=</span> <span class="n">disk</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">vid</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">vid</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">disk</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="Cache.create"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">attrs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">status</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Status</span><span class="o">.</span><span class="n">UNINITIALIZED</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">ext</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CacheItem</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new entry in the registry.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            uri:</span>
+<span class="sd">                Uniform Resource Identifier.</span>
+<span class="sd">            params:</span>
+<span class="sd">                Collection of parameters in dict format where key-value pairs</span>
+<span class="sd">                correspond to parameter-value respectively. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            attrs:</span>
+<span class="sd">                Extra attributes associated to the item. Keys are the attribute</span>
+<span class="sd">                names and values their content. These attributes will be stored</span>
+<span class="sd">                in the attribute tables according to their data type</span>
+<span class="sd">                automatically. Optional, defaults to `None`.</span>
+<span class="sd">            status:</span>
+<span class="sd">                Status of the new item. Optional, defaults to `0`.</span>
+<span class="sd">            ext:</span>
+<span class="sd">                Extension of the file associated to the item. Optional, defaults</span>
+<span class="sd">                to `None` (automatically extracted from the file name).</span>
+<span class="sd">            label:</span>
+<span class="sd">                Label for the item (e.g. type, group, category...). Optional,</span>
+<span class="sd">                defaults to `None`.</span>
+<span class="sd">            filename:</span>
+<span class="sd">                Name of the file associated to the item. Optional, defaults to</span>
+<span class="sd">                `None` (automatically set).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The newly created `CacheItem` instance.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; cache = cm.Cache(&#39;./&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; cache.create(&#39;foo&#39;)</span>
+<span class="sd">            CacheItem[31d0e534960b07c0bde745c17b05eaba V:1 UNINITIALIZED]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_sqlite</span><span class="p">()</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;CREATE </span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">)</span>
+        <span class="n">param_str</span> <span class="o">=</span> <span class="n">_utils</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Creating new version for item </span><span class="si">{</span><span class="n">param_str</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">Lock</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">con</span><span class="p">):</span>
+
+            <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Looking up existing versions of item `</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s1">`&#39;</span><span class="p">)</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                <span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span>
+                <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">last_version</span> <span class="o">=</span> <span class="nb">max</span><span class="p">((</span><span class="n">i</span><span class="o">.</span><span class="n">version</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">),</span> <span class="n">default</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">last_version</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+                <span class="n">_log</span><span class="p">(</span><span class="s1">&#39;No existing version found.&#39;</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Latest version: `</span><span class="si">{</span><span class="n">last_version</span><span class="si">}</span><span class="s1">`&#39;</span><span class="p">)</span>
+
+            <span class="n">new</span> <span class="o">=</span> <span class="n">CacheItem</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+                <span class="n">uri</span><span class="p">,</span>
+                <span class="n">params</span><span class="p">,</span>
+                <span class="n">attrs</span><span class="o">=</span><span class="n">attrs</span><span class="p">,</span>
+                <span class="n">version</span><span class="o">=</span><span class="n">last_version</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="n">date</span><span class="o">=</span><span class="n">_utils</span><span class="o">.</span><span class="n">parse_time</span><span class="p">(),</span>
+                <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
+                <span class="n">ext</span><span class="o">=</span><span class="n">ext</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+                <span class="n">cache</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Next version: </span><span class="si">{</span><span class="n">new</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">new</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">                INSERT INTO</span>
+<span class="s1">                main (</span>
+<span class="s1">                    item_id,</span>
+<span class="s1">                    version_id,</span>
+<span class="s1">                    version,</span>
+<span class="s1">                    status,</span>
+<span class="s1">                    file_name,</span>
+<span class="s1">                    label,</span>
+<span class="s1">                    date,</span>
+<span class="s1">                    ext,</span>
+<span class="s1">                    last_read,</span>
+<span class="s1">                    last_search,</span>
+<span class="s1">                    read_count,</span>
+<span class="s1">                    search_count</span>
+<span class="s1">                )</span>
+<span class="s1">                VALUES (</span>
+<span class="s1">                    </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_quotes</span><span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">key</span><span class="p">)</span><span class="si">}</span><span class="s1">,</span>
+<span class="s1">                    &quot;</span><span class="si">{</span><span class="n">new</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">new</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s1">&quot;,</span>
+<span class="s1">                    </span><span class="si">{</span><span class="n">new</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s1">,</span>
+<span class="s1">                    </span><span class="si">{</span><span class="n">new</span><span class="o">.</span><span class="n">_status</span><span class="si">}</span><span class="s1">,</span>
+<span class="s1">                    </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_quotes</span><span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="si">}</span><span class="s1">,</span>
+<span class="s1">                    </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_quotes</span><span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">label</span><span class="p">)</span><span class="si">}</span><span class="s1">,</span>
+<span class="s1">                    </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_quotes</span><span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">date</span><span class="p">)</span><span class="si">}</span><span class="s1">,</span>
+<span class="s1">                    </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_quotes</span><span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">ext</span><span class="p">)</span><span class="si">}</span><span class="s1">,</span>
+<span class="s1">                    NULL,</span>
+<span class="s1">                    </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_quotes</span><span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">date</span><span class="p">)</span><span class="si">}</span><span class="s1">,</span>
+<span class="s1">                    0,</span>
+<span class="s1">                    0</span>
+<span class="s1">                )</span>
+<span class="s1">            &#39;&#39;&#39;</span><span class="p">)</span>
+
+            <span class="n">q</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;SELECT id FROM main WHERE version_id = &quot;</span><span class="si">{</span><span class="n">new</span><span class="o">.</span><span class="n">version_id</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">new</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">key</span>
+
+            <span class="k">for</span> <span class="n">actual_typ</span> <span class="ow">in</span> <span class="n">ATTR_TYPES</span><span class="p">:</span>
+
+                <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Creating attributes in attr_</span><span class="si">{</span><span class="n">actual_typ</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+                <span class="n">useattrs</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">k</span><span class="p">:</span> <span class="n">v</span>
+                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">new</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sqlite_type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">actual_typ</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                <span class="p">}</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">useattrs</span><span class="p">:</span>
+
+                    <span class="k">continue</span>
+
+                <span class="n">main_fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_fields</span><span class="p">()</span>
+
+                <span class="n">values</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">, &quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">&quot;, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_quotes</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">actual_typ</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span>
+                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">useattrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">main_fields</span>
+                <span class="p">)</span>
+
+                <span class="n">q</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;INSERT INTO attr_</span><span class="si">{</span><span class="n">actual_typ</span><span class="si">}</span><span class="s1"> ( id, name, value ) &#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;VALUES </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+
+            <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Successfully created: </span><span class="si">{</span><span class="n">new</span><span class="o">.</span><span class="n">version_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="s1">&#39;END CREATE&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">new</span></div>
+
+
+<div class="viewcode-block" id="Cache.does_it_fit"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache.does_it_fit">[docs]</a>    <span class="k">def</span> <span class="nf">does_it_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks whether a given size is lower than the current available space.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            size:</span>
+<span class="sd">                Integer corresponding to the size to be checked (in bytes).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Whether the requested space is available.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">size</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_space</span></div>
+
+
+    <span class="c1"># TODO: Should method below include a call to `does_it_fit`?</span>
+<div class="viewcode-block" id="Cache.move_in"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache.move_in">[docs]</a>    <span class="k">def</span> <span class="nf">move_in</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">uri</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">attrs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">status</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Status</span><span class="o">.</span><span class="n">WRITE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+        <span class="n">ext</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CacheItem</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Copies a file into the cache directory and creates the corresponding</span>
+<span class="sd">        cache item registry.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path:</span>
+<span class="sd">                Current/original path of the file that has to be moved into the</span>
+<span class="sd">                cache.</span>
+<span class="sd">            uri:</span>
+<span class="sd">                Uniform Resource Identifier. Optional, defaults to `None`.</span>
+<span class="sd">            params:</span>
+<span class="sd">                Collection of parameters in dict format where key-value pairs</span>
+<span class="sd">                correspond to parameter-value respectively. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            attrs:</span>
+<span class="sd">                Extra attributes associated to the item. Keys are the attribute</span>
+<span class="sd">                names and values their content. These attributes will be stored</span>
+<span class="sd">                in the attribute tables according to their data type</span>
+<span class="sd">                automatically. Optional, defaults to `None`.</span>
+<span class="sd">            status:</span>
+<span class="sd">                Status of the new item. Optional, defaults to `1`.</span>
+<span class="sd">            ext:</span>
+<span class="sd">                Extension of the file associated to the item. Optional, defaults</span>
+<span class="sd">                to `None` (automatically extracted from the file name).</span>
+<span class="sd">            label:</span>
+<span class="sd">                Label for the item (e.g. type, group, category...). Optional,</span>
+<span class="sd">                defaults to `None`.</span>
+<span class="sd">            filename:</span>
+<span class="sd">                Name of the file associated to the item. Optional, defaults to</span>
+<span class="sd">                `None` (automatically set).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The newly created `CacheItem` instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
+
+        <span class="n">uri</span> <span class="o">=</span> <span class="n">uri</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Copying `</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">` to `</span><span class="si">{</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s1">`.&#39;</span><span class="p">)</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">item</span></div>
+
+
+<div class="viewcode-block" id="Cache.reload"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reloads the cache_manager at the module level and reloads the current</span>
+<span class="sd">        instance of `Cache`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">modname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span>
+        <span class="n">mod</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">modname</span><span class="p">,</span> <span class="n">fromlist</span><span class="o">=</span><span class="p">[</span><span class="n">modname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]])</span>
+
+        <span class="kn">import</span> <span class="nn">importlib</span> <span class="k">as</span> <span class="nn">imp</span>
+
+        <span class="n">imp</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;__class__&#39;</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span></div>
+
+
+    <span class="c1"># FIXME: attrs, ext and label are not used</span>
+    <span class="c1"># TODO: Make it more safer later (avoid to delete everything accidentally)</span>
+<div class="viewcode-block" id="Cache.remove"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">uri</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">attrs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">status</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ext</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">newer_than</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">older_than</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">disk</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">keep_record</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes item(s) from the cache. The removal procedure will depend on the</span>
+<span class="sd">        parameters `disk` and `keep_record`, see argument description below for</span>
+<span class="sd">        specifics on their behavior.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            uri:</span>
+<span class="sd">                Uniform Resource Identifier. Optional, defaults to `None`.</span>
+<span class="sd">            params:</span>
+<span class="sd">                Collection of parameters in dict format where key-value pairs</span>
+<span class="sd">                correspond to parameter-value respectively. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            version:</span>
+<span class="sd">                Integer defining the version of the item to update. Optional,</span>
+<span class="sd">                defaults to `None`.</span>
+<span class="sd">            attrs:</span>
+<span class="sd">                Extra attributes associated to the item. Keys are the attribute</span>
+<span class="sd">                names and values their content. Optional, defaults to `None`.</span>
+<span class="sd">                Currently not implemented</span>
+<span class="sd">            status:</span>
+<span class="sd">                Integer defining the status of the item to update. Optional,</span>
+<span class="sd">                defaults to `None`.</span>
+<span class="sd">            ext:</span>
+<span class="sd">                Extension of the file associated to the item. Optional, defaults</span>
+<span class="sd">                to `None`. Currently not implemented.</span>
+<span class="sd">            label:</span>
+<span class="sd">                Label for the item (e.g. type, group, category...). Optional,</span>
+<span class="sd">                defaults to `None`. Currently not implemented.</span>
+<span class="sd">            newer_than:</span>
+<span class="sd">                Date the times are required to be newer than. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            older_than:</span>
+<span class="sd">                Date the times are required to be older than. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            key:</span>
+<span class="sd">                Unique key name for the item. Optional, defaults to `None`.</span>
+<span class="sd">            disk:</span>
+<span class="sd">                Whether to also remove the files associated to the entry(ies)</span>
+<span class="sd">                from disk too. Optional, defaults to `False`.</span>
+<span class="sd">            keep_record:</span>
+<span class="sd">                Whether to keep the record of the entry in the registry (marks</span>
+<span class="sd">                the entry status as trashed, status = -1). Otherwise the entry</span>
+<span class="sd">                is permanently deleted. Optional, `True` by default.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; cache = cm.Cache(&#39;./&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; cache.create(&#39;foo&#39;)</span>
+<span class="sd">            CacheItem[foo V:1 UNINITIALIZED]</span>
+<span class="sd">            &gt;&gt;&gt; cache.remove(uri=&#39;foo&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; cache.search(uri=&#39;foo&#39;)</span>
+<span class="sd">            []</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">Lock</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">con</span><span class="p">):</span>
+
+            <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                <span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span>
+                <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
+                <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span>
+                <span class="n">newer_than</span><span class="o">=</span><span class="n">newer_than</span><span class="p">,</span>
+                <span class="n">older_than</span><span class="o">=</span><span class="n">older_than</span><span class="p">,</span>
+                <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">items</span><span class="p">:</span>
+
+                <span class="k">return</span>
+
+            <span class="n">where</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">)</span>
+            <span class="n">where</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39; WHERE id IN (</span><span class="si">{</span><span class="n">where</span><span class="si">}</span><span class="s1">)&#39;</span>
+            <span class="n">new_status</span> <span class="o">=</span> <span class="n">Status</span><span class="o">.</span><span class="n">DELETED</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="n">disk</span> <span class="k">else</span> <span class="n">Status</span><span class="o">.</span><span class="n">TRASH</span><span class="o">.</span><span class="n">value</span>
+
+            <span class="n">q</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;UPDATE main SET status = </span><span class="si">{</span><span class="n">new_status</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">where</span><span class="si">}</span><span class="s1">;&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">disk</span><span class="p">:</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_delete_files</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">keep_record</span><span class="p">:</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_delete_records</span><span class="p">(</span><span class="n">items</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Cache.search"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">uri</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">status</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">newer_than</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">older_than</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ext</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">attrs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">include_removed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">CacheItem</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Looks up for items in the cache based on the passed parameter(s).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            uri:</span>
+<span class="sd">                Uniform Resource Identifier. Optional, defaults to `None`.</span>
+<span class="sd">            params:</span>
+<span class="sd">                Collection of parameters in dict format where key-value pairs</span>
+<span class="sd">                correspond to parameter-value respectively. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            status:</span>
+<span class="sd">                Integer defining the status of the item to update. Optional,</span>
+<span class="sd">                defaults to `None`.</span>
+<span class="sd">            version:</span>
+<span class="sd">                Integer defining the version of the item to update. Optional,</span>
+<span class="sd">                defaults to `None`.</span>
+<span class="sd">            newer_than:</span>
+<span class="sd">                Date the times are required to be newer than. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            older_than:</span>
+<span class="sd">                Date the times are required to be older than. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            ext:</span>
+<span class="sd">                Extension of the file associated to the item. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            label:</span>
+<span class="sd">                Label for the item (e.g. type, group, category...). Optional,</span>
+<span class="sd">                defaults to `None`.</span>
+<span class="sd">            filename:</span>
+<span class="sd">                Name of the file associated to the item. Optional, defaults to</span>
+<span class="sd">                `None`.</span>
+<span class="sd">            key:</span>
+<span class="sd">                Unique key name for the item. Optional, defaults to `None`.</span>
+<span class="sd">            attrs:</span>
+<span class="sd">                Search by attributes. A dict of attribute names and values.</span>
+<span class="sd">                Operators can be included at the end of the names or in front</span>
+<span class="sd">                of the values, forming a tuple of length 2 in the latter case.</span>
+<span class="sd">                Multiple values can be provided as lists. By default the</span>
+<span class="sd">                attribute search parameters are joined by AND, this can be</span>
+<span class="sd">                overridden by including `&quot;__and&quot;: False` in `attrs`. The types</span>
+<span class="sd">                of the attributes will be inferred from the values, except if</span>
+<span class="sd">                the values provided as their correct type, such as numeric</span>
+<span class="sd">                types or `datetime`. Strings will be converted to dates only if</span>
+<span class="sd">                prefixed with `&quot;DATE:&quot;`. Optional, defaults to `None`.</span>
+<span class="sd">            include_removed:</span>
+<span class="sd">                Whether to include items marked for removal (i.e. trashed,</span>
+<span class="sd">                status = -1) in the search.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List of `CacheItem` instances of the items fulfilling the search.</span>
+<span class="sd">            terms.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; cache = cm.Cache(&#39;./&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; it = cache.create(&#39;foo&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; cache.search(uri=&#39;foo)</span>
+<span class="sd">            [CacheItem[foo V:1 UNINITIALIZED]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="s1">&#39;SEARCH&#39;</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">)</span>
+        <span class="n">param_str</span> <span class="o">=</span> <span class="n">_utils</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Searching cache: </span><span class="si">{</span><span class="n">param_str</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;attrs&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">by_attrs</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span>
+        <span class="n">where</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_where</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">attrs</span><span class="p">:</span>
+
+            <span class="n">where</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39; AND main.id IN (</span><span class="si">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">ids</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">with</span> <span class="n">Lock</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">con</span><span class="p">):</span>
+
+            <span class="k">for</span> <span class="n">actual_typ</span> <span class="ow">in</span> <span class="n">ATTR_TYPES</span><span class="p">:</span>
+
+                <span class="n">q</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s1">&#39;SELECT * FROM main &#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;LEFT JOIN attr_</span><span class="si">{</span><span class="n">actual_typ</span><span class="si">}</span><span class="s1"> attr ON main.id = attr.id &#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">where</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+
+                <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Fetching results from attr_</span><span class="si">{</span><span class="n">actual_typ</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+
+                    <span class="n">keys</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table_fields</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span>
+                        <span class="p">(</span><span class="s1">&#39;_id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">row</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">row</span><span class="p">))</span>
+                    <span class="n">verid</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;version_id&#39;</span><span class="p">]</span>
+
+                    <span class="k">if</span> <span class="n">verid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+
+                        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Found version: `</span><span class="si">{</span><span class="n">verid</span><span class="si">}</span><span class="s1">`&#39;</span><span class="p">)</span>
+
+                        <span class="n">results</span><span class="p">[</span><span class="n">verid</span><span class="p">]</span> <span class="o">=</span> <span class="n">CacheItem</span><span class="p">(</span>
+                            <span class="n">key</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;item_id&#39;</span><span class="p">],</span>
+                            <span class="n">version</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">],</span>
+                            <span class="n">status</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">],</span>
+                            <span class="n">date</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span>
+                            <span class="n">filename</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;file_name&#39;</span><span class="p">],</span>
+                            <span class="n">ext</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;ext&#39;</span><span class="p">],</span>
+                            <span class="n">label</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span>
+                            <span class="n">_id</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+                            <span class="n">last_read</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;last_read&#39;</span><span class="p">],</span>
+                            <span class="n">last_search</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;last_search&#39;</span><span class="p">],</span>
+                            <span class="n">read_count</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;read_count&#39;</span><span class="p">],</span>
+                            <span class="n">search_count</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;search_count&#39;</span><span class="p">],</span>
+                            <span class="n">cache</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]:</span>
+
+                        <span class="n">results</span><span class="p">[</span><span class="n">verid</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">results</span><span class="p">:</span>
+
+                <span class="n">ids</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                <span class="n">update_q</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s1">&#39;UPDATE main SET &#39;</span>
+                    <span class="s1">&#39;last_search = DATETIME(&quot;now&quot;), &#39;</span>
+                    <span class="s1">&#39;search_count = search_count + 1 &#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;WHERE id IN (</span><span class="si">{</span><span class="n">ids</span><span class="si">}</span><span class="s1">);&#39;</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">update_q</span><span class="p">)</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Retrieved </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s1"> results&#39;</span><span class="p">)</span>
+        <span class="n">_log</span><span class="p">(</span><span class="s1">&#39;END SEARCH&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
+
+
+    <span class="c1"># FIXME: attrs, ext and label are not used</span>
+<div class="viewcode-block" id="Cache.update"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">uri</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">attrs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">status</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ext</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">newer_than</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">older_than</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">update</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates one or more items. All arguments except `update` are used to</span>
+<span class="sd">        search for the items to be updated.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            uri:</span>
+<span class="sd">                Uniform Resource Identifier. Optional, defaults to `None`.</span>
+<span class="sd">            params:</span>
+<span class="sd">                Collection of parameters in dict format where key-value pairs</span>
+<span class="sd">                correspond to parameter-value respectively. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            attrs:</span>
+<span class="sd">                Extra attributes associated to the item. Keys are the attribute</span>
+<span class="sd">                names and values their content. Optional, defaults to `None`.</span>
+<span class="sd">                Currently not implemented</span>
+<span class="sd">            status:</span>
+<span class="sd">                Integer defining the status of the item to update. Optional,</span>
+<span class="sd">                defaults to `None`.</span>
+<span class="sd">            version:</span>
+<span class="sd">                Integer defining the version of the item to update. Optional,</span>
+<span class="sd">                defaults to `None`.</span>
+<span class="sd">            ext:</span>
+<span class="sd">                Extension of the file associated to the item. Optional, defaults</span>
+<span class="sd">                to `None`. Currently not implemented.</span>
+<span class="sd">            label:</span>
+<span class="sd">                Label for the item (e.g. type, group, category...). Optional,</span>
+<span class="sd">                defaults to `None`. Currently not implemented.</span>
+<span class="sd">            newer_than:</span>
+<span class="sd">                Date the times are required to be newer than. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            older_than:</span>
+<span class="sd">                Date the times are required to be older than. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            key:</span>
+<span class="sd">                Unique key name for the item. Optional, defaults to `None`.</span>
+<span class="sd">            update:</span>
+<span class="sd">                Dictionary containing the key-value pairs of fields/attributes</span>
+<span class="sd">                and the new values respectively to be updated. Optional,</span>
+<span class="sd">                defaults to `None`.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; cache = cm.Cache(&#39;./&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; it = cache.create(&#39;foo&#39;, attrs={&#39;bar&#39;: 123, &#39;baz&#39;: 456})</span>
+<span class="sd">            &gt;&gt;&gt; it.attrs</span>
+<span class="sd">            {&#39;bar&#39;: 123, &#39;baz&#39;: 456, &#39;_uri&#39;: &#39;foo&#39;}</span>
+<span class="sd">            &gt;&gt;&gt; cache.update(uri=&#39;foo&#39;, update={&#39;bar&#39;: 0})</span>
+<span class="sd">            &gt;&gt;&gt; it = cache.search(&#39;foo&#39;)[0]</span>
+<span class="sd">            &gt;&gt;&gt; it.attrs</span>
+<span class="sd">            {&#39;_uri&#39;: &#39;foo&#39;, &#39;bar&#39;: 0, &#39;baz&#39;: 456}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">Lock</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">con</span><span class="p">):</span>
+
+            <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                <span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span>
+                <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
+                <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span>
+                <span class="n">newer_than</span><span class="o">=</span><span class="n">newer_than</span><span class="p">,</span>
+                <span class="n">older_than</span><span class="o">=</span><span class="n">older_than</span><span class="p">,</span>
+                <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">update</span> <span class="o">=</span> <span class="n">update</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="n">main_fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_fields</span><span class="p">()</span>
+            <span class="n">main</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1"> = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_quotes</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">TYPES</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">])</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">update</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">main_fields</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Updating elements in main table</span>
+            <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">it</span><span class="o">.</span><span class="n">_id</span> <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span>
+            <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Updating </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span><span class="si">}</span><span class="s1"> items&#39;</span><span class="p">)</span>
+            <span class="n">where</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39; WHERE id IN (</span><span class="si">{</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">ids</span><span class="p">))</span><span class="si">}</span><span class="s1">)&#39;</span>
+
+            <span class="k">if</span> <span class="n">main</span><span class="p">:</span>
+
+                <span class="n">q</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;UPDATE main SET </span><span class="si">{</span><span class="n">main</span><span class="si">}{</span><span class="n">where</span><span class="si">}</span><span class="s1">;&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+
+            <span class="c1"># Updating elements in attribute tables</span>
+            <span class="k">for</span> <span class="n">actual_typ</span> <span class="ow">in</span> <span class="n">ATTR_TYPES</span><span class="p">:</span>
+
+                <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Updating attributes in attr_</span><span class="si">{</span><span class="n">actual_typ</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">update</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                    <span class="n">typ</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+
+                    <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">main_fields</span> <span class="ow">and</span> <span class="n">typ</span> <span class="o">==</span> <span class="n">actual_typ</span><span class="p">:</span>
+
+                        <span class="n">val</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;value = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_quotes</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">TYPES</span><span class="p">[</span><span class="n">typ</span><span class="p">])</span><span class="si">}</span><span class="s1">&#39;</span>
+                        <span class="n">name_where</span> <span class="o">=</span> <span class="n">where</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39; AND name = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_quotes</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+                        <span class="n">q</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;UPDATE attr_</span><span class="si">{</span><span class="n">actual_typ</span><span class="si">}</span><span class="s1"> SET </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">name_where</span><span class="si">}</span><span class="s1">&#39;</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+
+            <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Finished updating attributes&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Cache.update_status"><a class="viewcode-back" href="../../_cache.html#cache_manager._cache.Cache.update_status">[docs]</a>    <span class="k">def</span> <span class="nf">update_status</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">uri</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">status</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Status</span><span class="o">.</span><span class="n">READY</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+        <span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the status of a given entry(ies) in the registry. All arguments</span>
+<span class="sd">        other than `status` are used to identify/search the entry(ies) to</span>
+<span class="sd">        update.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            uri:</span>
+<span class="sd">                Uniform Resource Identifier. Optional, defaults to `None`.</span>
+<span class="sd">            params:</span>
+<span class="sd">                Collection of parameters in dict format where key-value pairs</span>
+<span class="sd">                correspond to parameter-value respectively. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            version:</span>
+<span class="sd">                Version number of the item(s). Optional, defaults to `None`.</span>
+<span class="sd">            status:</span>
+<span class="sd">                Integer defining the new status to be set. Optional, defaults to</span>
+<span class="sd">                `3` (READY status).</span>
+<span class="sd">            key:</span>
+<span class="sd">                Unique identifier for the item (alphanumeric hash).</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; cache = cm.Cache(&#39;./&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; it = cache.create(&#39;foo&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; it.status</span>
+<span class="sd">            0</span>
+<span class="sd">            &gt;&gt;&gt; cache.update_status(uri=&#39;foo&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; it.status</span>
+<span class="sd">            3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="n">uri</span><span class="o">=</span><span class="n">uri</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+            <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span>
+            <span class="n">update</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">status</span><span class="p">},</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+    <span class="n">ready</span> <span class="o">=</span> <span class="n">ft</span><span class="o">.</span><span class="n">partialmethod</span><span class="p">(</span><span class="n">update_status</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">Status</span><span class="o">.</span><span class="n">READY</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">failed</span> <span class="o">=</span> <span class="n">ft</span><span class="o">.</span><span class="n">partialmethod</span><span class="p">(</span><span class="n">update_status</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">Status</span><span class="o">.</span><span class="n">FAILED</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_accessed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the &#39;last_read&#39; and &#39;read_count&#39; attributes of a given item to</span>
+<span class="sd">        current date/time and +1 respectively.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            item_id:</span>
+<span class="sd">                Integer corresponding to the internal `CacheItem._id` attribute</span>
+<span class="sd">                that has just been accessed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">q</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s1">&#39;UPDATE main SET &#39;</span>
+            <span class="s1">&#39;last_read = DATETIME(&quot;now&quot;), read_count = read_count + 1 &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;WHERE id = </span><span class="si">{</span><span class="n">item_id</span><span class="si">}</span><span class="s1">;&#39;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_create_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the SQL registry database and creates the main and attribute</span>
+<span class="sd">        tables if not already existing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_sqlite</span><span class="p">()</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Initializing database&#39;</span><span class="p">)</span>
+
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_fields</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Ensuring main table exists&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">            CREATE TABLE IF NOT EXISTS</span>
+<span class="s1">            main (</span>
+<span class="s1">                </span><span class="si">{</span><span class="n">fields</span><span class="si">}</span>
+<span class="s1">            )</span>
+<span class="s1">        &#39;&#39;&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">typ</span> <span class="ow">in</span> <span class="n">ATTR_TYPES</span><span class="p">:</span>
+
+            <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Ensuring attr_</span><span class="si">{</span><span class="n">typ</span><span class="si">}</span><span class="s1"> table exists&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span>
+<span class="w">                </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">                CREATE TABLE IF NOT EXISTS</span>
+<span class="sd">                attr_{} (</span>
+<span class="sd">                    id INT,</span>
+<span class="sd">                    name VARCHAR,</span>
+<span class="sd">                    value {},</span>
+<span class="sd">                    FOREIGN KEY(id) REFERENCES main(id)</span>
+<span class="sd">                )</span>
+<span class="sd">            &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">typ</span><span class="p">,</span> <span class="n">typ</span><span class="o">.</span><span class="n">upper</span><span class="p">()),</span>
+            <span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_delete_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">CacheItem</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Permanently deletes the files from a given list of items in the cache</span>
+<span class="sd">        from the disk.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            items:</span>
+<span class="sd">                List of items to be deleted, these can be either the `CacheItem`</span>
+<span class="sd">                instances or an integer corresponding to the internal</span>
+<span class="sd">                `CacheItem._id` attribute.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+
+                <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Deleting from disk: `</span><span class="si">{</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s1">`.&#39;</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_delete_records</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">CacheItem</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Permanently deletes a given list of items from the cache registry.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            items:</span>
+<span class="sd">                List of items to be deleted, these can be either the `CacheItem`</span>
+<span class="sd">                instances or an integer corresponding to the internal</span>
+<span class="sd">                `CacheItem._id` attribute.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">Lock</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">con</span><span class="p">):</span>
+
+            <span class="n">where</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;_id&#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">)</span>
+            <span class="n">where</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39; WHERE id IN (</span><span class="si">{</span><span class="n">where</span><span class="si">}</span><span class="s1">)&#39;</span>
+            <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;_delete_records: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span><span class="si">}</span><span class="s1"> IDs to be deleted.&#39;</span><span class="p">)</span>
+            <span class="n">n_before</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">actual_typ</span> <span class="ow">in</span> <span class="n">ATTR_TYPES</span><span class="p">:</span>
+
+                <span class="n">attr_table</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;attr_</span><span class="si">{</span><span class="n">actual_typ</span><span class="si">}</span><span class="s1">&#39;</span>
+
+                <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Deleting attributes from </span><span class="si">{</span><span class="n">attr_table</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+                <span class="n">q</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;DELETE FROM </span><span class="si">{</span><span class="n">attr_table</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">where</span><span class="si">}</span><span class="s1">&#39;</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+
+            <span class="n">q</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;DELETE FROM main&#39;</span>
+            <span class="n">q</span> <span class="o">+=</span> <span class="n">where</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_execute</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+
+            <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Deleted </span><span class="si">{</span><span class="n">n_before</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s1"> records.&#39;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_ensure_sqlite</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ensures the connection to the SQL database is open.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">con</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_open_sqlite</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">_execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Executes a given SQL query in the database.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            query:</span>
+<span class="sd">                The SQL query string to execute in the database.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Executing query: </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">con</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">_open_sqlite</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Opens the cache registry (SQL database) connection.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Opening SQLite database: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">con</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_schema</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">_set_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pkg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the path for the cache. It can either be a explicitly defined path</span>
+<span class="sd">        or can take a module/package name and set the path to the OS default</span>
+<span class="sd">        cache directory and create a cache folder under the package name.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path:</span>
+<span class="sd">                Explicit path to set the cache in. Overrides the `pkg` keyword</span>
+<span class="sd">                argument. Optional, defaults to `None`.</span>
+<span class="sd">            pkg:</span>
+<span class="sd">                Package/module name the cache is used on. This sets the cache</span>
+<span class="sd">                directory in a folder located in the OS default cache directory.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        &gt;&gt;&gt; cache = cm.Cache(&#39;.&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; cache._set_path(path=&#39;./test_cache&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; cache.dir</span>
+<span class="sd">        &#39;./test_cache&#39;</span>
+<span class="sd">        &gt;&gt;&gt; cache.path</span>
+<span class="sd">        &#39;./test_cache/cache.sqlite&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">pkg</span><span class="p">:</span>
+
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Please provide a valid path or package name&#39;</span><span class="p">)</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="n">path</span> <span class="ow">or</span> <span class="n">platformdirs</span><span class="o">.</span><span class="n">user_cache_dir</span><span class="p">(</span><span class="n">pkg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+
+            <span class="n">stem</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">stem</span> <span class="k">if</span> <span class="n">ext</span> <span class="k">else</span> <span class="n">path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;cache.sqlite&#39;</span><span class="p">)</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Setting SQLite database path: </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_table_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;main&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the available fields in the main table (i.e. column names).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name:</span>
+<span class="sd">                Name of the table from which to retreive the field names.</span>
+<span class="sd">                Optional, defaults to `&#39;main&#39;` (currently only option).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary containing the field names as keys and values correspond</span>
+<span class="sd">            to the SQL data types and column specifications.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; cache = Cache(&#39;./&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; cache._table_fields()</span>
+<span class="sd">            OrderedDict([(&#39;id&#39;, &#39;INTEGER PRIMARY KEY AUTOINCREMENT&#39;), \</span>
+<span class="sd">                (&#39;item_id&#39;, &#39;VARCHAR&#39;), (&#39;version_id&#39;, &#39;VARCHAR&#39;), \</span>
+<span class="sd">                (&#39;version&#39;, &#39;INT&#39;), (&#39;status&#39;, &#39;INT&#39;), \</span>
+<span class="sd">                (&#39;file_name&#39;, &#39;VARCHAR&#39;), (&#39;label&#39;, &#39;VARCHAR&#39;), \</span>
+<span class="sd">                (&#39;date&#39;, &#39;DATETIME&#39;), (&#39;ext&#39;, &#39;VARCHAR&#39;), \</span>
+<span class="sd">                (&#39;last_read&#39;, &#39;DATETIME&#39;), (&#39;last_search&#39;, &#39;DATETIME&#39;), \</span>
+<span class="sd">                (&#39;read_count&#39;, &#39;INT&#39;), (&#39;search_count&#39;, &#39;INT&#39;)])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># TODO: Make other tables available?</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">_data</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.yaml&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_quotes</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">typ</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;VARCHAR&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Double-quotes strings to convert them to literals in SQL.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            string:</span>
+<span class="sd">                The string to be quoted.</span>
+<span class="sd">            typ:</span>
+<span class="sd">                Type of variable the string contains. Optional, defaults to</span>
+<span class="sd">                `&#39;VARCHAR&#39;`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The resulting quoted string.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; cache = Cache(&#39;./&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; cache._quotes(&#39;abc&#39;)</span>
+<span class="sd">            &#39;&quot;abc&quot;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">string</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="s1">&#39;NULL&#39;</span>
+
+        <span class="n">typ</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="s1">&quot;&#39;</span> <span class="k">if</span> <span class="p">(</span>
+                <span class="n">typ</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;VARCHAR&#39;</span><span class="p">)</span> <span class="ow">or</span>
+                <span class="n">typ</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;DATETIME&#39;</span><span class="p">)</span>
+        <span class="p">)</span> <span class="k">else</span> <span class="n">string</span>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_sqlite_type</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks a given value for the type and gives corresponding SQL</span>
+<span class="sd">        equivalent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            obj:</span>
+<span class="sd">                The value to check the type for.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The resulting SQL data type as a string.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; cache = Cache(&#39;./&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; cache._sqlite_type(123)</span>
+<span class="sd">            &#39;INT&#39;</span>
+<span class="sd">            &gt;&gt;&gt; cache._sqlite_type(1.25)</span>
+<span class="sd">            &#39;FLOAT&#39;</span>
+<span class="sd">            &gt;&gt;&gt; cache._sqlite_type(&#39;abc&#39;)</span>
+<span class="sd">            &#39;VARCHAR&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pytype</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+
+        <span class="k">return</span> <span class="n">TYPES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pytype</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_typeof</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks a given value for the numerical type.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value:</span>
+<span class="sd">                The variable to check for the type.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The resulting type as a string in SQL format. `&#39;INT&#39;` if the value</span>
+<span class="sd">            is an integer or `&#39;FLOAT&#39;` if its a floating point number.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; cache = Cache(&#39;./&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; cache._typeof(123)</span>
+<span class="sd">            &#39;INT&#39;</span>
+<span class="sd">            &gt;&gt;&gt; cache._typeof(9.01)</span>
+<span class="sd">            &#39;FLOAT&#39;</span>
+<span class="sd">            &gt;&gt;&gt; cache._typeof(&#39;123&#39;)</span>
+<span class="sd">            &#39;INT&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_misc</span><span class="o">.</span><span class="n">is_int</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="s1">&#39;INT&#39;</span>
+
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_misc</span><span class="o">.</span><span class="n">is_float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="s1">&#39;FLOAT&#39;</span>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_where</span><span class="p">(</span>
+        <span class="n">uri</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">status</span><span class="p">:</span> <span class="n">Status</span> <span class="o">|</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">newer_than</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">older_than</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ext</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">include_removed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a SQL `WHERE` clause based on different parameters defined in</span>
+<span class="sd">        the function arguments.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            uri:</span>
+<span class="sd">                Uniform Resource Identifier. Optional, defaults to `None`.</span>
+<span class="sd">            params:</span>
+<span class="sd">                Collection of parameters in dict format where key-value pairs</span>
+<span class="sd">                correspond to parameter-value respectively. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            status:</span>
+<span class="sd">                Status(es) of the item(s). Optional, defaults to `None`.</span>
+<span class="sd">            version:</span>
+<span class="sd">                Version(s) of the item(s). Optional, defaults to `None`.</span>
+<span class="sd">            newer_than:</span>
+<span class="sd">                Date the times are required to be newer than. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            older_than:</span>
+<span class="sd">                Date the times are required to be older than. Optional, defaults</span>
+<span class="sd">                to `None`.</span>
+<span class="sd">            ext:</span>
+<span class="sd">                Extension of the file associated to the item(s). Optional,</span>
+<span class="sd">                defaults to `None`.</span>
+<span class="sd">            label:</span>
+<span class="sd">                Label for the item (e.g. type, group, category...). Optional,</span>
+<span class="sd">                defaults to `None`.</span>
+<span class="sd">            filename:</span>
+<span class="sd">                Name of the file associated to the item. Optional, defaults to</span>
+<span class="sd">                `None`.</span>
+<span class="sd">            key:</span>
+<span class="sd">                Unique key name for the item. Optional, defaults to `None`.</span>
+<span class="sd">            include_removed:</span>
+<span class="sd">                Whether to include item(s) marked for removal. Optional,</span>
+<span class="sd">                defaults to `False`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The query string with the WHERE clause.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; cache = Cache(&#39;./&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; cache.create(&#39;test_entry&#39;)</span>
+<span class="sd">            CacheItem[test_entry V:1 UNINITIALIZED]</span>
+<span class="sd">            &gt;&gt;&gt; cache._where(&#39;test_entry&#39;)</span>
+<span class="sd">            &#39; WHERE item_id = &quot;224eeebf8db5634d8d9b2a31755d4a97&quot; AND status != \</span>
+<span class="sd">                -1 AND status != -2&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">where</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">item_id</span> <span class="o">=</span> <span class="n">key</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">item_id</span> <span class="ow">and</span> <span class="p">(</span><span class="n">uri</span> <span class="ow">or</span> <span class="n">params</span><span class="p">):</span>
+
+            <span class="n">params</span> <span class="o">=</span> <span class="n">params</span> <span class="ow">or</span> <span class="p">{}</span>
+
+            <span class="k">if</span> <span class="n">uri</span><span class="p">:</span>
+
+                <span class="n">params</span><span class="p">[</span><span class="s1">&#39;_uri&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uri</span>
+
+            <span class="n">item_id</span> <span class="o">=</span> <span class="n">CacheItem</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">item_id</span><span class="p">:</span>
+
+            <span class="n">where</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;item_id = &quot;</span><span class="si">{</span><span class="n">item_id</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
+
+            <span class="n">where</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;file_name = &quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+
+        <span class="n">status</span> <span class="o">=</span> <span class="n">_misc</span><span class="o">.</span><span class="n">to_set</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">status</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">include_removed</span><span class="p">:</span>
+
+            <span class="n">where</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;status != -1&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="o">-</span><span class="mi">2</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">status</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">include_removed</span><span class="p">:</span>
+
+            <span class="n">where</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;status != -2&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">status</span><span class="p">:</span>
+
+            <span class="n">status</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">status</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">where</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;status IN (</span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">version</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">version</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+
+            <span class="n">version</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">_misc</span><span class="o">.</span><span class="n">to_set</span><span class="p">(</span><span class="n">version</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">where</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;version IN (</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">newer_than</span><span class="p">:</span>
+
+            <span class="n">where</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;date &gt; &quot;</span><span class="si">{</span><span class="n">_utils</span><span class="o">.</span><span class="n">parse_time</span><span class="p">(</span><span class="n">newer_than</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">older_than</span><span class="p">:</span>
+
+            <span class="n">where</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;date &lt; &quot;</span><span class="si">{</span><span class="n">_utils</span><span class="o">.</span><span class="n">parse_time</span><span class="p">(</span><span class="n">older_than</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ext</span><span class="p">:</span>
+
+            <span class="n">where</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ext = &quot;</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
+
+            <span class="n">where</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;label = &quot;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+
+        <span class="n">where</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39; WHERE </span><span class="si">{</span><span class="s2">&quot; AND &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">where</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">where</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="c1"># TODO: Address cases where multiple items</span>
+
+            <span class="n">where</span> <span class="o">+=</span> <span class="s1">&#39; ORDER BY version DESC LIMIT 1&#39;</span>
+
+        <span class="k">return</span>  <span class="n">where</span></div>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="../../_cache.html">_cache module</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="../../_item.html">_item module</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="../../_lock.html">_lock module</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="../../_open.html">_open module</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="../../_status.html">_status module</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2022-2024, Saez Lab.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

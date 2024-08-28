@@ -1,0 +1,815 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cache_manager._open &#8212; cache_manager  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/style.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/cache_manager/_open';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../contents.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">cache_manager  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_cache.html">
+                        _cache module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_item.html">
+                        _item module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_lock.html">
+                        _lock module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_open.html">
+                        _open module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_status.html">
+                        _status module
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_cache.html">
+                        _cache module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_item.html">
+                        _item module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_lock.html">
+                        _lock module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_open.html">
+                        _open module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../_status.html">
+                        _status module
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../contents.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">cache_manager._open</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for cache_manager._open</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;ARCHIVES&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;COMPRESSED&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Opener&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">gzip</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">tarfile</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
+
+<span class="kn">from</span> <span class="nn">pypath_common</span> <span class="kn">import</span> <span class="n">_misc</span> <span class="k">as</span> <span class="n">_common</span>
+<span class="kn">from</span> <span class="nn">pypath_common</span> <span class="kn">import</span> <span class="n">_constants</span> <span class="k">as</span> <span class="n">_const</span>
+
+<span class="kn">from</span> <span class="nn">cache_manager._session</span> <span class="kn">import</span> <span class="n">_log</span>
+
+<span class="n">COMPRESSED</span> <span class="o">=</span>  <span class="p">{</span><span class="s1">&#39;gz&#39;</span><span class="p">,</span> <span class="s1">&#39;xz&#39;</span><span class="p">,</span> <span class="s1">&#39;bz2&#39;</span><span class="p">}</span>
+<span class="n">ARCHIVES</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;zip&#39;</span><span class="p">,</span> <span class="s1">&#39;tar.gz&#39;</span><span class="p">,</span> <span class="s1">&#39;tar.bz2&#39;</span><span class="p">,</span> <span class="s1">&#39;tar.xz&#39;</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="Opener"><a class="viewcode-back" href="../../_open.html#cache_manager._open.Opener">[docs]</a><span class="k">class</span> <span class="nc">Opener</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Opens a file.</span>
+
+<span class="sd">    This class opens a file, extracts it in case it is a gzip, tar.gz, tar.bz2</span>
+<span class="sd">    or zip archive, selects the requested files if you only need certain files</span>
+<span class="sd">    from a multifile archive, reads the data from the file, or returns the file</span>
+<span class="sd">    pointer, as you request. It examines the file type and size. All these tasks</span>
+<span class="sd">    are performed automatically upon instantiation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path:</span>
+<span class="sd">            Path to the file.</span>
+<span class="sd">        ext:</span>
+<span class="sd">            Extension of the file, such as &quot;zip&quot;, &quot;tar.gz&quot;, etc. Optional,</span>
+<span class="sd">            defaults to `None`.</span>
+<span class="sd">        needed:</span>
+<span class="sd">            A list of paths to be extracted within an archive. If not provided,</span>
+<span class="sd">            all paths will be included. Optional, defaults to `None`.</span>
+<span class="sd">        large:</span>
+<span class="sd">            Stores the file pointers instead of the contents of the files</span>
+<span class="sd">            themselves. Optional, defaults to `True`.</span>
+<span class="sd">        default_mode:</span>
+<span class="sd">            Reading mode for the file objects: &quot;r&quot; (normal) or &quot;rb&quot; (binary).</span>
+<span class="sd">            Optional, defaults to `&quot;r&quot;` (normal mode).</span>
+<span class="sd">        encoding:</span>
+<span class="sd">            Encoding for the stored file objects. Optional, defaults to `None`.</span>
+
+<span class="sd">    Attrs:</span>
+<span class="sd">        path:</span>
+<span class="sd">            Path to the file.</span>
+<span class="sd">        ext:</span>
+<span class="sd">            Extension of the file.</span>
+<span class="sd">        needed:</span>
+<span class="sd">            Paths to be extracted for compressed files.</span>
+<span class="sd">        large:</span>
+<span class="sd">            Whether to store the file pointers instead of actual file contents.</span>
+<span class="sd">        default_mode:</span>
+<span class="sd">            File reading mode, &quot;r&quot; (normal) or &quot;rb&quot; (binary).</span>
+<span class="sd">        encoding:</span>
+<span class="sd">            Encoding type for text (e.g. &#39;utf-8&#39;, &#39;ascii&#39;, etc.).</span>
+<span class="sd">        fileobj:</span>
+<span class="sd">            Stores the file object instance.</span>
+<span class="sd">        result:</span>
+<span class="sd">            Content(s) of the file(s). Resulting content will depend whether the</span>
+<span class="sd">            `large` attribute (i.e. file-object pointer or actual content) and</span>
+<span class="sd">            in the case of compressed folders, the different files are stored</span>
+<span class="sd">            as a dictionary where keys are file names and values are either file</span>
+<span class="sd">            pointers or contents.</span>
+<span class="sd">        size:</span>
+<span class="sd">            Size of the file. In case of `.gz` format, the size of the</span>
+<span class="sd">            compressed folder.</span>
+<span class="sd">        sizes: Size of the files when compressd format, stored as a dictionary</span>
+<span class="sd">            where keys are the file names.</span>
+<span class="sd">        tarfile:</span>
+<span class="sd">            Pointer to the tar-compressed file object (only when file is in</span>
+<span class="sd">            `.tar` format).</span>
+<span class="sd">        gzfile:</span>
+<span class="sd">            Pointer to the gz-compressed file object (only when file is in</span>
+<span class="sd">            `.gz` format).</span>
+<span class="sd">        zipfile:</span>
+<span class="sd">            Pointer to the zip-compressed file object (only when file is in</span>
+<span class="sd">            `.zip` format).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#FIXME: attribute not used?</span>
+    <span class="n">_FORBIDDEN_CHARS</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[/</span><span class="se">\\</span><span class="s1">&lt;&gt;:&quot;\?\*\|]&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">ext</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">needed</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">large</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">default_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span>
+            <span class="n">encoding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;self&#39;</span><span class="p">:</span>
+
+                <span class="k">continue</span>
+
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_type</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileobj</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileobj</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Opener.close"><a class="viewcode-back" href="../../_open.html#cache_manager._open.Opener.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Closes the file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;fileobj&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileobj</span><span class="p">,</span> <span class="s1">&#39;close&#39;</span><span class="p">):</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">fileobj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Opener.extract"><a class="viewcode-back" href="../../_open.html#cache_manager._open.Opener.extract">[docs]</a>    <span class="k">def</span> <span class="nf">extract</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calls the right extracting method for a compressed file according to the</span>
+<span class="sd">        format.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;open_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">)()</span></div>
+
+
+<div class="viewcode-block" id="Opener.open"><a class="viewcode-back" href="../../_open.html#cache_manager._open.Opener.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads the file object if exists on the disk. Stores the pointer under</span>
+<span class="sd">        `fileobj` attribute. To obtain the contents, `extract` must be called.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;No such file: `</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s1">`.&#39;</span>
+            <span class="n">_log</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">mode</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_mode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;plain&#39;</span>
+            <span class="k">else</span> <span class="p">(</span><span class="s1">&#39;rb&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileobj</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Opener.open_gz"><a class="viewcode-back" href="../../_open.html#cache_manager._open.Opener.open_gz">[docs]</a>    <span class="k">def</span> <span class="nf">open_gz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracts files from `.gz` file. Resulting files are stored under the</span>
+<span class="sd">        attribute `result`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Opening gzip file: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileobj</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileobj</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileobj</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gzfile</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">GzipFile</span><span class="p">(</span><span class="n">fileobj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fileobj</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">large</span><span class="p">:</span>
+
+            <span class="n">io</span><span class="o">.</span><span class="n">DEFAULT_BUFFER_SIZE</span> <span class="o">=</span> <span class="mi">4096</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gzfile_mode_r</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">TextIOWrapper</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gzfile</span><span class="p">,</span>
+                <span class="n">encoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterfile</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gzfile</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_mode</span> <span class="o">==</span> <span class="s1">&#39;rb&#39;</span>
+                <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gzfile_mode_r</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Result is an iterator over the lines of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gzfile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gzfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">_log</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Data has been read from gzip file </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s1">. The file has &#39;</span>
+                <span class="s1">&#39;been closed.&#39;</span><span class="p">,</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Opener.open_plain"><a class="viewcode-back" href="../../_open.html#cache_manager._open.Opener.open_plain">[docs]</a>    <span class="k">def</span> <span class="nf">open_plain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Opens a plain text file. Resulting file is stored under the attribute</span>
+<span class="sd">        `result`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Opening plain text file </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileobj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">large</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileobj</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileobj</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fileobj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">_log</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Contents of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s1"> has been read and the file has been &#39;</span>
+                <span class="s1">&#39;closed.&#39;</span><span class="p">,</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Opener.open_tar"><a class="viewcode-back" href="../../_open.html#cache_manager._open.Opener.open_tar">[docs]</a>    <span class="k">def</span> <span class="nf">open_tar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracts files from `.tar` file. Resulting files are stored under the</span>
+<span class="sd">        attribute `result`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Opening tar file: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_files</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">compr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ext</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tarfile</span> <span class="o">=</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fileobj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fileobj</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;r:</span><span class="si">{</span><span class="n">compr</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_members</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tarfile</span><span class="o">.</span><span class="n">getmembers</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_members</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">needed</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span>
+                    <span class="n">m</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">needed</span>
+                <span class="p">)</span>
+                <span class="c1"># Case m.size is 0 for dierctories</span>
+                <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">0</span>
+            <span class="p">):</span>
+
+                <span class="n">this_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tarfile</span><span class="o">.</span><span class="n">extractfile</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">size</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">large</span><span class="p">:</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_files</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_file</span>
+
+                <span class="k">else</span><span class="p">:</span>
+
+                    <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Reading contents of file from archive: `</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">`.&#39;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_files</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                    <span class="n">this_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">large</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">tarfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;File closed: `</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s1">`.&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_files</span></div>
+
+
+<div class="viewcode-block" id="Opener.open_zip"><a class="viewcode-back" href="../../_open.html#cache_manager._open.Opener.open_zip">[docs]</a>    <span class="k">def</span> <span class="nf">open_zip</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracts files from `.zip` file. Resulting files are stored under the</span>
+<span class="sd">        attribute `result`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Opening zip file </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_files_multipart</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileobj</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zipfile</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileobj</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_members</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zipfile</span><span class="o">.</span><span class="n">namelist</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_members</span><span class="p">):</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zipfile</span><span class="o">.</span><span class="n">filelist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">file_size</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">needed</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">needed</span><span class="p">:</span>
+
+                <span class="n">this_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zipfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">large</span><span class="p">:</span>
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_mode</span> <span class="o">==</span> <span class="s1">&#39;rb&#39;</span><span class="p">:</span>
+
+                        <span class="c1"># Keeping it in binary mode</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_files_multipart</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_file</span>
+
+                    <span class="k">else</span><span class="p">:</span>
+
+                        <span class="c1"># Wrapping the file for decoding</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_files_multipart</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">TextIOWrapper</span><span class="p">(</span>
+                            <span class="n">this_file</span><span class="p">,</span>
+                            <span class="n">encoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span>
+                        <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_files_multipart</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                    <span class="n">this_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">large</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">zipfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">_log</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Data has been read from zip file </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s1">. File has been &#39;</span>
+                <span class="s1">&#39;closed&#39;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_files_multipart</span></div>
+
+
+<div class="viewcode-block" id="Opener.set_type"><a class="viewcode-back" href="../../_open.html#cache_manager._open.Opener.set_type">[docs]</a>    <span class="k">def</span> <span class="nf">set_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determines the file type based on the extension.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ext</span> <span class="ow">or</span> <span class="n">_common</span><span class="o">.</span><span class="n">ext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="n">ext</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ext</span> <span class="o">=</span> <span class="s1">&#39;tar.gz&#39;</span> <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s1">&#39;tgz&#39;</span> <span class="k">else</span> <span class="n">ext</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">ext</span> <span class="k">if</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">COMPRESSED</span> <span class="o">|</span> <span class="n">ARCHIVES</span> <span class="k">else</span> <span class="s1">&#39;plain&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s1">&#39;tar&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;tar&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span></div>
+
+
+<div class="viewcode-block" id="Opener.iterfile"><a class="viewcode-back" href="../../_open.html#cache_manager._open.Opener.iterfile">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">iterfile</span><span class="p">(</span><span class="n">fileobj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an iterator over the lines of a file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">yield from</span> <span class="n">fileobj</span></div></div>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="../../_cache.html">_cache module</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="../../_item.html">_item module</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="../../_lock.html">_lock module</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="../../_open.html">_open module</a></li>
+<li class="toctree-l1 toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="../../_status.html">_status module</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2022-2024, Saez Lab.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
