@@ -12,10 +12,10 @@ and remove the parts below (or edit ``README.rst`` in the project root).
 Reference
 #########
 
-project_name
-============
+cache_manager
+=============
 
-.. automodule:: project_name
+.. automodule:: cache_manager
    :members:
 
 ###########################
