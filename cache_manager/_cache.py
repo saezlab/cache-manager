@@ -231,7 +231,8 @@ class Cache:
 
     def clean_disk(self):
         """
-        Remove items on disk, which doesn't have any DB record
+        Deletes files from the disk cache directory if they don't have any
+        record in the database registry.
         """
 
         _log('Cleaning disk: removing items without DB record.')
