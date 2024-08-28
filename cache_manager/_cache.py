@@ -179,9 +179,35 @@ class Cache:
         return item
 
 
-    def by_attrs(self, attrs: dict) -> list[int]:
+    def by_attrs(self, attrs: dict) -> set[int]:
         """
-        Selecting items by attributes
+        Searches entries in the registry based on their attributes (stored in
+        the differen type-based attribute tables).
+
+        Args:
+            attrs:
+                Attributes and corresponding values of the items to search for.
+                By default, the different attributes in the search must be
+                satisfied. This is, items that fulfill all the attribute-value
+                pairs, will be included in the search result. In case one wants
+                the results of the search to just fulfill at least one term, it
+                must include the following key-value pair in the argument:
+                `'__and': False`. See example below.
+
+        Returns:
+            Set of keys corresponding to the elements in the registry with the
+            searched attributes.
+
+        Examples:
+            >>> cache = cm.Cache('./')
+            >>> cache.create('foo1', attrs={'bar': 1, 'baz': 2})
+            CacheItem[foo1 V:1 UNINITIALIZED]
+            >>> cache.create('foo2', attrs={'bar': 1, 'baz': 5})
+            CacheItem[foo2 V:1 UNINITIALIZED]
+            >>> cache.by_attrs({'bar': 1, 'baz': 5})
+            {2}
+            >>> cache.by_attrs({'bar': 1, 'baz': 5, '__and': False})
+            {1, 2}
         """
 
         _log(f'Searching by attributes: {attrs}')
@@ -195,7 +221,8 @@ class Cache:
             for query in queries:
 
                 self._execute(f'SELECT id FROM attr_{atype} WHERE {query}')
-                result.append({item[0] for item in self.cur.fetchall()})
+                aux = self.cur.fetchall()
+                result.append({item[0] for item in aux})
 
         return op(*result) if result else set()
 
