@@ -146,7 +146,7 @@ class Cache:
         self,
         uri: str,
         params: dict | None = None,
-        status: set[int] | None = Status.READY.value,
+        status: int | set[int] | None = Status.READY.value,
         newer_than: str | datetime.datetime | None = None,
         older_than: str | datetime.datetime | None = None,
         attrs: dict | None = None,
@@ -155,6 +155,58 @@ class Cache:
         new_status: int = Status.WRITE.value,
         filename: str | None = None,
     ) -> CacheItem:
+        """
+        Searches for the best version of an item (i.e. last version). If such
+        item could not be found, it creates a new one.
+
+        Args:
+            uri:
+                Uniform Resource Identifier.
+            params:
+                Collection of parameters in dict format where key-value pairs
+                correspond to parameter-value respectively. Optional, defaults
+                to `None`.
+            status:
+                Integer (or set of) defining the valid status of the item to be
+                searched. Optional, defaults to `3` (READY status).
+            newer_than:
+                Date the times are required to be newer than. Optional, defaults
+                to `None`.
+            older_than:
+                Date the times are required to be older than. Optional, defaults
+                to `None`.
+            attrs:
+                Attributes of the item to be searched or created as dictionary
+                of key-value pairs corresponding to the name and value of the
+                attributes. Optional, defaults to `None`.
+            ext:
+                Extension of the file associated to the item. Optional, defaults
+                to `None`. Currently not implemented.
+            label:
+                Label for the item (e.g. type, group, category...). Optional,
+                defaults to `None`.
+            new_status:
+                Integer defining the new status to be set in the case a new item
+                is created. Optional, defaults to `1` (WRITE status).
+            filename:
+                Name of the file associated to the item. Optional, defaults to
+                `None`.
+
+        Returns:
+            The `CacheItem` instance of the best or new item according to the
+            provided attributes.
+
+        Examples:
+            >>> cache = cm.Cache('./')
+            >>> cache.create('foo')
+            CacheItem[foo V:1 UNINITIALIZED]
+            >>> cache.create('foo')
+            CacheItem[foo V:2 UNINITIALIZED]
+            >>> cache.best_or_new('foo', status=0)
+            CacheItem[foo V:2 UNINITIALIZED]
+            >>> cache.best_or_new('bar')
+            CacheItem[bar V:1 WRITE]
+        """
 
         args = locals()
         args.pop('self')
