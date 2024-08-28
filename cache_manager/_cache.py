@@ -76,7 +76,8 @@ class Cache:
 
     def autoclean(self):
         """
-        Keep only ready/in writing items and for each item the best version
+        Keeps only ready/in writing items and for each item the best version and
+        deletes anything else in the cache registry.
         """
 
         _log('Auto cleaning cache.')
