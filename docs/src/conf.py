@@ -43,7 +43,7 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.viewcode',
     'sphinx.ext.ifconfig',
-    'sphinxcontrib.bibtex',
+    #'sphinxcontrib.bibtex',
     'sphinx_autodoc_typehints',
     'sphinx.ext.mathjax',
     'sphinx_copybutton',
@@ -116,6 +116,10 @@ html_context = {
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+html_css_files = [
+    'css/style.css',
+]
 
 nitpick_ignore = [
     # If building the documentation fails because
