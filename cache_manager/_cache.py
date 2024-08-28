@@ -37,13 +37,32 @@ TYPES = {
 
 class Cache:
     """
-    The Cache class.
+    Cache manager class, stores and manages the information in the registry
+    database as well as the files in the cache directory.
+
+    Args:
+        path:
+            Explicit path to set the cache in. Overrides the `pkg` keyword
+            argument. Optional, defaults to `None`.
+        pkg:
+            Package/module name the cache is used on. This sets the cache
+            directory in a folder located in the OS default cache directory.
+
+    Attrs:
+        con:
+            Current connection to the SQL database, an instance of
+            `sqlite3.Connection`.
+        cur:
+            Current cursor of the SQL database, an instance of `sqlite3.Cursor`.
+        path:
+            Path to the current cache registry.
+        dir:
+            The directory of the cache.
+        free_space:
+            Amount of free space available in the cache (in bytes).
     """
 
     def __init__(self, path: str | None = None, pkg: str | None = None):
-        """
-        This is not empty.
-        """
 
         self.con, self.cur = None, None
         self._fields = {}
