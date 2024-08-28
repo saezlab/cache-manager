@@ -68,6 +68,12 @@ class Cache:
 
     @property
     def free_space(self) -> int:
+        """
+        Calculates the available free space in the cache directory.
+
+        Returns:
+            The available space in bytes.
+        """
 
         total, used, free = shutil.disk_usage(self.dir)
 
