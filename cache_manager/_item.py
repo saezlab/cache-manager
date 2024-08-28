@@ -240,7 +240,7 @@ class CacheItem:
 
         Args:
             params:
-                The parameters dictionary too generate the hash from.
+                The parameters dictionary to generate the hash from.
 
         Returns:
             The resulting hash from the serailized parameters.
