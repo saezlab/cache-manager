@@ -209,13 +209,11 @@ class Cache:
 
     def clean_db(self):
         """
-        Remove records without file on disk
+        Removes records from the database registry that do not have the
+        corresponding file on the cache disk directory.
         """
 
-        _log(
-            'Cleaning cache database: removing records '
-            'without file on the disk.',
-        )
+        _log('Cleaning cache database: removing records without file on disk.')
 
         items = {
             item
@@ -818,7 +816,7 @@ class Cache:
             status: int | None = None,
             version: int | None = None,
             ext: str | None = None,
-            label: str | None = None, 
+            label: str | None = None,
             newer_than: str | datetime.datetime | None = None,
             older_than: str | datetime.datetime | None = None,
             key: str | None = None,
