@@ -93,7 +93,7 @@ class CacheItem:
         cache:
             The `Cache` instance where the item belongs.
         cache_fname:
-            The file name of the associated cache database.
+            The file name of the associated file in the cache database.
         path:
             Path to the file associated to the item.
         rstatus:
