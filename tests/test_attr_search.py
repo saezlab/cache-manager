@@ -95,22 +95,20 @@ def test_search_by_attrs_datetime2(test_cache):
     assert len(result) == 0
 
 
-def test_attr_blob(test_cache):
+def test_json_attrs(test_cache):
 
     attrs = {
-            'dict_attr': {'foo': 'bar'},
-            'list_attr': [1, 2, 3],
-            'tuple_attr': (1, 2, 3),
-            #'set_attr': {1, 2, 3}
+        'dict_attr': {'foo': 'bar'},
+        'list_attr': [1, 2, 3],
+        'tuple_attr': (1, 2, 3),
+        'set_attr': {1, 2, 3}
     }
 
-    it = test_cache.best_or_new(
-        'blob_attrs',
-        attrs=attrs
-    )
+    it = test_cache.best_or_new('blob_attrs', attrs = attrs)
 
     result = test_cache.search('blob_attrs')[0]
 
     assert result.attrs['dict_attr'] == attrs['dict_attr']
     assert result.attrs['list_attr'] == attrs['list_attr']
     assert result.attrs['tuple_attr'] == list(attrs['tuple_attr'])
+    assert set(result.attrs['set_attr']) == attrs['set_attr']
