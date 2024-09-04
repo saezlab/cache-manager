@@ -26,17 +26,17 @@ import cache_manager.utils as _utils
 from . import _data
 from ._lock import Lock
 
-ATTR_TYPES = ['varchar', 'int', 'datetime', 'float', 'blob']
+ATTR_TYPES = ['varchar', 'int', 'datetime', 'float', 'text']
 
 TYPES = {
     'str': 'VARCHAR',
     'int': 'INT',
     'float': 'FLOAT',
     'datetime': 'DATETIME',
-    'list': 'BLOB',
-    'dict': 'BLOB',
-    'set': 'BLOB',
-    'tuple': 'BLOB',
+    'list': 'TEXT',
+    'dict': 'TEXT',
+    'set': 'TEXT',
+    'tuple': 'TEXT',
 }
 
 
@@ -911,7 +911,7 @@ class Cache:
                 fields = keys.copy()
                 fields[0] = 'main.id'
 
-                if actual_typ.upper() == 'BLOB':
+                if actual_typ.upper() == 'TEXT':
 
                     fields[-1] = 'json(value)'
 
@@ -931,7 +931,7 @@ class Cache:
 
                     row = dict(zip(keys, row))
 
-                    if actual_typ.upper() == 'BLOB' and row['value']:
+                    if actual_typ.upper() == 'TEXT' and row['value']:
 
                         row['value'] = json.loads(row['value'])
 
@@ -1393,13 +1393,13 @@ class Cache:
 
         typ = typ.upper()
 
-        if typ == 'BLOB' or isinstance(string, (set, list, tuple, dict)):
+        if typ == 'TEXT' or isinstance(string, (set, list, tuple, dict)):
 
             if isinstance(string, set):
 
                 string = list(string)
 
-            string = f"jsonb('{json.dumps(string)}')"
+            string = f"json('{json.dumps(string)}')"
 
         return f'"{string}"' if (
                 typ.startswith('VARCHAR') or
