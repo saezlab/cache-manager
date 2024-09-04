@@ -900,14 +900,25 @@ class Cache:
 
             where += f' AND main.id IN ({",".join(str(i) for i in ids)})'
 
+        keys = list(self._table_fields().keys()) + ['name', 'value']
+
         results = {}
 
         with Lock(self.con):
 
             for actual_typ in ATTR_TYPES:
 
+                fields = keys.copy()
+                fields[0] = 'main.id'
+
+                if actual_typ.upper() == 'BLOB':
+
+                    fields[-1] = 'json(value)'
+
+                fields = ', '.join(fields)
+
                 q = (
-                    'SELECT * FROM main '
+                    f'SELECT {fields} FROM main '
                     f'LEFT JOIN attr_{actual_typ} attr ON main.id = attr.id '
                     f'{where}'
                 )
@@ -918,11 +929,12 @@ class Cache:
 
                 for row in self.cur.fetchall():
 
-                    keys = (
-                        tuple(self._table_fields().keys()) +
-                        ('_id', 'name', 'value')
-                    )
                     row = dict(zip(keys, row))
+
+                    if actual_typ.upper() == 'BLOB' and row['value']:
+
+                        row['value'] = json.loads(row['value'])
+
                     verid = row['version_id']
 
                     if verid not in results:
@@ -1383,13 +1395,15 @@ class Cache:
 
         if typ == 'BLOB' or isinstance(string, (set, list, tuple, dict)):
 
-            string = bytes(json.dumps(string), 'utf-8').hex()
-            string = f'x{string}'
+            if isinstance(string, set):
+
+                string = list(string)
+
+            string = f"jsonb('{json.dumps(string)}')"
 
         return f'"{string}"' if (
                 typ.startswith('VARCHAR') or
-                typ.startswith('DATETIME') or
-                typ.startswith('BLOB')
+                typ.startswith('DATETIME')
         ) else string
 
 
