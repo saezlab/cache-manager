@@ -1383,11 +1383,13 @@ class Cache:
 
         if typ == 'BLOB' or isinstance(string, (set, list, tuple, dict)):
 
-            string = bytes(json.dumps(string), 'utf-8')
+            string = bytes(json.dumps(string), 'utf-8').hex()
+            string = f'x{string}'
 
         return f'"{string}"' if (
                 typ.startswith('VARCHAR') or
-                typ.startswith('DATETIME')
+                typ.startswith('DATETIME') or
+                typ.startswith('BLOB')
         ) else string
 
 
