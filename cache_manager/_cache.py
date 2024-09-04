@@ -9,6 +9,7 @@ __all__ = [
 from typing import Any
 import os
 import re
+import json
 import shutil
 import sqlite3
 import datetime
@@ -25,13 +26,17 @@ import cache_manager.utils as _utils
 from . import _data
 from ._lock import Lock
 
-ATTR_TYPES = ['varchar', 'int', 'datetime', 'float']
+ATTR_TYPES = ['varchar', 'int', 'datetime', 'float', 'blob']
 
 TYPES = {
     'str': 'VARCHAR',
     'int': 'INT',
     'float': 'FLOAT',
     'datetime': 'DATETIME',
+    'list': 'BLOB',
+    'dict': 'BLOB',
+    'set': 'BLOB',
+    'tuple': 'BLOB',
 }
 
 
@@ -1375,6 +1380,10 @@ class Cache:
             return 'NULL'
 
         typ = typ.upper()
+
+        if typ == 'BLOB' or isinstance(string, (set, list, tuple, dict)):
+
+            string = bytes(json.dumps(string), 'utf-8')
 
         return f'"{string}"' if (
                 typ.startswith('VARCHAR') or
