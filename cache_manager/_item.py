@@ -221,9 +221,10 @@ class CacheItem:
 
         if uri:
             params['_uri'] = uri
-            attrs['_uri'] = uri
 
+        attrs = {**params, **attrs}
         key = cls.serialize(params)
+
         args = {
             k: v for k, v in locals().items()
             if k not in ['uri', 'params', 'cls']
