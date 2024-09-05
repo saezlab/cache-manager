@@ -1,5 +1,8 @@
 from dateutil.parser import parse as dateparse
 
+
+from cache_manager import _status
+
 __all__ = [
     'test_search_by_attrs_datetime',
     'test_search_by_attrs_extended',
@@ -112,3 +115,32 @@ def test_json_attrs(test_cache):
     assert result.attrs['list_attr'] == attrs['list_attr']
     assert result.attrs['tuple_attr'] == list(attrs['tuple_attr'])
     assert set(result.attrs['set_attr']) == attrs['set_attr']
+
+
+def test_search_params(test_cache):
+
+    params = {
+        'desc_args': {
+            'query': {'foo': 'bar', 'page': 23},
+            'post': 'abcdefg',
+        },
+    }
+    attrs = {
+        'foo': 'bar',
+    }
+
+    it0 = test_cache.best_or_new(
+        'search_params',
+        params = params,
+        attrs = attrs,
+        new_status = _status.Status.READY.value,
+    )
+    it1 = test_cache.best_or_new('search_params', params = params)
+
+    its = test_cache.search('search_params')
+
+    assert len(its) == 0
+
+    its = test_cache.search('search_params', params = params)
+
+    assert len(its) == 1
