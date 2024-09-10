@@ -588,11 +588,18 @@ class Cache:
 
                 _log(f'Creating attributes in attr_{actual_typ}')
 
-                useattrs = {
-                    k: v
-                    for k, v in new.attrs.items()
+                # BEWARE
+                useattrs = [
+                    (keyvar, group if isinstance(vals, dict) else 'NULL', k, v)
+                    for keyvar, d in enumerate(('attrs', 'params'))
+                    for group, vals in getattr(new, d).items()
+                    for k, v in (
+                        vals
+                        if isinstance(vals, dict) else
+                        {group: vals}
+                    ).items()
                     if self._sqlite_type(v) == actual_typ.upper()
-                }
+                ]
 
                 if not useattrs:
 
@@ -600,10 +607,11 @@ class Cache:
 
                 main_fields = self._table_fields()
 
+
                 values = ', '.join(
-                    f'({key}, "{k}", {self._quotes(v, actual_typ)})'
-                    for k, v in useattrs.items()
-                    if k not in main_fields
+                    f'({key}, {self._quotes(group)}, {keyvar}, '
+                    f'"{k}", {self._quotes(v, actual_typ)})'
+                    for keyvar, group, k, v in useattrs
                 )
 
                 q = (
@@ -1192,7 +1200,7 @@ class Cache:
                 attr_{} (
                     id INT,
                     group VARCHAR,
-                    keyvar BOOLEAN,
+                    keyvar INT,
                     name VARCHAR,
                     value {},
                     FOREIGN KEY(id) REFERENCES main(id)
@@ -1390,7 +1398,7 @@ class Cache:
             '"abc"'
         """
 
-        if string is None:
+        if string is None or string == 'NULL':
 
             return 'NULL'
 

@@ -111,6 +111,7 @@ class CacheItem:
             key: str,
             version: int = 1,
             status: int = 0,
+            params: dict | None = None,
             date: str = None,
             filename: str = None,
             ext: str | None = None,
@@ -127,6 +128,7 @@ class CacheItem:
         self.key = key
         self.version = version
         self._status = status
+        self.params = params or {}
         self.date = date
         self.filename = filename
         self.ext = ext
@@ -220,18 +222,14 @@ class CacheItem:
         attrs = attrs or {}
 
         if uri:
-            params['_uri'] = uri
 
-        attrs = {
-            'attrs': attrs,
-            'params': params,
-        }
+            params['_uri'] = uri
 
         key = cls.serialize(params)
 
         args = {
             k: v for k, v in locals().items()
-            if k not in ['uri', 'params', 'cls']
+            if k not in ['uri', 'cls']
         }
 
         return cls(**args)
