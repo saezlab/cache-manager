@@ -226,6 +226,7 @@ class CacheItem:
             'attrs': attrs,
             'params': params,
         }
+
         key = cls.serialize(params)
 
         args = {
@@ -265,7 +266,6 @@ class CacheItem:
         """
 
         ext = f'.{self.ext}' if self.ext else ''
-        print(ext)
 
         return f'{self.version_id}{ext}'
 
