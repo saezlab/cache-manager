@@ -588,12 +588,17 @@ class Cache:
 
                 _log(f'Creating attributes in attr_{actual_typ}')
 
-                useattrs = {
-                    k: v
+                useattrs = [
+                    (keyvar, group if isdict else 'NULL', k, v)
                     for keyvar, d in enumerate(('attrs', 'params'))
-                    for k, v in getattr(new, d)
+                    for group, vals in getattr(new, d).items()
+                    for k, v in (
+                        vals
+                        if (isdict := isinstance(vals, dict)) else
+                        {group: vals}
+                    ).items()
                     if self._sqlite_type(v) == actual_typ.upper()
-                }
+                ]
 
                 if not useattrs:
 
