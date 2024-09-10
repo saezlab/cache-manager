@@ -616,7 +616,7 @@ class Cache:
 
                 q = (
                     f'INSERT INTO attr_{actual_typ} '
-                    '( id, group, keyvar, name, value ) '
+                    '( id, namespace, keyvar, name, value ) '
                     f'VALUES {values}'
                 )
 
@@ -1199,7 +1199,7 @@ class Cache:
                 CREATE TABLE IF NOT EXISTS
                 attr_{} (
                     id INT,
-                    group VARCHAR,
+                    namespace VARCHAR,
                     keyvar INT,
                     name VARCHAR,
                     value {},
