@@ -120,7 +120,8 @@ class TestCache:
         assert isinstance(it, _item.CacheItem)
         assert it.status == 1
         assert it.version == 1
-        assert it.attrs == {'foo': 'bar', '_uri': 'bestornew'}
+        assert it.attrs == {'foo': 'bar'}
+        assert it.params == {'_uri': 'bestornew'}
 
         it = test_cache.best_or_new('bestornew')
 
