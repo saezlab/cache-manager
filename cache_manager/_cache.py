@@ -909,7 +909,10 @@ class Cache:
 
             where += f' AND main.id IN ({",".join(str(i) for i in ids)})'
 
-        keys = list(self._table_fields().keys()) + ['name', 'value']
+        keys = (
+            list(self._table_fields().keys()) +
+            ['namespace',  'keyvar', 'name', 'value']
+        )
 
         results = {}
 
@@ -968,7 +971,16 @@ class Cache:
 
                     if row['name']:
 
-                        results[verid].attrs[row['name']] = row['value']
+                        target = getattr(
+                            results[verid],
+                            'params' if row['keyvar'] else 'attrs',
+                        )
+
+                        if row['namespace'] is not None:
+
+                            target = target[row['namespace']]
+
+                        target[row['name']] = row['value']
 
             if results:
 
