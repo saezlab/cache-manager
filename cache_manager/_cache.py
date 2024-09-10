@@ -590,7 +590,8 @@ class Cache:
 
                 useattrs = {
                     k: v
-                    for k, v in new.attrs.items()
+                    for keyvar, d in enumerate(('attrs', 'params'))
+                    for k, v in getattr(new, d)
                     if self._sqlite_type(v) == actual_typ.upper()
                 }
 
@@ -1192,7 +1193,7 @@ class Cache:
                 attr_{} (
                     id INT,
                     group VARCHAR,
-                    keyvar BOOLEAN,
+                    keyvar INT,
                     name VARCHAR,
                     value {},
                     FOREIGN KEY(id) REFERENCES main(id)
