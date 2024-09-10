@@ -339,7 +339,7 @@ class CacheItem:
             The Uniform Resource Identifier or `None` if not defined.
         """
 
-        return self.attrs.get('_uri', None)
+        return self.params.get('_uri', None)
 
 
     @property
