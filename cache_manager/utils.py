@@ -159,10 +159,10 @@ def parse_attr_search(dct: dict) -> dict:
 
     Returns:
         Returns a dictionary where the keys are the data type of the attributes
-        (namely: 'int', 'float', 'varchar' or 'datetime') and the values are a
-        list of strings with the SQL statements of the different attributes to
-        search on that attribute type table (e.g. `'name = "attribute_A" AND
-        value => 123'`).
+        (namely: 'int', 'float', 'varchar' or 'datetime', 'text') and the
+        values are a list of strings with the SQL statements of the different
+        attributes to search on that attribute type table (e.g.
+        `'name = "attribute_A" AND value => 123'`).
 
     Examples:
         >>> parse_attr_search({'attribute_A>=': 123})

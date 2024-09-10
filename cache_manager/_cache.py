@@ -1062,11 +1062,11 @@ class Cache:
             >>> cache = cm.Cache('./')
             >>> it = cache.create('foo', attrs={'bar': 123, 'baz': 456})
             >>> it.attrs
-            {'bar': 123, 'baz': 456, '_uri': 'foo'}
+            {'bar': 123, 'baz': 456}
             >>> cache.update(uri='foo', update={'bar': 0})
             >>> it = cache.search('foo')[0]
             >>> it.attrs
-            {'_uri': 'foo', 'bar': 0, 'baz': 456}
+            {'bar': 0, 'baz': 456}
         """
 
         with Lock(self.con):
