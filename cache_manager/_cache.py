@@ -607,7 +607,8 @@ class Cache:
                 )
 
                 q = (
-                    f'INSERT INTO attr_{actual_typ} ( id, group, name, value ) '
+                    f'INSERT INTO attr_{actual_typ} '
+                    '( id, group, keyvar, name, value ) '
                     f'VALUES {values}'
                 )
 
@@ -1191,6 +1192,7 @@ class Cache:
                 attr_{} (
                     id INT,
                     group VARCHAR,
+                    keyvar BOOLEAN,
                     name VARCHAR,
                     value {},
                     FOREIGN KEY(id) REFERENCES main(id)
