@@ -976,8 +976,12 @@ class Cache:
                             'params' if row['keyvar'] else 'attrs',
                         )
 
-                        if row['namespace'] is not None:
+                        if (
+                            row['namespace'] is not None
+                            and row['namespace'] not in target
+                        ):
 
+                            target[row['namespace']] = {}
                             target = target[row['namespace']]
 
                         target[row['name']] = row['value']
