@@ -222,7 +222,10 @@ class CacheItem:
         if uri:
             params['_uri'] = uri
 
-        attrs = {**params, **attrs}
+        attrs = {
+            'attrs': attrs,
+            'params': params,
+        }
         key = cls.serialize(params)
 
         args = {

@@ -607,7 +607,7 @@ class Cache:
                 )
 
                 q = (
-                    f'INSERT INTO attr_{actual_typ} ( id, name, value ) '
+                    f'INSERT INTO attr_{actual_typ} ( id, group, name, value ) '
                     f'VALUES {values}'
                 )
 
@@ -1190,6 +1190,7 @@ class Cache:
                 CREATE TABLE IF NOT EXISTS
                 attr_{} (
                     id INT,
+                    group VARCHAR,
                     name VARCHAR,
                     value {},
                     FOREIGN KEY(id) REFERENCES main(id)
