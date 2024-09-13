@@ -1079,6 +1079,7 @@ class Cache:
                 newer_than=newer_than,
                 older_than=older_than,
                 key=key,
+                attrs=attrs,
             )
 
             update = update or {}
