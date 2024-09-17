@@ -1081,7 +1081,7 @@ class Cache:
                 key=key,
                 attrs=attrs,
             )
-
+            print(items)
             update = update or {}
             main_fields = self._table_fields()
             main = ', '.join(
@@ -1121,10 +1121,18 @@ class Cache:
                         # Adding new attr
                         q = f'SELECT id FROM attr_{actual_typ} {name_where}'
                         self._execute(q)
-                        _ids = [i[0] for i in self.cur.fetchall()]
-                        print(_ids)
+                        existing_attr_ids = set(i[0] for i in self.cur.fetchall())
+                        print(existing_attr_ids)
 
+                        new_attr_ids = set(ids) - existing_attr_ids
 
+                        if not new_attr_ids:
+                            continue
+
+                        # Insert new attr to DB
+                        new_values = ",".join(f'id = {i}, {k} = {val}' for i in new_attr_ids)
+                        new_q = f'INSERT INTO attr_{actual_typ} ({new_values})'
+                        self._execute(new_q)
 
             _log(f'Finished updating attributes')
 
