@@ -892,7 +892,7 @@ class Cache:
         Example:
             >>> cache = cm.Cache('./')
             >>> it = cache.create('foo')
-            >>> cache.search(uri='foo)
+            >>> cache.search(uri='foo')
             [CacheItem[foo V:1 UNINITIALIZED]]
         """
 
@@ -1106,14 +1106,25 @@ class Cache:
 
                 for k, v in update.get('attrs', {}).items():
 
-                    typ = type(v).__name__
+                    typ = self._sqlite_type(v)
+                    print(v, typ, actual_typ)
 
-                    if k not in main_fields and typ == actual_typ:
+                    if k not in main_fields and typ == actual_typ.upper():
+                        print('HELOOOOO')
 
-                        val = f'value = {self._quotes(v, TYPES[typ])}'
+                        # Updating current attr
+                        val = f'value = {self._quotes(v, typ)}'
                         name_where = where + f' AND name = {self._quotes(k)}'
                         q = f'UPDATE attr_{actual_typ} SET {val} {name_where}'
                         self._execute(q)
+
+                        # Adding new attr
+                        q = f'SELECT id FROM attr_{actual_typ} {name_where}'
+                        self._execute(q)
+                        _ids = [i[0] for i in self.cur.fetchall()]
+                        print(_ids)
+
+
 
             _log(f'Finished updating attributes')
 
