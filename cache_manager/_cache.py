@@ -1081,7 +1081,6 @@ class Cache:
                 key=key,
                 attrs=attrs,
             )
-            print(items)
             update = update or {}
             main_fields = self._table_fields()
             main = ', '.join(
@@ -1107,13 +1106,12 @@ class Cache:
                 for k, v in update.get('attrs', {}).items():
 
                     typ = self._sqlite_type(v)
-                    print(v, typ, actual_typ)
 
                     if k not in main_fields and typ == actual_typ.upper():
-                        print('HELOOOOO')
 
                         # Updating current attr
-                        val = f'value = {self._quotes(v, typ)}'
+                        qval = self._quotes(v, typ)
+                        val = f'value = {qval}'
                         name_where = where + f' AND name = {self._quotes(k)}'
                         q = f'UPDATE attr_{actual_typ} SET {val} {name_where}'
                         self._execute(q)
@@ -1122,7 +1120,6 @@ class Cache:
                         q = f'SELECT id FROM attr_{actual_typ} {name_where}'
                         self._execute(q)
                         existing_attr_ids = set(i[0] for i in self.cur.fetchall())
-                        print(existing_attr_ids)
 
                         new_attr_ids = set(ids) - existing_attr_ids
 
@@ -1130,8 +1127,15 @@ class Cache:
                             continue
 
                         # Insert new attr to DB
-                        new_values = ",".join(f'id = {i}, {k} = {val}' for i in new_attr_ids)
-                        new_q = f'INSERT INTO attr_{actual_typ} ({new_values})'
+                        new_values = ",".join(
+                            f'{i}, NULL, 0, "{k}", {qval}'
+                            for i in new_attr_ids
+                        )
+                        new_q = (
+                            f'INSERT INTO attr_{actual_typ} '
+                            '(id, namespace, keyvar, name, value) '
+                            f'VALUES ({new_values})'
+                        )
                         self._execute(new_q)
 
             _log(f'Finished updating attributes')
