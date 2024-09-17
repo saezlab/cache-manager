@@ -1104,7 +1104,7 @@ class Cache:
 
                 _log(f'Updating attributes in attr_{actual_typ}')
 
-                for k, v in update.items():
+                for k, v in update.get('attrs', {}).items():
 
                     typ = type(v).__name__
 
