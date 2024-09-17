@@ -1103,40 +1103,63 @@ class Cache:
 
                 _log(f'Updating attributes in attr_{actual_typ}')
 
-                for k, v in update.get('attrs', {}).items():
+                useattrs = [
+                    (
+                        0,
+                        self._quotes(group)
+                            if isinstance(vals, dict)
+                            else 'NULL',
+                        k,
+                        v
+                    )
+                    for group, vals in update.get('attrs', {}).items()
+                    for k, v in (
+                        vals
+                        if isinstance(vals, dict) else
+                        {group: vals}
+                    ).items()
+                    if (
+                        self._sqlite_type(v) == actual_typ.upper()
+                        and k not in main_fields
+                    )
+                ]
+
+                for keyvar, group, k, v in useattrs:
 
                     typ = self._sqlite_type(v)
 
-                    if k not in main_fields and typ == actual_typ.upper():
+                    # Updating current attr
+                    qval = self._quotes(v, typ)
+                    val = f'value = {qval}'
+                    name_where = (
+                        where +
+                        f' AND name = "{k}" AND namespace = {group}'
+                    )
+                    q = f'UPDATE attr_{actual_typ} SET {val} {name_where}'
+                    self._execute(q)
 
-                        # Updating current attr
-                        qval = self._quotes(v, typ)
-                        val = f'value = {qval}'
-                        name_where = where + f' AND name = {self._quotes(k)}'
-                        q = f'UPDATE attr_{actual_typ} SET {val} {name_where}'
-                        self._execute(q)
+                    # Adding new attr
+                    q = f'SELECT id FROM attr_{actual_typ} {name_where}'
+                    self._execute(q)
+                    existing_attr_ids = set(i[0] for i in self.cur.fetchall())
 
-                        # Adding new attr
-                        q = f'SELECT id FROM attr_{actual_typ} {name_where}'
-                        self._execute(q)
-                        existing_attr_ids = set(i[0] for i in self.cur.fetchall())
+                    new_attr_ids = set(ids) - existing_attr_ids
 
-                        new_attr_ids = set(ids) - existing_attr_ids
+                    if not new_attr_ids:
 
-                        if not new_attr_ids:
-                            continue
+                        continue
 
-                        # Insert new attr to DB
-                        new_values = ",".join(
-                            f'{i}, NULL, 0, "{k}", {qval}'
-                            for i in new_attr_ids
-                        )
-                        new_q = (
-                            f'INSERT INTO attr_{actual_typ} '
-                            '(id, namespace, keyvar, name, value) '
-                            f'VALUES ({new_values})'
-                        )
-                        self._execute(new_q)
+                    # Insert new attr to DB
+                    new_values = ",".join(
+                        f'{i}, {group}, {keyvar}, "{k}", {qval}'
+                        for i in new_attr_ids
+                    )
+                    new_q = (
+                        f'INSERT INTO attr_{actual_typ} '
+                        '(id, namespace, keyvar, name, value) '
+                        f'VALUES ({new_values})'
+                    )
+                    self._execute(new_q)
 
             _log(f'Finished updating attributes')
 
