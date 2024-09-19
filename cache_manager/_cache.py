@@ -1215,6 +1215,60 @@ class Cache:
     failed = ft.partialmethod(update_status, status=Status.FAILED.value)
 
 
+    def update_date(
+        self,
+        uri: str | None = None,
+        params: dict | None = None,
+        version: int | None = -1,
+        status: int | None = None,
+        key: str | None = None,
+        newdate: str | datetime.datetime | None = None,
+        datefield: str = 'date',
+    ):
+        """
+        Updates the date of a given entry in the registry. All arguments
+        other than `newdate` are used to identify/search the entry to
+        update and `datefield` defines which date field to update. If this field
+        is not in the main table, it will be added to the attribute tables.
+
+        Args:
+            uri:
+                Uniform Resource Identifier. Optional, defaults to `None`.
+            params:
+                Collection of parameters in dict format where key-value pairs
+                correspond to parameter-value respectively. Optional, defaults
+                to `None`.
+            version:
+                Version number of the item(s). Optional, defaults to `None`.
+            status:
+                Integer defining the status. Optional, defaults to `None`.
+            key:
+                Unique identifier for the item (alphanumeric hash).
+            newdate:
+                The new date to be set. Optional, defaults to `None` (uses
+                current time).
+            datefield:
+                Name of the date field in the main table to update (e.g. date,
+                last_read or last_search). Otherwise, will update or create such
+                field in the attributes table. Optional, defaults to `'date'`.
+        """
+
+        updated = {datefield: _utils.parse_time(newdate)}
+
+        if datefield not in {'date', 'last_read', 'last_search'}:
+
+            updated = {'attrs': updated}
+
+        self.update(
+            uri=uri,
+            params=params,
+            version=version,
+            status=status,
+            update=updated,
+            key=key,
+        )
+
+
     def _accessed(self, item_id: int):
         """
         Updates the 'last_read' and 'read_count' attributes of a given item to
