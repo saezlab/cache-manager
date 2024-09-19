@@ -1728,7 +1728,7 @@ class Cache:
         if ids:
 
             ids = _misc.to_list(ids)
-            where.append(f'id IN ({", ".join(str(i) for i in ids)})')
+            where.append(f'main.id IN ({", ".join(str(i) for i in ids)})')
 
         where = f' WHERE {" AND ".join(where)}' if where else ''
 
