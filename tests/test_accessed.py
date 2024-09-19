@@ -36,7 +36,6 @@ def test_last_read(test_cache):
         f.write("Something")
 
     it._open()
-
     q = f'SELECT datetime(last_read, "localtime"), read_count FROM main WHERE id = {it._id};'
     test_cache._execute(q)
     last, count = test_cache.cur.fetchone()

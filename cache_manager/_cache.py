@@ -1286,10 +1286,10 @@ class Cache:
             item_or_id = self.search(ids = item_or_id)[0]
 
         self.update(
-            item_id = item_or_id.key,
+            key = item_or_id.key,
             update = {
                 'read_count': item_or_id.read_count + 1,
-                'date': datetime.datetime.now(),
+                'last_read': datetime.datetime.now(),
             },
         )
 
