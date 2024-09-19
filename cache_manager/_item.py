@@ -356,6 +356,12 @@ class CacheItem:
         return f'{self.key}-{self.version}'
 
 
+    def accessed(self):
+
+        if self.cache:
+            self.cache._accessed(self._id)
+
+
     def update_date(
         self,
         datefield: str = 'date',
@@ -472,7 +478,7 @@ class CacheItem:
             documentation for more details.
         """
 
-        self.cache._accessed(self._id)
+        self.accessed()
 
         return _open.Opener(self.path, **kwargs)
 
