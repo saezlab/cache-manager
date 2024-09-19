@@ -836,6 +836,7 @@ class Cache:
             key: str | None = None,
             attrs: dict | None = None,
             include_removed: bool = False,
+            ids: int | list[int] | None = None,
     ) -> list[CacheItem]:
         """
         Looks up for items in the cache based on the passed parameter(s).
@@ -1269,20 +1270,27 @@ class Cache:
         )
 
 
-    def _accessed(self, item_id: int):
+    def _accessed(self, item_or_id: int | CacheItem):
         """
         Updates the 'last_read' and 'read_count' attributes of a given item to
         current date/time and +1 respectively.
 
         Args:
-            item_id:
+            item_or_id:
                 Integer corresponding to the internal `CacheItem._id` attribute
-                that has just been accessed.
+                that has just been accessed or the `CacheItem` itself.
         """
 
-        self.update_date()
+        if isinstance(item_or_id, int):
+
+            item_or_id = self.search(ids = item_or_id)[0]
+
         self.update(
-            item_id=item_id,
+            item_id = item_or_id.key,
+            update = {
+                'read_count': item_or_id.read_count + 1,
+                'date': datetime.datetime.now(),
+            },
         )
 
 
@@ -1610,6 +1618,7 @@ class Cache:
         filename: str | None = None,
         key: str | None = None,
         include_removed: bool = False,
+        ids: int | list[int] | None = None,
     ) -> str:
         """
         Generates a SQL `WHERE` clause based on different parameters defined in
@@ -1715,6 +1724,11 @@ class Cache:
         if label:
 
             where.append(f'label = "{label}"')
+
+        if ids:
+
+            ids = _misc.to_list(ids)
+            where.append(f'id IN ({", ".join(str(i) for i in ids)})')
 
         where = f' WHERE {" AND ".join(where)}' if where else ''
 
