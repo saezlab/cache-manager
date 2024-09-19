@@ -1280,12 +1280,10 @@ class Cache:
                 that has just been accessed.
         """
 
-        q = (
-            'UPDATE main SET '
-            'last_read = DATETIME("now"), read_count = read_count + 1 '
-            f'WHERE id = {item_id};'
+        self.update_date()
+        self.update(
+            item_id=item_id,
         )
-        self._execute(q)
 
 
     def _create_schema(self):
