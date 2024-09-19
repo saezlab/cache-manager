@@ -6,6 +6,7 @@ __all__ = [
 
 from typing import IO, Type
 import os
+import datetime
 
 from pypath_common import _misc
 
@@ -353,6 +354,35 @@ class CacheItem:
         """
 
         return f'{self.key}-{self.version}'
+
+
+    def update_date(
+        self,
+        datefield: str = 'date',
+        newdate: str | datetime.datetime | None = None,
+    ):
+        """
+        Update the date to a given value, updating it in the associated `Cache`
+        instance if available.
+
+        Args:
+            newdate:
+                The new date to be set. Optional, defaults to `None` (uses
+                current time).
+            datefield:
+                Name of the date field in the main table to update (e.g. date,
+                last_read or last_search). Otherwise, will update or create such
+                field in the attributes table. Optional, defaults to `'date'`.
+        """
+
+        if self.cache:
+
+            self.cache.update_date(
+                key=self.key,
+                version=self.version,
+                newdate=newdate,
+                datefield=datefield,
+            )
 
 
     def failed(self):
