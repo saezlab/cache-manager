@@ -161,6 +161,32 @@ class TestCache:
         assert {(it.version, it.status) for it in its} == {(1, 3), (2, 2)}
 
 
+    def test_update_date(self, test_cache):
+
+        it = test_cache.best_or_new('updatedate')
+
+        d = '2027-01-23 00:00:01'
+
+        it.update_date(newdate = d)
+
+        it = it._from_main()
+
+        assert it.date == utils.parse_time(d)
+
+
+    def test_update_date_attrs(self, test_cache):
+
+        it = test_cache.best_or_new('updatedateattrs')
+
+        d = '2027-01-23 00:00:01'
+
+        it.update_date(datefield = 'testdate', newdate = d)
+
+        it = it._from_main()
+
+        assert it.attrs['testdate'] == utils.parse_time(d)
+
+
     def test_item_status(self, test_cache):
 
         it = test_cache.best_or_new('itemstatus')
