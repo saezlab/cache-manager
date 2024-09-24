@@ -391,6 +391,25 @@ class CacheItem:
             )
 
 
+    def update(self, **kwargs):
+        """
+        Updates the item in the cache.
+
+        Args:
+            **kwargs:
+                The key-value pairs of fields/attributes and the new values
+                respectively to be updated.
+        """
+
+        if self.cache:
+
+            self.cache.update(
+                key=self.key,
+                version=self.version,
+                update=kwargs,
+            )
+
+
     def failed(self):
         """
         Sets the status to failed.
