@@ -15,6 +15,7 @@ import sqlite3
 import datetime
 import functools as ft
 import collections
+from collections.abc import Mapping
 
 from pypath_common import _misc
 import platformdirs
@@ -1082,8 +1083,6 @@ class Cache:
                 key=key,
                 attrs=attrs,
             )
-            print(items)
-            print(update)
             update = update or {}
             main_fields = self._table_fields()
             main = ', '.join(
@@ -1110,7 +1109,7 @@ class Cache:
                     (
                         0,
                         self._quotes(group)
-                            if isinstance(vals, dict)
+                            if isinstance(vals, Mapping)
                             else 'NULL',
                         k,
                         v
@@ -1118,7 +1117,7 @@ class Cache:
                     for group, vals in update.get('attrs', {}).items()
                     for k, v in (
                         vals
-                        if isinstance(vals, dict) else
+                        if isinstance(vals, Mapping) else
                         {group: vals}
                     ).items()
                     if (
@@ -1126,7 +1125,7 @@ class Cache:
                         and k not in main_fields
                     )
                 ]
-                print(useattrs)
+
                 for keyvar, group, k, v in useattrs:
 
                     typ = self._sqlite_type(v)
@@ -1139,7 +1138,6 @@ class Cache:
                         f' AND name = "{k}" AND namespace = {group}'
                     )
                     q = f'UPDATE attr_{actual_typ} SET {val} {name_where}'
-                    print(q)
                     self._execute(q)
 
                     # Adding new attr
@@ -1163,7 +1161,6 @@ class Cache:
                         '(id, namespace, keyvar, name, value) '
                         f'VALUES ({new_values})'
                     )
-                    print(new_q)
                     self._execute(new_q)
 
             _log(f'Finished updating attributes')
