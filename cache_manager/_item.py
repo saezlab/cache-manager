@@ -283,6 +283,19 @@ class CacheItem:
 
         return os.path.join(d, self.cache_fname)
 
+    @property
+    def size(self) -> float | None:
+        """
+        Size of the file in bytes.
+
+        Returns:
+            Size of the file in bytes.
+        """
+
+        if os.path.exists(path := self.path):
+
+            return os.path.getsize(path)
+
 
     @property
     def rstatus(self) -> int:
