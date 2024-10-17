@@ -15,6 +15,7 @@ import sqlite3
 import datetime
 import functools as ft
 import collections
+from collections.abc import Mapping
 
 from pypath_common import _misc
 import platformdirs
@@ -1108,7 +1109,7 @@ class Cache:
                     (
                         0,
                         self._quotes(group)
-                            if isinstance(vals, dict)
+                            if isinstance(vals, Mapping)
                             else 'NULL',
                         k,
                         v
@@ -1116,7 +1117,7 @@ class Cache:
                     for group, vals in update.get('attrs', {}).items()
                     for k, v in (
                         vals
-                        if isinstance(vals, dict) else
+                        if isinstance(vals, Mapping) else
                         {group: vals}
                     ).items()
                     if (
