@@ -510,7 +510,7 @@ class CacheItem:
 
         self.filename = (
             self.filename or
-            os.path.basename(self.uri or '') or
+            os.path.basename(self.uri.split('?')[0] or '') or
             self.cache_fname
         )
         self.ext = self.ext or os.path.splitext(self.filename)[-1][1:] or None
