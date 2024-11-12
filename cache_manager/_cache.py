@@ -696,9 +696,10 @@ class Cache:
         args.pop('self')
         args.pop('path')
 
-        uri = uri or os.path.basename(path)
+        args['uri'] = uri or os.path.basename(path)
 
         item = self.create(**args)
+        
         _log(f'Copying `{path}` to `{item.path}`.')
         shutil.copy(path, item.path)
 
