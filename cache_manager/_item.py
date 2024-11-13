@@ -447,7 +447,7 @@ class CacheItem:
 
         if self.status == Status.READY.value:
 
-            return self._open(**kwargs).get('result', None)
+            return self._open(**kwargs)
 
 
     def ready(self):
