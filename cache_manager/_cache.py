@@ -1537,7 +1537,7 @@ class Cache:
 
             string = f"json('{json.dumps(string)}')"
 
-        return f'"{string}"' if (
+        return f"'{string}'" if (
                 typ.startswith('VARCHAR') or
                 typ.startswith('DATETIME')
         ) else string
