@@ -264,7 +264,7 @@ class CacheItem:
             Combination of `version_id` (key + version) and the file extension.
         """
 
-        ext = f'{self.ext}' if self.ext else ''
+        ext = f'.{self.ext}' if self.ext else ''
 
         return f'{self.version_id}{ext}'
 
@@ -527,4 +527,5 @@ class CacheItem:
             self.cache_fname
         )
         self.ext = self.ext or os.path.splitext(self.filename)[-1][1:] or None
+        self.ext = self.ext.strip('.') if self.ext is not None else None
         self.date = self.date or _utils.parse_time()
