@@ -264,7 +264,7 @@ class CacheItem:
             Combination of `version_id` (key + version) and the file extension.
         """
 
-        ext = f'.{self.ext}' if self.ext else ''
+        ext = f'{self.ext}' if self.ext else ''
 
         return f'{self.version_id}{ext}'
 
