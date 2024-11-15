@@ -109,6 +109,7 @@ class Opener:
 
             setattr(self, k, v)
 
+        self.result = None
         self.set_type()
         self.open()
         self.extract()
