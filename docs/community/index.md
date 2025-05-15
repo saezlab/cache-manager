@@ -1,4 +1,4 @@
-Welcome to the Omnicache community! We follow open-source principles and
+Welcome to the cache-manager community! We follow open-source principles and
 encourage any sort of contribution. We communicate on GitHub, where we also
 organise our projects.
 
@@ -18,8 +18,8 @@ organise our projects.
 
 ## Contributing Guidelines GitHub Links
 
-- [Contribution guidelines](https://github.com/Omnicache/Omnicache/blob/main/CONTRIBUTING.md)
+- [Contribution guidelines](https://github.com/cache-manager/cache-manager/blob/main/CONTRIBUTING.md)
 
-- [Code of Conduct](https://github.com/Omnicache/Omnicache/blob/main/CODE_OF_CONDUCT.md)
+- [Code of Conduct](https://github.com/cache-manager/cache-manager/blob/main/CODE_OF_CONDUCT.md)
 
-- [Developer Guide](https://github.com/Omnicache/Omnicache/blob/main/DEVELOPER.md)
+- [Developer Guide](https://github.com/cache-manager/cache-manager/blob/main/DEVELOPER.md)

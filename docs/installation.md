@@ -10,7 +10,7 @@ We strongly recommend installing a few prerequisites to ensure a smooth experien
       - [Install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 4. *Docker* (containerization technology) [optional]
       - [Install Docker](https://docs.docker.com/engine/)
-  
+
 !!! tip "Tip"
     If you are missing any of those pre-requisites, **please follow the installation guide in each resource before you continue**.
 
@@ -19,11 +19,11 @@ We strongly recommend installing a few prerequisites to ensure a smooth experien
 
 You can verify access to these components in your terminal:
 
-1. `python` version 3.10 or higher.
+1. `Python` version 3.10 or higher.
    ```bash
    python --version
    ```
-2. `poetry`
+2. `Poetry`
    ```bash
    poetry --version
    ```
@@ -31,6 +31,7 @@ You can verify access to these components in your terminal:
    ```bash
    git --version
    ```
-4. `docker`
+4. `Docker`
    ```bash
    docker --version
+   ```

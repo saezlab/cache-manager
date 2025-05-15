@@ -1,4 +1,5 @@
 import functools as ft
+
 from pypath_common import data
 
-load = ft.partial(data.load, module = "cache_manager")
+load = ft.partial(data.load, module = 'cache_manager')

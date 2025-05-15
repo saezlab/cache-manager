@@ -33,25 +33,7 @@ class Opener:
     pointer, as you request. It examines the file type and size. All these tasks
     are performed automatically upon instantiation.
 
-    Args:
-        path:
-            Path to the file.
-        ext:
-            Extension of the file, such as "zip", "tar.gz", etc. Optional,
-            defaults to `None`.
-        needed:
-            A list of paths to be extracted within an archive. If not provided,
-            all paths will be included. Optional, defaults to `None`.
-        large:
-            Stores the file pointers instead of the contents of the files
-            themselves. Optional, defaults to `True`.
-        default_mode:
-            Reading mode for the file objects: "r" (normal) or "rb" (binary).
-            Optional, defaults to `"r"` (normal mode).
-        encoding:
-            Encoding for the stored file objects. Optional, defaults to `None`.
-
-    Attrs:
+    Attributes:
         path:
             Path to the file.
         ext:
@@ -92,14 +74,35 @@ class Opener:
     _FORBIDDEN_CHARS = re.compile(r'[/\\<>:"\?\*\|]')
 
     def __init__(
-            self,
-            path: str,
-            ext: str | None = None,
-            needed: list[str] | None = None,
-            large: bool = True,
-            default_mode: str = 'r',
-            encoding: str | None = None,
+        self,
+        path: str,
+        ext: str | None = None,
+        needed: list[str] | None = None,
+        large: bool = True,
+        default_mode: str = 'r',
+        encoding: str | None = None,
     ):
+        """ Initialize the Opener class.
+
+        Args:
+            path:
+                Path to the file.
+            ext:
+                Extension of the file, such as "zip", "tar.gz", etc. Optional,
+                defaults to `None`.
+            needed:
+                A list of paths to be extracted within an archive. If not provided,
+                all paths will be included. Optional, defaults to `None`.
+            large:
+                Stores the file pointers instead of the contents of the files
+                themselves. Optional, defaults to `True`.
+            default_mode:
+                Reading mode for the file objects: "r" (normal) or "rb" (binary).
+                Optional, defaults to `"r"` (normal mode).
+            encoding:
+                Encoding for the stored file objects. Optional, defaults to `None`.
+        """
+
 
         for k, v in locals().items():
 

@@ -67,7 +67,7 @@ class CacheItem:
             The `Cache` instance where the item belongs. Optional, defaults
             to `None`.
 
-    Attrs:
+    Attributes:
         key:
             Unique key name for the item.
         version:
@@ -404,7 +404,7 @@ class CacheItem:
             )
 
 
-    def update(self, **kwargs):
+    def update(self, **kwargs: object):
         """
         Updates the item in the cache.
 
@@ -431,7 +431,7 @@ class CacheItem:
         self.status = Status.FAILED.value
 
 
-    def open(self, **kwargs) -> str | IO | dict[str, str | IO] | None:
+    def open(self, **kwargs: object) -> str | IO | dict[str, str | IO] | None:
         """
         Opens the file in reading mode.
 

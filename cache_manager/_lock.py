@@ -14,17 +14,18 @@ class Lock:
     Context manager that keeps the SQLite database exclusively locked. This
     avoids concurrency when performing changes within a database connection.
 
-    Args:
-        con:
-            The current instance of `sqlite3.Connection` to be locked.
-
-    Attrs:
+    Attributes:
         con:
             Current connection to SQL database.
     """
 
     def __init__(self, con: sqlite3.Connection) -> None:
+        """Initialize the class Lock.
 
+        Args:
+            con:
+                The current instance of `sqlite3.Connection` to be locked.
+        """
         self.con = con
 
 
@@ -41,7 +42,12 @@ class Lock:
         return self.con
 
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: object | None,
+    ) -> None:
         """
         Exits the context manager closing the exclusive transaction and
         unlocking the connection. If an exception occurs, changes will be rolled

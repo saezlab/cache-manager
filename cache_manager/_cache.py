@@ -7,6 +7,7 @@ __all__ = [
 ]
 
 from typing import Any
+from collections.abc import Mapping
 import os
 import re
 import json
@@ -15,7 +16,6 @@ import sqlite3
 import datetime
 import functools as ft
 import collections
-from collections.abc import Mapping
 
 from pypath_common import _misc
 import platformdirs
@@ -46,18 +46,9 @@ class Cache:
     Cache manager class, stores and manages the information in the registry
     database as well as the files in the cache directory.
 
-    Args:
-        path:
-            Explicit path to set the cache in. Overrides the `pkg` keyword
-            argument. Optional, defaults to `None`.
-        pkg:
-            Package/module name the cache is used on. This sets the cache
-            directory in a folder located in the OS default cache directory.
-
-    Attrs:
+    Attributes:
         con:
-            Current connection to the SQL database, an instance of
-            `sqlite3.Connection`.
+            Current connection to the SQL database, an instance of `sqlite3.Connection`.
         cur:
             Current cursor of the SQL database, an instance of `sqlite3.Cursor`.
         path:
@@ -69,7 +60,16 @@ class Cache:
     """
 
     def __init__(self, path: str | None = None, pkg: str | None = None):
+        """Initializes a Cache instance.
 
+        Args:
+            path:
+                Explicit path to set the cache in. Overrides the `pkg` keyword
+                argument. Optional, defaults to `None`.
+            pkg:
+                Package/module name the cache is used on. This sets the cache
+                directory in a folder located in the OS default cache directory.
+        """
         self.con, self.cur = None, None
         self._fields = {}
         self._set_path(path=path, pkg=pkg)
@@ -172,7 +172,7 @@ class Cache:
         Returns:
             The `CacheItem` instance corresponding to the latest version of it.
 
-        Example:
+        Examples:
             >>> cache = cm.Cache('./')
             >>> cache.create('foo')
             CacheItem[foo V:1 UNINITIALIZED]
@@ -353,7 +353,7 @@ class Cache:
         Returns:
             The `CacheItem` instance of the item searched (if any).
 
-        Example:
+        Examples:
             >>> cache = cm.Cache('./')
             >>> it = cache.create('foo')
             >>> it.key
@@ -427,7 +427,7 @@ class Cache:
             `disk_fname` (file name as stored in the cache directory on the
             disk).
 
-        Example:
+        Examples:
             >>> cache = cm.Cache('./')
             >>> cache.create('foo')
             CacheItem[foo V:1 UNINITIALIZED]
@@ -500,7 +500,7 @@ class Cache:
         Returns:
             The newly created `CacheItem` instance.
 
-        Example:
+        Examples:
             >>> cache = cm.Cache('./')
             >>> cache.create('foo')
             CacheItem[31d0e534960b07c0bde745c17b05eaba V:1 UNINITIALIZED]
@@ -699,7 +699,7 @@ class Cache:
         args['uri'] = uri or os.path.basename(path)
 
         item = self.create(**args)
-        
+
         _log(f'Copying `{path}` to `{item.path}`.')
         shutil.copy(path, item.path)
 
@@ -783,7 +783,7 @@ class Cache:
                 the entry status as trashed, status = -1). Otherwise the entry
                 is permanently deleted. Optional, `True` by default.
 
-        Example:
+        Examples:
             >>> cache = cm.Cache('./')
             >>> cache.create('foo')
             CacheItem[foo V:1 UNINITIALIZED]
@@ -892,7 +892,7 @@ class Cache:
             List of `CacheItem` instances of the items fulfilling the search.
             terms.
 
-        Example:
+        Examples:
             >>> cache = cm.Cache('./')
             >>> it = cache.create('foo')
             >>> cache.search(uri='foo')
@@ -1061,7 +1061,7 @@ class Cache:
                 and the new values respectively to be updated. Optional,
                 defaults to `None`.
 
-        Example:
+        Examples:
             >>> cache = cm.Cache('./')
             >>> it = cache.create('foo', attrs={'bar': 123, 'baz': 456})
             >>> it.attrs
@@ -1113,7 +1113,7 @@ class Cache:
                             if isinstance(vals, Mapping)
                             else 'NULL',
                         k,
-                        v
+                        v,
                     )
                     for group, vals in update.get('attrs', {}).items()
                     for k, v in (
@@ -1144,7 +1144,7 @@ class Cache:
                     # Adding new attr
                     q = f'SELECT id FROM attr_{actual_typ} {name_where}'
                     self._execute(q)
-                    existing_attr_ids = set(i[0] for i in self.cur.fetchall())
+                    existing_attr_ids = {i[0] for i in self.cur.fetchall()}
 
                     new_attr_ids = set(ids) - existing_attr_ids
 
@@ -1153,7 +1153,7 @@ class Cache:
                         continue
 
                     # Insert new attr to DB
-                    new_values = ",".join(
+                    new_values = ','.join(
                         f'{i}, {group}, {keyvar}, "{k}", {qval}'
                         for i in new_attr_ids
                     )
@@ -1195,7 +1195,7 @@ class Cache:
             key:
                 Unique identifier for the item (alphanumeric hash).
 
-        Example:
+        Examples:
             >>> cache = cm.Cache('./')
             >>> it = cache.create('foo')
             >>> it.status
@@ -1440,7 +1440,7 @@ class Cache:
                 Package/module name the cache is used on. This sets the cache
                 directory in a folder located in the OS default cache directory.
 
-        Example:
+        Examples:
         >>> cache = cm.Cache('.')
         >>> cache._set_path(path='./test_cache')
         >>> cache.dir
@@ -1482,7 +1482,7 @@ class Cache:
             Dictionary containing the field names as keys and values correspond
             to the SQL data types and column specifications.
 
-        Example:
+        Examples:
             >>> cache = Cache('./')
             >>> cache._table_fields()
             OrderedDict([('id', 'INTEGER PRIMARY KEY AUTOINCREMENT'), \
@@ -1517,7 +1517,7 @@ class Cache:
         Returns:
             The resulting quoted string.
 
-        Example:
+        Examples:
             >>> cache = Cache('./')
             >>> cache._quotes('abc')
             '"abc"'
@@ -1661,7 +1661,7 @@ class Cache:
         Returns:
             The query string with the WHERE clause.
 
-        Example:
+        Examples:
             >>> cache = Cache('./')
             >>> cache.create('test_entry')
             CacheItem[test_entry V:1 UNINITIALIZED]

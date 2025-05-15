@@ -11,13 +11,7 @@ class Status(enum.Enum):
     """
     Class defining the status for cache items.
 
-    Arg:
-        Integer defining current status as described above.
-
-    Returns:
-        Instance of `Status` with the specified status value provided.
-
-    Attrs:
+    Attributes:
         UNINITIALIZED:
             Has value 0. Newly created entry, to be initialized.
         WRITE:
@@ -32,7 +26,7 @@ class Status(enum.Enum):
         DELETED:
             Has value -2. File is deleted and entry is marked for deletion.
 
-    Example:
+    Examples:
         >>> Status(1)
         <Status.WRITE: 1>
         >>> Status.WRITE
@@ -53,14 +47,14 @@ class Status(enum.Enum):
         Creates an instance of `Status` based on the passed status string
         instead of the integer.
 
-        Arg:
+        Args:
             name:
                 String defining the status. Not case-sensitive.
 
         Returns:
             Instance of `Status` with the specified status value provided.
 
-        Example:
+        Examples:
             >>> Status('WRITE')
             <Status.WRITE: 1>
             >>> Status('ready')
