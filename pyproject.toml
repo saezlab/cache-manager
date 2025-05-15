@@ -6,6 +6,12 @@ build-backend = "poetry.core.masonry.api"
 name = "pypi-public"
 url = "https://pypi.org/simple/"
 
+
+[tool.poetry.group.documentation.dependencies]
+mkdocs-material = "^9.6.14"
+pymdown-extensions = "^10.15"
+mkdocstrings = {extras = ["python"], version = "^0.29.1"}
+
 [tool.poetry]
 name = "cachemanager"
 version = "0.1.1"
