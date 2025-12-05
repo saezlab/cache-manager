@@ -9,7 +9,7 @@
 # cache-manager
 
 ## Description
-cache-manager is a lightweight, Pythonic cache for files with a SQLite registry. It lets you:
+cache-manager is a lightweight, Pythonic cache for files with an SQLite registry. It lets you:
 
 - Store files under a cache directory while tracking metadata in SQLite.
 - Version entries automatically based on a stable key derived from a URI/parameters.
@@ -96,7 +96,7 @@ Logging/session helpers are available under `cache_manager.session` and `cache_m
 
 ```
 
-1) TODO: Add a more complete example.
+3) TODO: Add a more complete example.
 
 ```python
 
@@ -104,14 +104,6 @@ Logging/session helpers are available under `cache_manager.session` and `cache_m
 
 ## Contributing
 Contributions are welcome! A typical flow:
-
-```bash
-git clone https://github.com/saezlab/cache-manager.git
-cd cache-manager
-python -m venv .venv && source .venv/bin/activate
-pip install -e .[dev]
-pytest -q
-```
 
 Please open issues and pull requests on GitHub. If you plan a larger change, consider discussing it in an issue first. (A dedicated `CONTRIBUTING.md` may be added later.)
 
