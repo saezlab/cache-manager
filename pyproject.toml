@@ -38,7 +38,7 @@ toml = "*"
 pypath-common = { git = "https://github.com/saezlab/pypath-common.git", branch = "master" }
 python-dateutil = "^2.9.0.post0"
 platformdirs = "^4.2.2"
-numpy = "^1.26.4"
+numpy = ">=1.26.4"
 
 [tool.poetry.dev-dependencies]
 pytest = ">=6.0"
