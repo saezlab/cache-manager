@@ -29,6 +29,23 @@ def temp_tar_gz_file(tmpdir):
 
 
 @pytest.fixture
+def temp_tar_file(tmpdir):
+
+    subfolder = tmpdir.mkdir('subfolder_plain_tar')
+    file1 = subfolder.join('file1.txt')
+    file2 = subfolder.join('file2.txt')
+    file1.write('This is the first file.')
+    file2.write('This is the second file.')
+
+    tar_path = tmpdir.join('archive.tar')
+
+    with tarfile.open(tar_path, 'w:') as tar:
+        tar.add(subfolder.strpath, arcname=os.path.basename(subfolder.strpath))
+
+    return tar_path
+
+
+@pytest.fixture
 def temp_xz_file(tmpdir):
 
     subfolder = tmpdir.mkdir('subfolder')
@@ -138,3 +155,25 @@ def test_open_tar_gz(temp_tar_gz_file):
     opener = _open.Opener(temp_tar_gz_file.strpath, large = False)
 
     assert opener.result['subfolder/file1.txt'] == b'This is the first file.'
+
+
+def test_open_plain_tar(temp_tar_file):
+
+    opener = _open.Opener(temp_tar_file.strpath, ext='tar')
+
+    assert isinstance(opener.result, dict)
+    assert set(opener.result.keys()) == {
+        'subfolder_plain_tar/file1.txt',
+        'subfolder_plain_tar/file2.txt',
+    }
+    assert (
+        opener.result['subfolder_plain_tar/file1.txt'].read() ==
+        b'This is the first file.'
+    )
+
+    opener = _open.Opener(temp_tar_file.strpath, ext='tar', large=False)
+
+    assert (
+        opener.result['subfolder_plain_tar/file2.txt'] ==
+        b'This is the second file.'
+    )
