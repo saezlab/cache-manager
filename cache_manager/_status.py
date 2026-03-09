@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+import logging
+import enum
+
 __all__ = [
     'Status',
 ]
 
-import enum
-
+#--- Module logger 
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 class Status(enum.Enum):
     """

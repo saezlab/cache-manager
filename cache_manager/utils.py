@@ -14,10 +14,14 @@ import re
 import hashlib
 import datetime
 import collections
+import logging
 
 from pypath_common import _misc
 import dateutil
 
+#--- Module logger 
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 def hash(value: Any) -> str:
     """

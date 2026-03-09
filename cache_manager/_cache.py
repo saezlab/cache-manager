@@ -15,6 +15,7 @@ import sqlite3
 import datetime
 import functools as ft
 import collections
+import logging
 from collections.abc import Mapping
 
 from pypath_common import _misc
@@ -22,7 +23,6 @@ import platformdirs
 
 from cache_manager._item import CacheItem
 from cache_manager._status import Status
-from cache_manager._session import _log
 import cache_manager.utils as _utils
 from . import _data
 from ._lock import Lock
@@ -40,6 +40,9 @@ TYPES = {
     'tuple': 'TEXT',
 }
 
+#--- Module logger 
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 class Cache:
     """
@@ -80,7 +83,8 @@ class Cache:
 
         if hasattr(self, 'con'):
 
-            _log(f'Closing SQLite database path: {self.path}')
+
+            logger.debug(f'Closing SQLite database path: {self.path}')
             self.con.close()
 
 
@@ -111,7 +115,8 @@ class Cache:
         deletes anything else in the cache registry.
         """
 
-        _log('Auto cleaning cache.')
+
+        logger.debug('Auto cleaning cache.')
         items = collections.defaultdict(set)
         best = dict()
 
@@ -134,11 +139,13 @@ class Cache:
             for it in v - _misc.to_set(best.get(k, []))
         ]
 
-        _log(f'Deleting {len(to_remove)} records.')
+
+        logger.debug(f'Deleting {len(to_remove)} records.')
 
         self._delete_records(to_remove)
         self.clean_disk()
-        _log('Auto clean complete.')
+
+        logger.debug('Auto clean complete.')
 
 
     def best(
@@ -196,11 +203,12 @@ class Cache:
 
         if items:
 
-            _log(f'Best matching version: {items[-1].version}')
+            logger.debug(f'Best matching version: {items[-1].version}')
 
             return items[-1]
 
-        _log('No version found matching criteria')
+
+        logger.debug('No version found matching criteria')
 
 
     def best_or_new(
@@ -323,7 +331,7 @@ class Cache:
             {1, 2}
         """
 
-        _log(f'Searching by attributes: {attrs}')
+        logger.debug(f'Searching by attributes: {attrs}')
         result = []
 
         op = set.intersection if attrs.pop('__and', True) else set.union
@@ -362,7 +370,7 @@ class Cache:
             CacheItem[foo V:1 UNINITIALIZED]
         """
 
-        _log(f'Looking up key: {key}')
+        logger.debug(f'Looking up key: {key}')
 
         return _misc.first(self.search(key=key, version=version))
 
@@ -373,7 +381,8 @@ class Cache:
         corresponding file on the cache disk directory.
         """
 
-        _log('Cleaning cache database: removing records without file on disk.')
+
+        logger.debug('Cleaning cache database: removing records without file on disk.')
 
         items = {
             item
@@ -381,10 +390,12 @@ class Cache:
             if (item := it['item'])
             and not os.path.exists(it['item'].path)
         }
-        _log(f'Deleting {len(items)} records.')
+
+        logger.debug(f'Deleting {len(items)} records.')
 
         self._delete_records(items)
-        _log('Cleaning cache database complete.')
+
+        logger.debug('Cleaning cache database complete.')
 
 
     def clean_disk(self):
@@ -393,7 +404,8 @@ class Cache:
         record in the database registry.
         """
 
-        _log('Cleaning disk: removing items without DB record.')
+
+        logger.debug('Cleaning disk: removing items without DB record.')
 
         fnames = {
             os.path.join(self.dir, fname)
@@ -402,14 +414,17 @@ class Cache:
             and not item.get('status', False)
         }
 
-        _log(f'Deleting {len(fnames)} files.')
+
+        logger.debug(f'Deleting {len(fnames)} files.')
 
         for file in fnames:
 
-            _log(f'Deleting from disk: `{file}`.')
+
+            logger.debug(f'Deleting from disk: `{file}`.')
             os.remove(file)
 
-        _log('Cleaning disk complete.')
+
+        logger.debug('Cleaning disk complete.')
 
 
     def contents(self) -> dict[str, dict[str, int | str | CacheItem]]:
@@ -509,16 +524,19 @@ class Cache:
 
         self._ensure_sqlite()
 
-        _log(f'CREATE {uri}')
+
+        logger.debug(f'CREATE {uri}')
         args = locals()
         args.pop('self')
         param_str = _utils.serialize(args)
 
-        _log(f'Creating new version for item {param_str}')
+
+        logger.debug(f'Creating new version for item {param_str}')
 
         with Lock(self.con):
 
-            _log(f'Looking up existing versions of item `{uri}`')
+
+            logger.debug(f'Looking up existing versions of item `{uri}`')
             items = self.search(
                 uri=uri,
                 params=params,
@@ -528,11 +546,13 @@ class Cache:
 
             if last_version == 0:
 
-                _log('No existing version found.')
+
+                logger.debug('No existing version found.')
 
             else:
 
-                _log(f'Latest version: `{last_version}`')
+
+                logger.debug(f'Latest version: `{last_version}`')
 
             new = CacheItem.new(
                 uri,
@@ -546,7 +566,8 @@ class Cache:
                 cache=self,
             )
 
-            _log(f'Next version: {new.key}-{new.version}')
+
+            logger.debug(f'Next version: {new.key}-{new.version}')
 
             self._execute(f'''
                 INSERT INTO
@@ -587,7 +608,8 @@ class Cache:
 
             for actual_typ in ATTR_TYPES:
 
-                _log(f'Creating attributes in attr_{actual_typ}')
+
+                logger.debug(f'Creating attributes in attr_{actual_typ}')
 
                 # BEWARE
                 useattrs = [
@@ -623,9 +645,9 @@ class Cache:
 
                 self._execute(q)
 
-            _log(f'Successfully created: {new.version_id}')
+            logger.debug(f'Successfully created: {new.version_id}')
 
-        _log('END CREATE')
+        logger.debug('END CREATE')
 
         return new
 
@@ -700,7 +722,7 @@ class Cache:
 
         item = self.create(**args)
         
-        _log(f'Copying `{path}` to `{item.path}`.')
+        logger.debug(f'Copying `{path}` to `{item.path}`.')
         shutil.copy(path, item.path)
 
         return item
@@ -899,11 +921,11 @@ class Cache:
             [CacheItem[foo V:1 UNINITIALIZED]]
         """
 
-        _log('SEARCH')
+        logger.debug('SEARCH')
         args = locals()
         args.pop('self')
         param_str = _utils.serialize(args)
-        _log(f'Searching cache: {param_str}')
+        logger.debug(f'Searching cache: {param_str}')
         attrs = args.pop('attrs') or {}
         ids = self.by_attrs(attrs)
         where = self._where(**args)
@@ -940,7 +962,8 @@ class Cache:
 
                 self._execute(q)
 
-                _log(f'Fetching results from attr_{actual_typ}')
+
+                logger.debug(f'Fetching results from attr_{actual_typ}')
 
                 for row in self.cur.fetchall():
 
@@ -954,7 +977,8 @@ class Cache:
 
                     if verid not in results:
 
-                        _log(f'Found version: `{verid}`')
+
+                        logger.debug(f'Found version: `{verid}`')
 
                         results[verid] = CacheItem(
                             key=row['item_id'],
@@ -1000,8 +1024,8 @@ class Cache:
                 )
                 self._execute(update_q)
 
-        _log(f'Retrieved {len(results)} results')
-        _log('END SEARCH')
+        logger.debug(f'Retrieved {len(results)} results')
+        logger.debug('END SEARCH')
 
         return list(results.values())
 
@@ -1093,7 +1117,8 @@ class Cache:
 
             # Updating elements in main table
             ids = [it._id for it in items]
-            _log(f'Updating {len(ids)} items')
+
+            logger.debug(f'Updating {len(ids)} items')
             where = f' WHERE id IN ({", ".join(map(str, ids))})'
 
             if main:
@@ -1104,7 +1129,8 @@ class Cache:
             # Updating elements in attribute tables
             for actual_typ in ATTR_TYPES:
 
-                _log(f'Updating attributes in attr_{actual_typ}')
+
+                logger.debug(f'Updating attributes in attr_{actual_typ}')
 
                 useattrs = [
                     (
@@ -1164,7 +1190,7 @@ class Cache:
                     )
                     self._execute(new_q)
 
-            _log(f'Finished updating attributes')
+            logger.debug('Finished updating attributes')
 
 
     def update_status(
@@ -1304,11 +1330,13 @@ class Cache:
 
         self._ensure_sqlite()
 
-        _log(f'Initializing database')
+
+        logger.debug('Initializing database')
 
         fields = ', '.join(f'{k} {v}' for k, v in self._table_fields().items())
 
-        _log(f'Ensuring main table exists')
+
+        logger.debug('Ensuring main table exists')
         self._execute(f'''
             CREATE TABLE IF NOT EXISTS
             main (
@@ -1318,7 +1346,8 @@ class Cache:
 
         for typ in ATTR_TYPES:
 
-            _log(f'Ensuring attr_{typ} table exists')
+
+            logger.debug(f'Ensuring attr_{typ} table exists')
             self._execute(
                 '''
                 CREATE TABLE IF NOT EXISTS
@@ -1350,7 +1379,8 @@ class Cache:
 
             if os.path.exists(item.path):
 
-                _log(f'Deleting from disk: `{item.path}`.')
+
+                logger.debug(f'Deleting from disk: `{item.path}`.')
                 os.remove(item.path)
 
 
@@ -1369,14 +1399,15 @@ class Cache:
 
             where = ','.join(str(getattr(i, '_id', i)) for i in items)
             where = f' WHERE id IN ({where})'
-            _log(f'_delete_records: {len(items)} IDs to be deleted.')
+
+            logger.debug(f'_delete_records: {len(items)} IDs to be deleted.')
             n_before = len(self)
 
             for actual_typ in ATTR_TYPES:
 
                 attr_table = f'attr_{actual_typ}'
 
-                _log(f'Deleting attributes from {attr_table}')
+                logger.debug(f'Deleting attributes from {attr_table}')
 
                 q = f'DELETE FROM {attr_table} {where}'
 
@@ -1387,7 +1418,8 @@ class Cache:
 
             self._execute(q)
 
-            _log(f'Deleted {n_before - len(self)} records.')
+
+            logger.debug(f'Deleted {n_before - len(self)} records.')
 
 
     def _ensure_sqlite(self):
@@ -1410,7 +1442,8 @@ class Cache:
         """
 
         query = re.sub(r'\s+', ' ', query)
-        _log(f'Executing query: {query}')
+
+        logger.debug(f'Executing query: {query}')
         self.cur.execute(query)
         self.con.commit()
 
@@ -1420,7 +1453,8 @@ class Cache:
         Opens the cache registry (SQL database) connection.
         """
 
-        _log(f'Opening SQLite database: {self.path}')
+
+        logger.debug(f'Opening SQLite database: {self.path}')
         self.con = sqlite3.connect(self.path)
         self.cur = self.con.cursor()
         self._create_schema()
@@ -1464,7 +1498,8 @@ class Cache:
 
             path = os.path.join(path, 'cache.sqlite')
 
-        _log(f'Setting SQLite database path: {path}')
+
+        logger.debug(f'Setting SQLite database path: {path}')
         self.path = path
         self.dir = os.path.dirname(self.path)
 
