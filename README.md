@@ -57,7 +57,27 @@ The API centers around two types: `Cache` (manager) and `CacheItem` (one file + 
 Minimal example:
 
 ```python
+import cache_manager as cm
+from cache_manager._status import Status
 
+cache = cm.Cache(path="./my_cache")
+item = cache.create(
+    uri="https://example.org/data.tsv",
+    params={"dataset": "demo", "version": 1},
+    attrs={"species": "human", "rows": 1200},
+    status=Status.WRITE.value,
+    filename="data.tsv",
+)
+
+with open(item.path, "w", encoding="utf-8") as f:
+    f.write("col_a\tcol_b\n1\t2\n")
+
+item.ready()
+best = cache.best(
+    uri="https://example.org/data.tsv",
+    params={"dataset": "demo", "version": 1},
+)
+print(best, best.path)
 ```
 
 Run the included example script which downloads a real dataset and caches it:
@@ -67,7 +87,7 @@ python scripts/hello_cache_manager.py
 ```
 
 ## Configuration
-There’s no global config file; you configure the cache per instance:
+There is no global config file; you configure the cache per instance:
 
 - `Cache(path: str | None = None, pkg: str | None = None)`
   - `path`: explicit directory for cache (contains the SQLite registry and files).
@@ -84,22 +104,80 @@ Logging/session helpers are available under `cache_manager.session` and `cache_m
 
 ## Examples
 
-1) TODO: Add a minimal example.
+1. Create or reuse an item with `best_or_new`.
 
 ```python
+import os
+import cache_manager as cm
+from cache_manager._status import Status
 
+cache = cm.Cache(path="./my_cache")
+uri = "https://example.org/report.csv"
+params = {"year": 2026, "cohort": "A"}
+
+item = cache.best_or_new(
+    uri=uri,
+    params=params,
+    attrs={"kind": "report", "format": "csv"},
+    filename="report.csv",
+    new_status=Status.WRITE.value,
+)
+
+if item.status != Status.READY.value or not os.path.exists(item.path):
+    with open(item.path, "w", encoding="utf-8") as f:
+        f.write("id,value\n1,42\n")
+    item.ready()
+
+print("Using:", item.path)
 ```
 
-2) TODO: Add another minimal example.
+2. Query by attributes and metadata.
 
 ```python
+import cache_manager as cm
+from cache_manager._status import Status
 
+cache = cm.Cache(path="./my_cache")
+
+cache.create(
+    uri="demo://sample-1",
+    attrs={"project": "alpha", "batch": 1, "score": 0.95},
+    status=Status.READY.value,
+)
+cache.create(
+    uri="demo://sample-2",
+    attrs={"project": "alpha", "batch": 2, "score": 0.71},
+    status=Status.READY.value,
+)
+
+ids = cache.by_attrs({"project": "alpha", "batch": 2})
+print("matching ids:", ids)
+
+items = cache.search(uri="demo://sample-2", status=Status.READY.value)
+for it in items:
+    print(it.version_id, it.attrs)
 ```
 
-3) TODO: Add a more complete example.
+3. Open a cached file through `CacheItem.open`.
 
 ```python
+import cache_manager as cm
+from cache_manager._status import Status
 
+cache = cm.Cache(path="./my_cache")
+item = cache.create(
+    uri="demo://text-file",
+    filename="hello.txt",
+    status=Status.WRITE.value,
+)
+
+with open(item.path, "w", encoding="utf-8") as f:
+    f.write("hello\nworld\n")
+
+item.ready()
+
+opened = item.open(default_mode="r", encoding="utf-8", large=True)
+print(next(iter(opened.result)).strip())
 ```
 
 ## Contributing
@@ -111,7 +189,6 @@ Please open issues and pull requests on GitHub. If you plan a larger change, con
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
 
 ## Contact
-OmniPath Team — omnipathdb@gmail.com
+OmniPath Team - omnipathdb@gmail.com
 
 Project page: https://github.com/saezlab/cache-manager
-Documentation: https://cache-manager.readthedocs.io/
