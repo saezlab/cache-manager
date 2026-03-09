@@ -13,11 +13,15 @@ import gzip
 import struct
 import tarfile
 import zipfile
+import logging
 
 from pypath_common import _misc as _common
 from pypath_common import _constants as _const
 
-from cache_manager._session import _log
+
+#--- Module logger 
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 COMPRESSED =  {'gz', 'xz', 'bz2'}
 ARCHIVES = {'zip', 'tar', 'tar.gz', 'tar.bz2', 'tar.xz'}
@@ -155,7 +159,7 @@ class Opener:
         if not os.path.exists(self.path):
 
             msg = f'No such file: `{self.path}`.'
-            _log(msg)
+            logger.warning(msg)
 
             raise FileNotFoundError(msg)
 
@@ -173,7 +177,7 @@ class Opener:
         attribute `result`.
         """
 
-        _log(f'Opening gzip file: {self.path}')
+        logger.debug(f'Opening gzip file: {self.path}')
 
         self.fileobj.seek(-4, 2)
         self.size = struct.unpack('I', self.fileobj.read(4))[0]
@@ -192,13 +196,13 @@ class Opener:
                 if self.default_mode == 'rb'
                 else self._gzfile_mode_r,
             )
-            _log(f'Result is an iterator over the lines of {self.path}')
+            logger.debug(f'Result is an iterator over the lines of {self.path}')
 
         else:
 
             self.result = self.gzfile.read()
             self.gzfile.close()
-            _log(
+            logger.debug(
                 f'Data has been read from gzip file {self.path}. The file has '
                 'been closed.',
             )
@@ -210,7 +214,7 @@ class Opener:
         `result`.
         """
 
-        _log(f'Opening plain text file {self.path}')
+        logger.debug(f'Opening plain text file {self.path}')
 
         self.size = os.path.getsize(self.fileobj.name)
 
@@ -222,7 +226,7 @@ class Opener:
 
             self.result = self.fileobj.read()
             self.fileobj.close()
-            _log(
+            logger.debug(
                 f'Contents of {self.path} has been read and the file has been '
                 'closed.',
             )
@@ -234,7 +238,7 @@ class Opener:
         attribute `result`.
         """
 
-        _log(f'Opening tar file: {self.path}')
+        logger.debug(f'Opening tar file: {self.path}')
 
         self._files = {}
         self.sizes = {}
@@ -263,14 +267,14 @@ class Opener:
 
                 else:
 
-                    _log(f'Reading contents of file from archive: `{m.name}`.')
+                    logger.debug(f'Reading contents of file from archive: `{m.name}`.')
                     self._files[m.name] = this_file.read()
                     this_file.close()
 
         if not self.large:
 
             self.tarfile.close()
-            _log(f'File closed: `{self.path}`.')
+            logger.debug(f'File closed: `{self.path}`.')
 
         self.result = self._files
 
@@ -281,7 +285,7 @@ class Opener:
         attribute `result`.
         """
 
-        _log(f'Opening zip file {self.path}')
+        logger.debug(f'Opening zip file {self.path}')
 
         self._files_multipart = {}
         self.sizes = {}
@@ -319,7 +323,7 @@ class Opener:
         if not self.large:
 
             self.zipfile.close()
-            _log(
+            logger.debug(
                 f'Data has been read from zip file {self.path}. File has been '
                 'closed',
             )

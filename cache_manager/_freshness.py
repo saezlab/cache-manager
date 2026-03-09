@@ -6,14 +6,17 @@ from __future__ import annotations
 
 import os
 import hashlib
+import logging
 from email.utils import parsedate_to_datetime
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from pathlib import Path
 
-from cache_manager._session import _log
 
+#--- Module logger 
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 def metadata_from_item(item) -> dict:
     """
@@ -92,7 +95,7 @@ def _check_etag(remote_headers: dict, local_metadata: dict) -> tuple[bool, str]:
         return False, 'no local etag stored'
 
     is_current = remote_etag == local_etag
-    _log(f'ETag check: remote={remote_etag}, local={local_etag}, current={is_current}')
+    logger.debug(f'ETag check: remote={remote_etag}, local={local_etag}, current={is_current}')
     return is_current, 'etag match' if is_current else 'etag mismatch'
 
 
@@ -116,10 +119,10 @@ def _check_last_modified(
         remote_dt = parsedate_to_datetime(remote_modified)
         local_dt = parsedate_to_datetime(local_modified)
         is_current = local_dt >= remote_dt
-        _log(f'Last-Modified check: remote={remote_dt}, local={local_dt}, current={is_current}')
+        logger.debug(f'Last-Modified check: remote={remote_dt}, local={local_dt}, current={is_current}')
         return is_current, 'not modified' if is_current else 'modified'
     except (ValueError, TypeError) as e:
-        _log(f'Error parsing dates: {e}')
+        logger.warning(f'Error parsing dates: {e}')
         return False, f'date parse error: {e}'
 
 
@@ -134,7 +137,7 @@ def _check_hash(
     if remote_md5:
         local_md5 = _compute_hash(local_path, 'md5')
         is_current = remote_md5 == local_md5
-        _log(f'MD5 check: remote={remote_md5}, local={local_md5}, current={is_current}')
+        logger.debug(f'MD5 check: remote={remote_md5}, local={local_md5}, current={is_current}')
         return is_current, 'md5 match' if is_current else 'md5 mismatch'
 
     local_sha256 = local_metadata.get('sha256')
@@ -155,10 +158,10 @@ def _check_size(local_path: str | Path, remote_headers: dict) -> tuple[bool, str
         remote_size = int(remote_size)
         local_size = os.path.getsize(local_path)
         is_current = local_size == remote_size
-        _log(f'Size check: remote={remote_size}, local={local_size}, current={is_current}')
+        logger.debug(f'Size check: remote={remote_size}, local={local_size}, current={is_current}')
         return is_current, 'size match' if is_current else 'size mismatch'
     except (ValueError, OSError) as e:
-        _log(f'Error checking size: {e}')
+        logger.warning(f'Error checking size: {e}')
         return False, f'size check error: {e}'
 
 
@@ -177,8 +180,8 @@ def get_remote_headers(url: str, **kwargs) -> dict:
 
     try:
         response = requests.head(url, allow_redirects=True, **kwargs)
-        _log(f'HEAD request to {url}: status={response.status_code}')
+        logger.debug(f'HEAD request to {url}: status={response.status_code}')
         return dict(response.headers)
     except Exception as e:
-        _log(f'Error getting remote headers: {e}')
+        logger.warning(f'Error getting remote headers: {e}')
         return {}

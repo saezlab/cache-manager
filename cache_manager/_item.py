@@ -7,6 +7,7 @@ __all__ = [
 from typing import IO, Type
 import os
 import datetime
+import logging
 
 from pypath_common import _misc
 
@@ -14,6 +15,10 @@ from cache_manager import _open
 from cache_manager._status import Status
 import cache_manager
 import cache_manager.utils as _utils
+
+#--- Module logger 
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 
 class CacheItem:

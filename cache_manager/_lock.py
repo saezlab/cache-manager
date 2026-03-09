@@ -5,6 +5,11 @@ __all__ = [
 ]
 
 import sqlite3
+import logging
+
+#--- Module logger 
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 locked_connections = {}
 
