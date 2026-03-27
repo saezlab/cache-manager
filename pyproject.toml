@@ -64,7 +64,7 @@ nbsphinx = { git = "https://github.com/deeenes/nbsphinx.git", branch = "timings"
 flake8-pyproject = { git = "https://github.com/john-hen/Flake8-pyproject.git" }
 
 [tool.poetry.urls]
-"Bug Tracker" = "https://github.com/https://github.com/saezlab/cache-manager/issues"
+"Bug Tracker" = "https://github.com/saezlab/cache-manager/issues"
 
 [tool.black]
 line-length = 80
