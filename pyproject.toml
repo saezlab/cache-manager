@@ -7,7 +7,7 @@ name = "pypi-public"
 url = "https://pypi.org/simple/"
 
 [tool.poetry]
-name = "cachemanager"
+name = "cache-manager"
 version = "0.1.1"
 description = "A Python manager for the cache"
 license = "GNU General Public License Version 3"
