@@ -2,7 +2,7 @@ import pytest
 
 import sqlite3
 
-from cache_manager import _lock
+from cachedir import _lock
 
 
 def test_lock(test_cache):

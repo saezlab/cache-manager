@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from cache_manager import _freshness
+from cachedir import _freshness
 
 
 class _DummyItem:

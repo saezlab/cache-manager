@@ -1,6 +1,6 @@
 import os
 
-from cache_manager import utils
+from cachedir import utils
 
 __all__ = [
     'TestRemove',

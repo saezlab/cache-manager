@@ -12,9 +12,9 @@ requires = ["hatchling"]
 
 [project]
 name = "cachedir"
-version = "0.1.1"
+version = "0.1.2"
 description = "A Python manager for the cache"
-license = "GPL-3.0-or-later"
+license = "BSD-3-Clause"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
@@ -24,7 +24,7 @@ classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Natural Language :: English",
@@ -64,11 +64,11 @@ Repository = "https://github.com/saezlab/cachedir"
 # ===================================
 
 [tool.hatch.build.targets.wheel]
-packages = ["cache_manager"]
+packages = ["cachedir"]
 
 # ---- Coverage
 [tool.coverage.run]
-source = ["cache_manager"]
+source = ["cachedir"]
 omit = ["**/test_*.py"]
 
 # ---- Pytest
@@ -152,7 +152,7 @@ case-sensitive = false
 combine-as-imports = true
 force-sort-within-sections = true
 force-wrap-aliases = true
-known-first-party = ["cache_manager"]
+known-first-party = ["cachedir"]
 known-third-party = ["numpy", "pandas"]
 length-sort = false
 no-lines-before = ["local-folder"]

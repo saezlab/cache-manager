@@ -1,7 +1,7 @@
 from dateutil.parser import parse as dateparse
 
 
-from cache_manager import _status
+from cachedir import _status
 
 __all__ = [
     'test_search_by_attrs_datetime',

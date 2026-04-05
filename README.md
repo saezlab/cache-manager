@@ -57,8 +57,8 @@ The API centers around two types: `Cache` (manager) and `CacheItem` (one file + 
 Minimal example:
 
 ```python
-import cache_manager as cm
-from cache_manager._status import Status
+import cachedir as cm
+from cachedir._status import Status
 
 cache = cm.Cache(path="./my_cache")
 item = cache.create(
@@ -83,7 +83,7 @@ print(best, best.path)
 Run the included example script which downloads a real dataset and caches it:
 
 ```bash
-python scripts/hello_cache_manager.py
+python scripts/hello_cachedir.py
 ```
 
 ## Configuration
@@ -97,10 +97,10 @@ Common item fields:
 - `uri` (str): a canonical identifier used for the hash key (together with `params`).
 - `params` (dict): serialized to the stable key; changing them yields a new key.
 - `attrs` (dict): typed attributes persisted to attribute tables for rich queries.
-- `status` (int): from `cache_manager._status.Status` (READY, WRITE, etc.).
+- `status` (int): from `cachedir._status.Status` (READY, WRITE, etc.).
 - `filename` (str): filename to be used in the cache; extension is auto-inferred.
 
-Logging/session helpers are available under `cache_manager.session` and `cache_manager.log` if you want simple trace output.
+Logging/session helpers are available under `cachedir.session` and `cachedir.log` if you want simple trace output.
 
 ## Examples
 
@@ -108,8 +108,8 @@ Logging/session helpers are available under `cache_manager.session` and `cache_m
 
 ```python
 import os
-import cache_manager as cm
-from cache_manager._status import Status
+import cachedir as cm
+from cachedir._status import Status
 
 cache = cm.Cache(path="./my_cache")
 uri = "https://example.org/report.csv"
@@ -134,8 +134,8 @@ print("Using:", item.path)
 2. Query by attributes and metadata.
 
 ```python
-import cache_manager as cm
-from cache_manager._status import Status
+import cachedir as cm
+from cachedir._status import Status
 
 cache = cm.Cache(path="./my_cache")
 
@@ -161,8 +161,8 @@ for it in items:
 3. Open a cached file through `CacheItem.open`.
 
 ```python
-import cache_manager as cm
-from cache_manager._status import Status
+import cachedir as cm
+from cachedir._status import Status
 
 cache = cm.Cache(path="./my_cache")
 item = cache.create(

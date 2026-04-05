@@ -7,8 +7,8 @@ import gzip
 import zipfile
 import tarfile
 
-from cache_manager import utils
-from cache_manager import _open
+from cachedir import utils
+from cachedir import _open
 
 
 @pytest.fixture

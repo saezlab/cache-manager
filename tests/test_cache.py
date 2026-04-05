@@ -3,7 +3,7 @@ import tempfile
 
 import pytest
 
-from cache_manager import _item, utils
+from cachedir import _item, utils
 
 __all__ = [
     'TestCache',

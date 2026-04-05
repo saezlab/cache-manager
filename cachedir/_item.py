@@ -11,10 +11,10 @@ import logging
 
 from pkg_infra.utils import _misc
 
-from cache_manager import _open
-from cache_manager._status import Status
-import cache_manager
-import cache_manager.utils as _utils
+from cachedir import _open
+from cachedir._status import Status
+import cachedir
+import cachedir.utils as _utils
 
 #--- Module logger 
 logger = logging.getLogger(__name__)
@@ -128,7 +128,7 @@ class CacheItem:
             last_search: str = None,
             read_count: int | None = None,
             search_count: int | None = None,
-            cache: Type[cache_manager.Cache] | None = None,
+            cache: Type[cachedir.Cache] | None = None,
     ):
 
         self.key = key

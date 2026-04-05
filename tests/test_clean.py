@@ -1,7 +1,7 @@
 import pytest
 import os
 
-from cache_manager._status import Status
+from cachedir._status import Status
 
 
 def test_clean_disk(test_cache):

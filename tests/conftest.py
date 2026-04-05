@@ -8,7 +8,7 @@ __all__ = [
 ]
 
 sys.path.append(str(pl.Path(__file__).parent.parent))
-from cache_manager import Cache
+from cachedir import Cache
 
 
 @pytest.fixture

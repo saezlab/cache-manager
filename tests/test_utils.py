@@ -1,6 +1,6 @@
 import pytest
 
-from cache_manager import utils
+from cachedir import utils
 
 __all__ = ['TestUtils']
 

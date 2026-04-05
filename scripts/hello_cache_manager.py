@@ -3,8 +3,8 @@ import csv
 from urllib.request import urlopen
 from contextlib import closing
 
-import cache_manager as cm
-from cache_manager._status import Status
+import cachedir as cm
+from cachedir._status import Status
 
 
 URL = (

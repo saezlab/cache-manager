@@ -1,16 +1,15 @@
 #!/usr/bin/env python
 
 #
-# This file is part of the `cache_manager` Python module
+# This file is part of the `cachedir` Python module
 #
-# Copyright 2024
+# Copyright 2025
 # Heidelberg University Hospital
 #
 # File author(s): OmniPath Team (omnipathdb@gmail.com)
 #
-# Distributed under the GPLv3 license
-# See the file `LICENSE` or read a copy at
-# https://www.gnu.org/licenses/gpl-3.0.txt
+# Distributed under the BSD 3-Clause license
+# See the file `LICENSE` for details
 #
 
 """
@@ -26,7 +25,7 @@ import logging
 
 import toml
 
-_VERSION = '0.1.1'
+_VERSION = '0.1.2'
 
 #--- Module logger 
 logger = logging.getLogger(__name__)

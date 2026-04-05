@@ -21,9 +21,9 @@ from collections.abc import Mapping
 from pkg_infra.utils import _misc
 import platformdirs
 
-from cache_manager._item import CacheItem
-from cache_manager._status import Status
-import cache_manager.utils as _utils
+from cachedir._item import CacheItem
+from cachedir._status import Status
+import cachedir.utils as _utils
 from . import _data
 from ._lock import Lock
 
@@ -730,7 +730,7 @@ class Cache:
 
     def reload(self):
         """
-        Reloads the cache_manager at the module level and reloads the current
+        Reloads the cachedir at the module level and reloads the current
         instance of `Cache`
         """
 
