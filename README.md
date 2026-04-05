@@ -1,15 +1,15 @@
 [![Tests][badge-ci]][link-ci]
 [![Coverage][badge-cov]][link-cov]
 
-[badge-cov]: https://codecov.io/github/saezlab/cache-manager/graph/badge.svg
-[link-cov]: https://codecov.io/github/saezlab/cache-manager
-[badge-ci]: https://img.shields.io/github/actions/workflow/status/saezlab/cache-manager/ci.yml?branch=main
-[link-ci]: https://github.com/saezlab/cache-manager/actions/workflows/ci.yml
+[badge-cov]: https://codecov.io/github/saezlab/cachedir/graph/badge.svg
+[link-cov]: https://codecov.io/github/saezlab/cachedir
+[badge-ci]: https://img.shields.io/github/actions/workflow/status/saezlab/cachedir/ci.yml?branch=main
+[link-ci]: https://github.com/saezlab/cachedir/actions/workflows/ci.yml
 
-# cache-manager
+# cachedir
 
 ## Description
-cache-manager is a lightweight, Pythonic cache for files with an SQLite registry. It lets you:
+cachedir is a lightweight, Pythonic cache for files with an SQLite registry. It lets you:
 
 - Store files under a cache directory while tracking metadata in SQLite.
 - Version entries automatically based on a stable key derived from a URI/parameters.
@@ -21,7 +21,7 @@ cache-manager is a lightweight, Pythonic cache for files with an SQLite registry
 This is ideal for reproducible data pipelines and ETL steps where you want deterministic, discoverable artifacts.
 
 ## Table of Contents
-- [cache-manager](#cache-manager)
+- [cachedir](#cachedir)
   - [Description](#description)
   - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
@@ -36,8 +36,8 @@ This is ideal for reproducible data pipelines and ETL steps where you want deter
 Clone and install in editable mode (no extra tools required):
 
 ```bash
-git clone https://github.com/saezlab/cache-manager.git
-cd cache-manager
+git clone https://github.com/saezlab/cachedir.git
+cd cachedir
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .
@@ -46,8 +46,8 @@ pip install -e .
 Alternatively, if you prefer Poetry:
 
 ```bash
-git clone https://github.com/saezlab/cache-manager.git
-cd cache-manager
+git clone https://github.com/saezlab/cachedir.git
+cd cachedir
 poetry install
 ```
 
@@ -191,4 +191,4 @@ This project is licensed under the GNU General Public License v3.0. See the [LIC
 ## Contact
 OmniPath Team - omnipathdb@gmail.com
 
-Project page: https://github.com/saezlab/cache-manager
+Project page: https://github.com/saezlab/cachedir
