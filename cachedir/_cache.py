@@ -1570,9 +1570,11 @@ class Cache:
 
                 string = list(string)
 
-            string = f"json('{json.dumps(string)}')"
+            string = json.dumps(string).replace("'", "''")
+            string = f"json('{string}')"
 
-        return f"'{string}'" if (
+        escaped = str(string).replace("'", "''")
+        return f"'{escaped}'" if (
                 typ.startswith('VARCHAR') or
                 typ.startswith('DATETIME')
         ) else string
