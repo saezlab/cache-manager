@@ -16,7 +16,7 @@ import datetime
 import collections
 import logging
 
-from pypath_common import _misc
+from pkg_infra.utils import _misc
 import dateutil
 
 #--- Module logger 

@@ -18,7 +18,7 @@ import collections
 import logging
 from collections.abc import Mapping
 
-from pypath_common import _misc
+from pkg_infra.utils import _misc
 import platformdirs
 
 from cache_manager._item import CacheItem

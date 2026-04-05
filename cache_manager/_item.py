@@ -9,7 +9,7 @@ import os
 import datetime
 import logging
 
-from pypath_common import _misc
+from pkg_infra.utils import _misc
 
 from cache_manager import _open
 from cache_manager._status import Status

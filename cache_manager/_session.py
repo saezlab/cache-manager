@@ -1,13 +1,10 @@
 import functools as _ft
 import logging
 
-from pypath_common import session as _session
+from pkg_infra.session import get_session as _get_session
 
-#--- Module logger 
+#--- Module logger
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
-_get_session = _ft.partial(_session, 'cache_manager')
-
-
-session = _get_session()
+session = _get_session(workspace=".")

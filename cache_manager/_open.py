@@ -15,8 +15,7 @@ import tarfile
 import zipfile
 import logging
 
-from pypath_common import _misc as _common
-from pypath_common import _constants as _const
+from pkg_infra.utils._misc import ext
 
 
 #--- Module logger 
@@ -336,7 +335,7 @@ class Opener:
         Determines the file type based on the extension.
         """
 
-        ext = self.ext or _common.ext(self.path)
+        ext = self.ext or ext(self.path)
         ext = ext.strip('.')
         self.ext = 'tar.gz' if ext == 'tgz' else ext
 
