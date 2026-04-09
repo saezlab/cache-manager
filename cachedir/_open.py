@@ -335,11 +335,11 @@ class Opener:
         Determines the file type based on the extension.
         """
 
-        ext = self.ext or ext(self.path)
-        ext = ext.strip('.')
-        self.ext = 'tar.gz' if ext == 'tgz' else ext
+        resolved_ext = self.ext or ext(self.path)
+        resolved_ext = resolved_ext.strip('.')
+        self.ext = 'tar.gz' if resolved_ext == 'tgz' else resolved_ext
 
-        self.type = ext if ext in COMPRESSED | ARCHIVES else 'plain'
+        self.type = resolved_ext if resolved_ext in COMPRESSED | ARCHIVES else 'plain'
         self.type = 'tar' if self.type.startswith('tar') else self.type
 
 
