@@ -1,9 +1,11 @@
+import os
 import datetime
 import tempfile
 
 import pytest
 
 from cachedir import _item, utils
+from cachedir._status import Status
 
 __all__ = [
     'TestCache',
@@ -128,6 +130,44 @@ class TestCache:
         assert isinstance(it, _item.CacheItem)
         assert it.status == 1
         assert it.version == 2
+
+
+    def test_best_skips_ready_without_file(self, test_cache):
+
+        # A READY item whose backing file is missing is corrupt and must not be
+        # returned as the best match -- otherwise the caller gets a path to a
+        # nonexistent file (the bug behind dlmachine's "all mirrors failed" on a
+        # cleaned/partial cache entry).
+        it = test_cache.best_or_new('readyfilecheck')
+        assert it.status == Status.WRITE.value
+
+        # No file on disk yet -> marking it READY makes it corrupt.
+        test_cache.ready('readyfilecheck', version = it.version)
+        assert test_cache.best('readyfilecheck') is None
+
+        # With the file actually present, READY is a valid hit again.
+        with open(it.path, 'wb') as fp:
+            fp.write(b'payload')
+
+        best = test_cache.best('readyfilecheck')
+        assert best is not None
+        assert best.version == it.version
+
+        # Removing the file makes it skip the item once more.
+        os.remove(it.path)
+        assert test_cache.best('readyfilecheck') is None
+
+
+    def test_best_keeps_writeitem_without_file(self, test_cache):
+
+        # WRITE items are slots for an in-progress / resumable download and are
+        # file-less by design, so the file-existence check must NOT exclude them.
+        w = test_cache.best_or_new('writeslot')
+        assert w.status == Status.WRITE.value
+
+        found = test_cache.best('writeslot', status = Status.WRITE.value)
+        assert found is not None
+        assert found.version == w.version
 
 
     def test_update_status(self, test_cache):

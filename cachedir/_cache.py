@@ -198,6 +198,20 @@ class Cache:
             newer_than=newer_than,
             older_than=older_than,
         )
+
+        # A READY item claims to hold complete cached data, so it is only a valid
+        # "best" match if its backing file is actually present. A READY item with
+        # a missing file (deleted, cleaned, or a download that crashed after the
+        # status update) is corrupt: drop it so best_or_new() falls through to
+        # creating a fresh item and re-fetching, instead of handing the caller a
+        # path to a nonexistent file. WRITE (in-progress / resumable) and
+        # UNINITIALIZED (no file yet) items are left untouched -- callers use
+        # those to find or claim a download slot.
+        items = [
+            it for it in items
+            if it._status != Status.READY.value or os.path.exists(it.path)
+        ]
+
         # TODO: Consider also date
         items = sorted(items, key=lambda it: it.version)
 
